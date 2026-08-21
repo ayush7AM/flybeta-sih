@@ -245,6 +245,90 @@ All use `ReadOnlyModelViewSet` — list + retrieve only, no write operations.
 | `python manage.py check` | ✅ 0 issues |
 | URL route introspection | ✅ All 12 routes registered (list + detail × 3 resources × 2 formats) |
 
+### Phase 2b: React Vite Frontend ✅
+
+Initialized React + Vite + Tailwind v4 frontend and converted Stitch prototypes into working React components wired to the DRF API.
+
+#### 1. Project Setup
+
+- Moved Stitch prototypes to `/design/stitch-reference/` (preserved as reference)
+- Initialized Vite + React project in `/frontend` via `npx create-vite@latest`
+- Installed: `react-router-dom`, `react-markdown`, `axios`, `tailwindcss@v4`, `@tailwindcss/vite`
+- Vite proxy configured: `/api` → `http://localhost:8000` (avoids CORS in dev)
+
+#### 2. Design System ([index.css](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/index.css))
+
+Tailwind v4 CSS-first config using `@theme` directive. All DESIGN.md tokens mapped:
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--color-ink` | `#111111` | Base text, borders |
+| `--color-canvas` | `#F9F8F6` | Page background |
+| `--color-primary` | `#E52E2E` | CTAs, primary actions |
+| `--color-emerald` | `#059669` | Data Science track |
+| `--color-violet` | `#6D28D9` | AI & ML track |
+| `--color-cobalt` | `#2563EB` | Cloud Computing track |
+| `--color-gold` | `#EAB308` | Coins/badges |
+| `--color-flame` | `#EA580C` | Streaks |
+
+Global classes: `.brutalist-card`, `.brutalist-btn`, `.brutalist-badge`, `.heading-xl/lg/md`, `.label-mono`, `.grid-bg`, `.markdown-content`
+
+#### 3. Components
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| `Navbar` | [Navbar.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/layout/Navbar.jsx) | Fixed top bar with logo, nav links, gamification badges |
+| `Layout` | [Layout.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/layout/Layout.jsx) | Wraps pages with Navbar + grid background |
+| `TrackCard` | [TrackCard.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/TrackCard.jsx) | Domain card with accent colors, level preview, CTA |
+| `LevelNode` | [LevelNode.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/LevelNode.jsx) | Roadmap level with lesson list, mandatory/bonus counts |
+| `MarkdownRenderer` | [MarkdownRenderer.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/MarkdownRenderer.jsx) | react-markdown wrapper with brutalist styling |
+
+#### 4. Pages & Routing ([App.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/App.jsx))
+
+| Route | Page | Data Source |
+|-------|------|-------------|
+| `/` | [TrackSelectionPage](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/TrackSelectionPage.jsx) | `GET /api/v1/domains/` |
+| `/track/:name` | [TrackRoadmapPage](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/TrackRoadmapPage.jsx) | `GET /api/v1/domains/{name}/` |
+| `/track/:name/level/:num/lesson/:order` | [LessonRunnerPage](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/LessonRunnerPage.jsx) | `GET /api/v1/domains/{name}/` |
+
+#### 5. API Service ([api.js](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/services/api.js))
+
+Axios instance with functions: `getDomains()`, `getDomain(name)`, `getLevels(domain)`, `getLevel(id)`, `getLessons(level)`, `getLesson(id)`
+
+#### 6. Files Inventory
+
+```
+frontend/
+├── index.html                    # SEO meta, Google Fonts preconnect
+├── vite.config.js                # React + Tailwind v4 + API proxy
+├── package.json
+├── src/
+│   ├── main.jsx                  # Entry point
+│   ├── App.jsx                   # React Router setup (3 routes)
+│   ├── index.css                 # Tailwind v4 @theme + design system
+│   ├── services/
+│   │   └── api.js                # Axios API client
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── Navbar.jsx
+│   │   │   └── Layout.jsx
+│   │   ├── TrackCard.jsx
+│   │   ├── LevelNode.jsx
+│   │   └── MarkdownRenderer.jsx
+│   └── pages/
+│       ├── TrackSelectionPage.jsx
+│       ├── TrackRoadmapPage.jsx
+│       └── LessonRunnerPage.jsx
+└── dist/                         # Production build output
+```
+
+#### 7. Verification
+
+| Check | Result |
+|-------|--------|
+| `npm run build` | ✅ 0 warnings, 177ms, 243 modules |
+| Bundle size | CSS: 17.2 kB (4.4 gzip), JS: 408.7 kB (130 gzip) |
+
 ---
 
 ## Phase 3: Gamification Logic & Theme Switcher ⬜
@@ -267,4 +351,4 @@ All use `ReadOnlyModelViewSet` — list + retrieve only, no write operations.
 
 ---
 
-*Last updated: 2026-08-21 — Phase 1 complete.*
+*Last updated: 2026-08-21 — Phase 2b complete.*

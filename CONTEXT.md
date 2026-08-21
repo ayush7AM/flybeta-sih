@@ -2,10 +2,10 @@
 
 ## Overview
 FlyBeta is a gamified, level-based learning platform for Data Science, AI, and Cloud Computing.
-Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS).
+Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v4).
 
 ## Current Phase
-**Phase 1 — Complete**: Django DRF models, auth, SQLite database initialized.
+**Phase 2b — Complete**: React Vite frontend initialized with 3 core pages wired to DRF API.
 
 ### What's Done
 - Django project scaffold (`flybeta` config) in `/backend`
@@ -14,18 +14,23 @@ Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS).
 - UserProfile auto-creation via post_save signal
 - Admin registrations with filters, inlines, and search
 - SQLite database created and migrated
-- DRF + CORS configured
-- API router stub at `/api/v1/`
+- DRF read-only API at `/api/v1/` (domains, levels, lessons)
+- Content pipeline: `python manage.py load_level_content` (JSON → DB)
+- Sample data: Cloud Computing Level 1 (5 lessons)
+- React + Vite + Tailwind v4 frontend in `/frontend`
+- Design system: All DESIGN.md tokens mapped to CSS custom properties
+- 3 pages: Track Selection, Track Roadmap, Lesson Runner
+- 5 components: Navbar, Layout, TrackCard, LevelNode, MarkdownRenderer
+- API service layer with Axios + Vite proxy
+- Stitch prototypes preserved at `/design/stitch-reference/`
 
 ### What's Next
-- **Phase 2**: React Vite setup, global UI shell, integrate Stitch prototypes into components
 - **Phase 3**: Gamification logic (XP/coin state updates), theme switcher
 - **Phase 4**: AI features (Project Architect & Code Reviewer endpoints)
 
 ## Frontend
-Located at `/frontend/stitch_flybeta_tactile_editorial_lab/`.
-Contains Stitch-generated HTML/Tailwind prototypes — static mockups with multiple theme variants.
-These are reference designs for the final React components (Phase 2).
+Located at `/frontend/`. React + Vite + Tailwind v4.
+Design reference prototypes at `/design/stitch-reference/`.
 
 ## Design System
 Neo-Brutalism / Retro-Tech / Blueprint aesthetic.
@@ -35,6 +40,22 @@ See `DESIGN.md` for full design tokens (colors, typography, elevation, micro-int
 | Layer | Technology |
 |-------|-----------|
 | Backend | Django 5.2 + DRF 3.18 + SQLite (dev) |
-| Frontend | React (Vite) + Tailwind CSS (planned) |
-| Communication | JSON over REST API |
+| Frontend | React (Vite) + Tailwind CSS v4 |
+| Communication | JSON over REST API (proxied in dev) |
 | Auth | Session/Basic (Phase 1), JWT (planned) |
+
+## How to Run
+
+### Backend
+```bash
+cd backend && source venv/bin/activate
+python manage.py runserver    # http://localhost:8000
+```
+
+### Frontend
+```bash
+cd frontend
+npm run dev                   # http://localhost:5173
+```
+
+Both must run simultaneously. Vite proxies `/api` → Django backend.
