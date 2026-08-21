@@ -1,0 +1,257 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   FLYBETA DESIGN SYSTEM — Tactile Neo-Brutalism
+   Reference: DESIGN.md
+   ========================================================================= */
+
+@theme {
+  /* ── Color Tokens ─────────────────────────────────────────────────────── */
+  --color-ink: #111111;
+  --color-canvas: #F9F8F6;
+  --color-surface: #FFFFFF;
+
+  /* Primary Action */
+  --color-primary: #E52E2E;
+  --color-primary-dark: #C41E1E;
+
+  /* Track Accents */
+  --color-emerald: #059669;
+  --color-emerald-light: #f0fdf4;
+  --color-violet: #6D28D9;
+  --color-violet-light: #f5f3ff;
+  --color-cobalt: #2563EB;
+  --color-cobalt-light: #eff6ff;
+
+  /* Gamification */
+  --color-gold: #EAB308;
+  --color-gold-light: #fefce8;
+  --color-flame: #EA580C;
+  --color-flame-light: #fff7ed;
+
+  /* Neutrals */
+  --color-muted: #6B7280;
+  --color-border: #111111;
+  --color-border-light: #E5E2E1;
+
+  /* ── Typography ───────────────────────────────────────────────────────── */
+  --font-heading: "Anton", "Impact", sans-serif;
+  --font-body: "Inter", "Helvetica Neue", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* ── Shadows ──────────────────────────────────────────────────────────── */
+  --shadow-brutal: 6px 6px 0px 0px #111111;
+  --shadow-brutal-sm: 4px 4px 0px 0px #111111;
+  --shadow-brutal-lg: 10px 10px 0px 0px #111111;
+  --shadow-none: 0px 0px 0px 0px #111111;
+
+  /* ── Spacing ──────────────────────────────────────────────────────────── */
+  --spacing-gutter: 24px;
+}
+
+/* ── Base Reset & Canvas ─────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Blueprint Grid Background ───────────────────────────────────────────── */
+.grid-bg {
+  background-image:
+    linear-gradient(to right, var(--color-border-light) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-border-light) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ── Brutalist Component Classes ─────────────────────────────────────────── */
+
+/* Card with hard offset shadow + lift on hover */
+.brutalist-card {
+  border: 2px solid var(--color-ink);
+  box-shadow: var(--shadow-brutal);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--color-surface);
+}
+
+.brutalist-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px 0px var(--color-ink);
+}
+
+/* Button with press-down micro-interaction */
+.brutalist-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 14px;
+  line-height: 1;
+  border: 2px solid var(--color-ink);
+  box-shadow: var(--shadow-brutal);
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  user-select: none;
+}
+
+.brutalist-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0px 0px var(--color-ink);
+}
+
+.brutalist-btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.brutalist-btn-primary:hover {
+  background: var(--color-primary-dark);
+}
+
+/* Badge / Label — stamped die-cut look */
+.brutalist-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid var(--color-ink);
+}
+
+/* ── Typography Utilities ────────────────────────────────────────────────── */
+.heading-xl {
+  font-family: var(--font-heading);
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.heading-lg {
+  font-family: var(--font-heading);
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.heading-md {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.label-mono {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Markdown Content Styling ────────────────────────────────────────────── */
+.markdown-content h1 {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin: 0 0 24px 0;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--color-ink);
+}
+
+.markdown-content h2 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  margin: 32px 0 16px 0;
+}
+
+.markdown-content h3 {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 18px;
+  margin: 24px 0 12px 0;
+}
+
+.markdown-content p {
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0 0 16px 0;
+  color: var(--color-ink);
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin: 0 0 16px 0;
+  padding-left: 24px;
+}
+
+.markdown-content li {
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.markdown-content strong {
+  font-weight: 700;
+}
+
+.markdown-content code {
+  font-family: var(--font-mono);
+  background: var(--color-canvas);
+  border: 1px solid var(--color-border-light);
+  padding: 2px 6px;
+  font-size: 14px;
+}
+
+.markdown-content pre {
+  background: var(--color-ink);
+  color: #f0f0f0;
+  border: 2px solid var(--color-ink);
+  padding: 16px;
+  overflow-x: auto;
+  margin: 0 0 16px 0;
+  box-shadow: var(--shadow-brutal-sm);
+}
+
+.markdown-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* ── Scrollbar Styling ───────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-canvas);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-light);
+  border: 1px solid var(--color-ink);
+}
