@@ -95,23 +95,22 @@ export default function LessonRunnerPage() {
       // Update UserContext with new stats (instant Navbar update)
       updateUser(result.user);
 
-      // Show reward flash
-      if (result.status === 'completed') {
-        setReward({
-          xp: currentLesson.xp_reward,
-          coins: currentLesson.coins_reward,
-          levelCompleted: result.level_completed,
-        });
-      }
+      // Always show the success overlay
+      setReward({
+        xp: currentLesson.xp_reward,
+        coins: currentLesson.coins_reward,
+        levelCompleted: result.level_completed,
+        alreadyDone: result.status === 'already_completed',
+      });
 
-      // Navigate after a brief delay so user sees the reward
+      // Navigate after 1.5s so the user actually sees the celebration
       setTimeout(() => {
         if (nextLesson) {
           navigate(`/track/${name}/level/${levelNum}/lesson/${nextLesson.order}`);
         } else {
           navigate(`/track/${name}`);
         }
-      }, result.status === 'completed' ? 1200 : 300);
+      }, 1500);
     } catch (err) {
       console.error('Failed to complete lesson:', err);
       setCompleting(false);
@@ -120,25 +119,90 @@ export default function LessonRunnerPage() {
 
   return (
     <div>
-      {/* Reward Flash Overlay */}
+      {/* ── Success Overlay ──────────────────────────────────────────── */}
       {reward && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
-          <div className="brutalist-card p-8 text-center animate-bounce pointer-events-none"
-               style={{ boxShadow: 'var(--shadow-brutal-lg)', background: 'white' }}>
-            <p className="heading-lg m-0 mb-2" style={{ color: meta.accent }}>
-              {reward.levelCompleted ? '🏆 LEVEL COMPLETE!' : '✓ LESSON DONE!'}
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center"
+          style={{ background: 'rgba(0, 0, 0, 0.55)', animation: 'overlayFadeIn 0.2s ease-out' }}
+        >
+          <div
+            className="text-center px-10 py-8 mx-4 bg-surface"
+            style={{
+              border: '4px solid var(--color-ink)',
+              boxShadow: '12px 12px 0px 0px var(--color-ink)',
+              animation: 'overlayPunchIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              maxWidth: '480px',
+              width: '100%',
+            }}
+          >
+            {/* Title */}
+            <p
+              className="heading-xl m-0 mb-1"
+              style={{
+                color: meta.accent,
+                fontSize: '2.25rem',
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
+              }}
+            >
+              {reward.levelCompleted
+                ? '🏆 LEVEL COMPLETE!'
+                : reward.alreadyDone
+                  ? '✓ ALREADY DONE!'
+                  : '⚡ MISSION ACCOMPLISHED!'}
             </p>
-            <div className="flex items-center justify-center gap-4">
-              <span className="brutalist-badge bg-cobalt-light text-cobalt text-lg px-4 py-2">
-                +{reward.xp} XP
-              </span>
-              <span className="brutalist-badge bg-gold-light text-gold text-lg px-4 py-2">
-                +{reward.coins} 💰
-              </span>
-            </div>
+
+            {/* Subtitle */}
+            <p className="label-mono text-muted m-0 mb-4" style={{ fontSize: '0.8rem' }}>
+              {reward.alreadyDone ? 'No double rewards — keep going!' : 'Rewards earned'}
+            </p>
+
+            {/* Reward Badges */}
+            {!reward.alreadyDone && (
+              <div className="flex items-center justify-center gap-4 flex-wrap">
+                <span
+                  className="label-mono flex items-center gap-2 px-5 py-2"
+                  style={{
+                    border: '3px solid var(--color-ink)',
+                    boxShadow: '4px 4px 0px 0px var(--color-ink)',
+                    background: '#DBEAFE',
+                    color: '#2563EB',
+                    fontSize: '1.15rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  ⚡ +{reward.xp} XP
+                </span>
+                <span
+                  className="label-mono flex items-center gap-2 px-5 py-2"
+                  style={{
+                    border: '3px solid var(--color-ink)',
+                    boxShadow: '4px 4px 0px 0px var(--color-ink)',
+                    background: '#FEF3C7',
+                    color: '#B45309',
+                    fontSize: '1.15rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  💰 +{reward.coins} COINS
+                </span>
+              </div>
+            )}
           </div>
         </div>
       )}
+
+      {/* Keyframe animations (scoped inline) */}
+      <style>{`
+        @keyframes overlayFadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes overlayPunchIn {
+          from { opacity: 0; transform: scale(0.7); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
 
       {/* Breadcrumb */}
       <div className="mb-6 flex items-center gap-2 label-mono text-muted flex-wrap">

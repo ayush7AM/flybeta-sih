@@ -52,4 +52,10 @@ export const completeLesson = async (lessonId) => {
   return data;
 };
 
+// ── AI endpoints ────────────────────────────────────────────────────────
+export const generateBlueprint = async (prompt) => {
+  const { data } = await api.post('ai/architect/', { prompt });
+  return data;
+};
+
 export default api;

@@ -14,6 +14,7 @@ from accounts.models import UserProfile
 from api.serializers import (
     DomainSerializer, LevelSerializer, LessonSerializer, UserStatsSerializer,
 )
+from api.ai_services import generate_project_blueprint
 
 
 def get_dev_user():
@@ -156,3 +157,28 @@ class LessonViewSet(ReadOnlyModelViewSet):
             'level_completed': level_completed,
         }, status=status.HTTP_200_OK)
 
+
+class BlueprintView(APIView):
+    """
+    POST /api/v1/ai/architect/
+
+    Accepts a project prompt and returns a step-by-step blueprint.
+    Currently uses a mock service; will be swapped for Gemini API later.
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        prompt = request.data.get('prompt', '').strip()
+
+        if not prompt:
+            return Response(
+                {'error': 'A "prompt" field is required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        steps = generate_project_blueprint(prompt)
+
+        return Response({
+            'prompt': prompt,
+            'steps': steps,
+        }, status=status.HTTP_200_OK)
