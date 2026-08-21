@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { getDomain } from '../services/api';
+import { getDomain, completeLesson } from '../services/api';
+import { useUser } from '../context/UserContext';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 
 const TRACK_META = {
@@ -14,9 +15,12 @@ const DEFAULT_META = { accent: '#E52E2E' };
 export default function LessonRunnerPage() {
   const { name, num, order } = useParams();
   const navigate = useNavigate();
+  const { updateUser } = useUser();
   const [domain, setDomain] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [completing, setCompleting] = useState(false);
+  const [reward, setReward] = useState(null); // { xp, coins } flash
 
   const meta = TRACK_META[name] || DEFAULT_META;
   const levelNum = parseInt(num);
@@ -29,6 +33,12 @@ export default function LessonRunnerPage() {
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [name]);
+
+  // Clear reward flash on lesson change
+  useEffect(() => {
+    setReward(null);
+    setCompleting(false);
+  }, [order]);
 
   if (loading) {
     return (
@@ -76,8 +86,60 @@ export default function LessonRunnerPage() {
   const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
   const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
 
+  // Handle lesson completion
+  const handleComplete = async () => {
+    setCompleting(true);
+    try {
+      const result = await completeLesson(currentLesson.id);
+
+      // Update UserContext with new stats (instant Navbar update)
+      updateUser(result.user);
+
+      // Show reward flash
+      if (result.status === 'completed') {
+        setReward({
+          xp: currentLesson.xp_reward,
+          coins: currentLesson.coins_reward,
+          levelCompleted: result.level_completed,
+        });
+      }
+
+      // Navigate after a brief delay so user sees the reward
+      setTimeout(() => {
+        if (nextLesson) {
+          navigate(`/track/${name}/level/${levelNum}/lesson/${nextLesson.order}`);
+        } else {
+          navigate(`/track/${name}`);
+        }
+      }, result.status === 'completed' ? 1200 : 300);
+    } catch (err) {
+      console.error('Failed to complete lesson:', err);
+      setCompleting(false);
+    }
+  };
+
   return (
     <div>
+      {/* Reward Flash Overlay */}
+      {reward && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
+          <div className="brutalist-card p-8 text-center animate-bounce pointer-events-none"
+               style={{ boxShadow: 'var(--shadow-brutal-lg)', background: 'white' }}>
+            <p className="heading-lg m-0 mb-2" style={{ color: meta.accent }}>
+              {reward.levelCompleted ? '🏆 LEVEL COMPLETE!' : '✓ LESSON DONE!'}
+            </p>
+            <div className="flex items-center justify-center gap-4">
+              <span className="brutalist-badge bg-cobalt-light text-cobalt text-lg px-4 py-2">
+                +{reward.xp} XP
+              </span>
+              <span className="brutalist-badge bg-gold-light text-gold text-lg px-4 py-2">
+                +{reward.coins} 💰
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Breadcrumb */}
       <div className="mb-6 flex items-center gap-2 label-mono text-muted flex-wrap">
         <Link to="/" className="no-underline text-muted hover:text-ink">Tracks</Link>
@@ -169,21 +231,13 @@ export default function LessonRunnerPage() {
               </Link>
             )}
 
-            {nextLesson ? (
-              <button
-                onClick={() => navigate(`/track/${name}/level/${levelNum}/lesson/${nextLesson.order}`)}
-                className="brutalist-btn brutalist-btn-primary"
-              >
-                Complete & Continue →
-              </button>
-            ) : (
-              <Link
-                to={`/track/${name}`}
-                className="brutalist-btn brutalist-btn-primary no-underline"
-              >
-                ✓ Level Complete →
-              </Link>
-            )}
+            <button
+              onClick={handleComplete}
+              disabled={completing}
+              className={`brutalist-btn brutalist-btn-primary ${completing ? 'opacity-60 cursor-not-allowed' : ''}`}
+            >
+              {completing ? 'Saving...' : nextLesson ? 'Complete & Continue →' : '✓ Complete Level →'}
+            </button>
           </div>
         </div>
       </div>

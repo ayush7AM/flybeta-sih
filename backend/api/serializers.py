@@ -1,6 +1,15 @@
 from rest_framework import serializers
 
 from learn.models import Domain, Level, Lesson
+from accounts.models import UserProfile
+
+
+class UserStatsSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ['username', 'xp', 'coins', 'streak', 'last_active_date']
 
 
 class LessonSerializer(serializers.ModelSerializer):

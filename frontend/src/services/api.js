@@ -41,5 +41,15 @@ export const getLesson = async (id) => {
   const { data } = await api.get(`lessons/${id}/`);
   return data;
 };
+// ── User endpoints ──────────────────────────────────────────────────────
+export const getUserStats = async () => {
+  const { data } = await api.get('users/me/');
+  return data;
+};
+
+export const completeLesson = async (lessonId) => {
+  const { data } = await api.post(`lessons/${lessonId}/complete/`);
+  return data;
+};
 
 export default api;

@@ -331,13 +331,78 @@ frontend/
 
 ---
 
-## Phase 3: Gamification Logic & Theme Switcher ⬜
+## Phase 3: Gamification Logic & Theme Switcher ✅
 
-> *Not started. Will cover:*
-> - XP/coin state updates on lesson completion
-> - Streak calculation logic (based on `last_active_date`)
-> - Badge system
-> - Theme switcher using CSS variables (Neo-Brutalism base + themed variants)
+### Subtask 3a: Mock Auth & Dev User ✅
+
+Created management command to seed a development user for API testing.
+
+- [create_dev_user.py](file:///Users/ayush/Desktop/code/flybeta-project/backend/accounts/management/commands/create_dev_user.py) — creates superuser `dev` / `flybeta123` with UserProfile
+- Idempotent — safe to re-run
+
+### Subtask 3b: `GET /api/v1/users/me/` ✅
+
+| File | Change |
+|------|--------|
+| [serializers.py](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/serializers.py) | Added `UserStatsSerializer` (username, xp, coins, streak, last_active_date) |
+| [views.py](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/views.py) | Added `UserMeView` with mock auth (returns dev user's profile) |
+| [urls.py](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/urls.py) | Wired at `users/me/` |
+
+### Subtask 3c: Lesson Completion POST ✅
+
+Added `@action(detail=True, methods=['post'])` named `complete` on `LessonViewSet`.
+
+**Endpoint:** `POST /api/v1/lessons/{id}/complete/`
+
+**Logic:**
+1. Get-or-create `LevelProgress` for user + lesson's level
+2. Add lesson to `lessons_completed` M2M (idempotent — no double-rewards)
+3. Award `xp_reward` and `coins_reward` to UserProfile
+4. Streak: yesterday → increment; today → no change; else → reset to 1
+5. Check if all mandatory lessons done → set `is_completed = True`
+6. Return updated stats + level completion status
+
+**Verification:**
+
+| Test | Result |
+|------|--------|
+| First completion | ✅ XP: 0→10, Coins: 0→5, Streak: 0→1 |
+| Idempotent re-complete | ✅ `"already_completed"`, no double-reward |
+| Second lesson | ✅ XP: 10→25, Coins: 5→10 |
+| Same-day streak | ✅ Stays at 1 |
+
+### Subtask 3d: Frontend Gamification ✅
+
+| File | Change |
+|------|--------|
+| [UserContext.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/context/UserContext.jsx) | **New** — fetches `/users/me/` on load, exposes `updateUser` for instant updates |
+| [api.js](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/services/api.js) | Added `getUserStats()` and `completeLesson(id)` |
+| [Navbar.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/layout/Navbar.jsx) | Badges show live XP/coins/streak from UserContext |
+| [LessonRunnerPage.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/LessonRunnerPage.jsx) | "Complete & Continue" calls POST, updates context, shows +XP/+Coins flash |
+| [App.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/App.jsx) | Wrapped with `UserProvider` |
+
+### Subtask 3e: Theme Switcher ✅
+
+| File | Change |
+|------|--------|
+| [ThemeContext.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/context/ThemeContext.jsx) | **New** — CSS variable swapping, localStorage persistence |
+| [Navbar.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/layout/Navbar.jsx) | Theme dropdown added next to gamification badges |
+| [App.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/App.jsx) | Wrapped with `ThemeProvider` |
+
+**Available Themes:**
+
+| Theme | Primary | Canvas | Shadows |
+|-------|---------|--------|---------|
+| 🏗️ Neo-Brutalism | Crimson `#E52E2E` | Cream `#F9F8F6` | Black hard offset |
+| 🤖 Doraemon Blue | Blue `#3182ce` | Light blue `#ebf8ff` | Blue hard offset |
+
+### Phase 3 Verification
+
+| Check | Result |
+|-------|--------|
+| `npm run build` | ✅ 0 warnings, 183ms, 245 modules |
+| `curl /api/v1/users/me/` | ✅ Returns dev user stats |
+| `curl -X POST /api/v1/lessons/1/complete/` | ✅ Awards XP/coins, updates streak |
 
 ---
 
@@ -351,4 +416,4 @@ frontend/
 
 ---
 
-*Last updated: 2026-08-21 — Phase 2b complete.*
+*Last updated: 2026-08-21 — Phase 3 complete.*
