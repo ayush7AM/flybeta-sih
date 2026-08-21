@@ -152,6 +152,53 @@ backend/
 - **`lessons_completed` as M2M** — cleaner than a JSON array; lets us query completion state with Django ORM.
 - **`content/` directory** — curriculum will be JSON files loaded via a management command (`load_level_content`), not hardcoded in Python.
 
+#### 9. Content Pipeline (Curriculum Automation)
+
+**Management Command:** `python manage.py load_level_content`
+
+Located at `learn/management/commands/load_level_content.py`. Walks the `content/{domain}/level_{NN}.json` directory tree and upserts `Domain`, `Level`, and `Lesson` records via `update_or_create`.
+
+**Features:**
+- `--domain <name>` — only load a specific domain folder
+- `--dry-run` — parse and validate JSON without writing to DB
+- Idempotent — safe to re-run; second run updates existing records, never duplicates
+
+**JSON Schema (per file):**
+```json
+{
+  "domain": {
+    "name": "cloud",
+    "title": "Cloud Computing",
+    "icon": "cloud",
+    "color": "#2563EB"
+  },
+  "level": {
+    "number": 1,
+    "title": "Cloud Foundations",
+    "description": "Intro to cloud computing concepts."
+  },
+  "lessons": [
+    {
+      "order": 1,
+      "title": "What is Cloud Computing?",
+      "content_md": "# Markdown content...",
+      "xp_reward": 10,
+      "coins_reward": 5,
+      "is_mandatory": true
+    }
+  ]
+}
+```
+
+**Sample Data Created:** `content/cloud/level_01.json` — Cloud Level 1 with 5 lessons (4 mandatory, 1 bonus):
+1. What is Cloud Computing? (10 XP)
+2. Cloud Service Models: IaaS, PaaS, SaaS (15 XP)
+3. Public vs Private vs Hybrid Cloud (15 XP)
+4. Meet the Big Three: AWS, GCP, Azure (10 XP)
+5. Hands-On: Your First Cloud Resource (20 XP, optional)
+
+**Verification:** Command run twice — first run created 1 domain + 1 level + 5 lessons; second run updated all with zero duplicates.
+
 ---
 
 ## Phase 2: React Vite Setup, Global UI Shell, Track/Lesson Components ⬜
