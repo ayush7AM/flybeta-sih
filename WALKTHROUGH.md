@@ -201,14 +201,49 @@ Located at `learn/management/commands/load_level_content.py`. Walks the `content
 
 ---
 
-## Phase 2: React Vite Setup, Global UI Shell, Track/Lesson Components ⬜
+## Phase 2: React Vite Setup, Global UI Shell, Track/Lesson Components 🟡
 
-> *Not started. Will cover:*
-> - Initialize React + Vite project in `/frontend`
-> - Convert Stitch HTML prototypes into React components
-> - Build global UI shell (header, navigation, gamification bar)
-> - Wire up API service layer to consume `/api/v1/` endpoints
-> - Build DRF serializers and ViewSets in the `api` app
+### Phase 2a: DRF Read-Only API ✅
+
+Built the API layer in the `api` app to serve curriculum data to the frontend.
+
+#### 1. Serializers ([serializers.py](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/serializers.py))
+
+| Serializer | Nesting | Fields |
+|------------|---------|--------|
+| `LessonSerializer` | — | id, level, order, title, content_md, xp_reward, coins_reward, is_mandatory |
+| `LevelSerializer` | Embeds `lessons` | id, domain, number, title, description, lessons[] |
+| `DomainSerializer` | Embeds `levels` → `lessons` | id, name, title, icon, color, levels[] |
+
+Nested serializers give the frontend full curriculum trees in a single request.
+
+#### 2. ViewSets ([views.py](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/views.py))
+
+All use `ReadOnlyModelViewSet` — list + retrieve only, no write operations.
+
+| ViewSet | Queryset Optimization | Extras |
+|---------|----------------------|--------|
+| `DomainViewSet` | `prefetch_related('levels__lessons')` | `lookup_field='name'` — slug-based lookup (`/domains/cloud/`) |
+| `LevelViewSet` | `select_related('domain') + prefetch_related('lessons')` | `?domain=cloud` query filter |
+| `LessonViewSet` | `select_related('level__domain')` | `?level=<id>` query filter |
+
+#### 3. API Endpoints ([urls.py](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/urls.py))
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/domains/` | GET | List all domains with nested levels/lessons |
+| `/api/v1/domains/{name}/` | GET | Single domain by slug (e.g. `/api/v1/domains/cloud/`) |
+| `/api/v1/levels/` | GET | List all levels (filter: `?domain=cloud`) |
+| `/api/v1/levels/{id}/` | GET | Single level with nested lessons |
+| `/api/v1/lessons/` | GET | List all lessons (filter: `?level=1`) |
+| `/api/v1/lessons/{id}/` | GET | Single lesson with full markdown content |
+
+#### 4. Verification
+
+| Check | Result |
+|-------|--------|
+| `python manage.py check` | ✅ 0 issues |
+| URL route introspection | ✅ All 12 routes registered (list + detail × 3 resources × 2 formats) |
 
 ---
 

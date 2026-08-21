@@ -1,12 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-router = DefaultRouter()
+from api.views import DomainViewSet, LevelViewSet, LessonViewSet
 
-# TODO: Phase 2 — register ViewSets here
-# router.register(r'domains', DomainViewSet)
-# router.register(r'levels', LevelViewSet)
-# ...
+router = DefaultRouter()
+router.register(r'domains', DomainViewSet)
+router.register(r'levels', LevelViewSet)
+router.register(r'lessons', LessonViewSet)
 
 app_name = 'api'
 
