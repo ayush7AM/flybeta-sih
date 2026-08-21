@@ -58,4 +58,9 @@ export const generateBlueprint = async (prompt) => {
   return data;
 };
 
+export const reviewCode = async (code, language = 'python') => {
+  const { data } = await api.post('ai/reviewer/', { code, language });
+  return data;
+};
+
 export default api;

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { generateBlueprint } from '../services/api';
+import LabsSubNav from '../components/LabsSubNav';
 
 // Alternating card rotations for the "scattered index card" feel
 const CARD_ROTATIONS = ['rotate-0', 'rotate-1', '-rotate-1', 'rotate-[0.5deg]'];
@@ -35,6 +36,8 @@ export default function ProjectArchitectPage() {
 
   return (
     <div>
+      <LabsSubNav />
+
       {/* ── Hero Section ──────────────────────────────────────────────── */}
       <header className="mb-10 border-b-2 border-ink pb-8">
         <h1 className="heading-xl mb-4 tracking-tighter">THE BLUEPRINT LAB</h1>

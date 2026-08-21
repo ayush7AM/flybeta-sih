@@ -36,8 +36,9 @@ export default function Navbar() {
         </Link>
         <div className="hidden md:flex gap-2">
           {NAV_LINKS.map(({ label, path }) => {
-            const isActive = location.pathname === path ||
-              (path === '/' && location.pathname.startsWith('/track'));
+            const isActive = path === '/'
+              ? location.pathname === '/' || location.pathname.startsWith('/track')
+              : location.pathname.startsWith(path);
             return (
               <Link
                 key={path}

@@ -5,7 +5,7 @@ FlyBeta is a gamified, level-based learning platform for Data Science, AI, and C
 Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v4).
 
 ## Current Phase
-**Phase 3 — Complete**: Gamification logic, mock auth, theme switcher all wired end-to-end.
+**Phase 4 — Complete**: AI features (Blueprint Lab & Code Drishti) mock endpoints and UI wired end-to-end.
 
 ### What's Done
 - Django project scaffold (`flybeta` config) in `/backend`
@@ -28,9 +28,11 @@ Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v
 - `POST /api/v1/lessons/{id}/complete/` — XP/coins award, streak logic, level completion
 - `UserContext` — live gamification state in Navbar, reward flash on lesson complete
 - `ThemeContext` — 2 themes (Neo-Brutalism, Doraemon Blue), CSS variable swapping, localStorage
+- **Phase 4a**: Project Architect (Blueprint Lab) UI & mock endpoint (`POST /api/v1/ai/architect/`)
+- **Phase 4b**: Code Reviewer (Code Drishti) UI & mock endpoint (`POST /api/v1/ai/reviewer/`)
 
 ### What's Next
-- **Phase 4**: AI features (Project Architect & Code Reviewer endpoints)
+- **Phase 5**: Real AI API integration (replacing mock AI services with Gemini)
 
 ## Frontend
 Located at `/frontend/`. React + Vite + Tailwind v4.

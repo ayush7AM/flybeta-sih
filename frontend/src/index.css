@@ -181,6 +181,61 @@ body {
   box-shadow: var(--shadow-brutal);
 }
 
+/* Review Card — severity-accented finding card for Code Drishti */
+.review-card {
+  background: var(--color-surface);
+  border: 2px solid var(--color-ink);
+  border-left: 5px solid var(--color-muted);
+  box-shadow: var(--shadow-brutal-sm);
+  padding: 24px;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-card:hover {
+  transform: translateX(4px);
+  box-shadow: 6px 6px 0px 0px var(--color-ink);
+}
+
+/* Severity Badge — colored pill for finding severity */
+.severity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--color-ink);
+}
+
+/* Dark code textarea — editor-like input */
+.code-textarea {
+  width: 100%;
+  border: 2px solid var(--color-ink);
+  background: var(--color-ink);
+  color: #e5e7eb;
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+  resize: none;
+  tab-size: 4;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.code-textarea::placeholder {
+  color: #6b7280;
+}
+
+.code-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-brutal);
+}
+
 /* ── Typography Utilities ────────────────────────────────────────────────── */
 .heading-xl {
   font-family: var(--font-heading);

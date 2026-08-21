@@ -406,14 +406,39 @@ Added `@action(detail=True, methods=['post'])` named `complete` on `LessonViewSe
 
 ---
 
-## Phase 4: AI Features ⬜
+## Phase 4: AI Features ✅
 
-> *Not started. Will cover:*
-> - Project Architect endpoint (AI-powered project planning)
-> - Code Reviewer endpoint (AI-powered code review)
-> - Integration with external AI API
-> - Frontend components for AI features (already prototyped in Stitch)
+### Subtask 4a: Project Architect (Blueprint Lab) ✅
+
+**Goal:** Create a "Blueprint Lab" where users can enter a project idea and receive a step-by-step structural plan.
+
+| Component | Changes |
+|-----------|---------|
+| Backend API | Added `BlueprintView` (`POST /api/v1/ai/architect/`) in `views.py`. Validates prompt. |
+| AI Service | `generate_project_blueprint()` mock added to `ai_services.py` (returns 4 hardcoded steps). Ready for Gemini swap. |
+| Frontend API | Added `generateBlueprint(prompt)` in `api.js`. |
+| Frontend UI | Added `ProjectArchitectPage.jsx` at `/labs/architect`. Recreated stitch reference layout with input textarea, badges, and animated `blueprint-card` index cards. |
+
+### Subtask 4b: Code Reviewer (Code Drishti) ✅
+
+**Goal:** Create a "Code Drishti" page for static code analysis, identifying issues by severity.
+
+| Component | Changes |
+|-----------|---------|
+| Backend API | Added `CodeReviewView` (`POST /api/v1/ai/reviewer/`) in `views.py`. Accepts `code` and `language`. |
+| AI Service | `generate_code_review()` mock added to `ai_services.py` (returns 4 findings across CRITICAL, WARNING, INFO, STYLE). |
+| Frontend API | Added `reviewCode(code, language)` in `api.js`. |
+| Frontend UI | Added `CodeReviewerPage.jsx` at `/labs/reviewer`. Includes language dropdown, dark `code-textarea`, and `review-card` UI with severity-colored left borders and badges. |
+| Routing & Nav | Wired routes in `App.jsx`, redirected `/labs` to `/labs/architect`. Fixed Navbar "Labs" highlight state for all `/labs/*` paths. Added `LabsSubNav` component to toggle between Blueprint Lab and Code Drishti. |
+
+### Phase 4 Verification
+
+| Check | Result |
+|-------|--------|
+| Backend | ✅ `python manage.py check` passes with 0 issues. |
+| Frontend Build | ✅ `npm run build` succeeds (0 warnings, 248 modules). |
+| E2E | ✅ Both AI endpoints respond with mock data on POST. |
 
 ---
 
-*Last updated: 2026-08-21 — Phase 3 complete.*
+*Last updated: 2026-08-22 — Phase 4 complete.*

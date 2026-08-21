@@ -14,7 +14,7 @@ from accounts.models import UserProfile
 from api.serializers import (
     DomainSerializer, LevelSerializer, LessonSerializer, UserStatsSerializer,
 )
-from api.ai_services import generate_project_blueprint
+from api.ai_services import generate_project_blueprint, generate_code_review
 
 
 def get_dev_user():
@@ -181,4 +181,32 @@ class BlueprintView(APIView):
         return Response({
             'prompt': prompt,
             'steps': steps,
+        }, status=status.HTTP_200_OK)
+
+
+class CodeReviewView(APIView):
+    """
+    POST /api/v1/ai/reviewer/
+
+    Accepts a code snippet and returns structured review findings.
+    Currently uses a mock service; will be swapped for Gemini API later.
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        code = request.data.get('code', '').strip()
+
+        if not code:
+            return Response(
+                {'error': 'A "code" field is required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        language = request.data.get('language', 'python').strip()
+        findings = generate_code_review(code, language)
+
+        return Response({
+            'code': code,
+            'language': language,
+            'findings': findings,
         }, status=status.HTTP_200_OK)

@@ -1,10 +1,12 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { UserProvider } from './context/UserContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Layout from './components/layout/Layout';
 import TrackSelectionPage from './pages/TrackSelectionPage';
 import TrackRoadmapPage from './pages/TrackRoadmapPage';
 import LessonRunnerPage from './pages/LessonRunnerPage';
+import ProjectArchitectPage from './pages/ProjectArchitectPage';
+import CodeReviewerPage from './pages/CodeReviewerPage';
 
 export default function App() {
   return (
@@ -16,6 +18,9 @@ export default function App() {
               <Route path="/" element={<TrackSelectionPage />} />
               <Route path="/track/:name" element={<TrackRoadmapPage />} />
               <Route path="/track/:name/level/:num/lesson/:order" element={<LessonRunnerPage />} />
+              <Route path="/labs" element={<Navigate to="/labs/architect" replace />} />
+              <Route path="/labs/architect" element={<ProjectArchitectPage />} />
+              <Route path="/labs/reviewer" element={<CodeReviewerPage />} />
             </Route>
           </Routes>
         </UserProvider>
