@@ -1,9 +1,22 @@
 import { Link } from 'react-router-dom';
+import { Cloud, Bot, BarChart3, BookOpen, BrainCircuit, Database, Code, Rocket } from 'lucide-react';
+
+const ICON_MAP = {
+  'cloud': Cloud,
+  'robot': Bot,
+  'chart-bar': BarChart3,
+  'brain': BrainCircuit,
+  'database': Database,
+  'code': Code,
+  'rocket': Rocket,
+};
 
 const TRACK_COLORS = {
   'data-science': { accent: '#059669', bg: '#f0fdf4', label: 'Emerald Track', code: 'TS-01' },
   'ai-ml': { accent: '#6D28D9', bg: '#f5f3ff', label: 'Violet Track', code: 'TS-02' },
   'cloud': { accent: '#2563EB', bg: '#eff6ff', label: 'Cobalt Track', code: 'TS-03' },
+  'ai': { accent: '#6D28D9', bg: '#f5f3ff', label: 'Violet Track', code: 'TS-02' },
+  'data': { accent: '#059669', bg: '#f0fdf4', label: 'Emerald Track', code: 'TS-01' },
 };
 
 const DEFAULT_TRACK = { accent: '#E52E2E', bg: '#fef2f2', label: 'Track', code: 'TS-00' };
@@ -11,6 +24,7 @@ const DEFAULT_TRACK = { accent: '#E52E2E', bg: '#fef2f2', label: 'Track', code: 
 export default function TrackCard({ domain }) {
   const track = TRACK_COLORS[domain.name] || DEFAULT_TRACK;
   const levelCount = domain.levels?.length || 0;
+  const IconComponent = ICON_MAP[domain.icon] || BookOpen;
 
   return (
     <article className="brutalist-card flex flex-col overflow-hidden">
@@ -26,11 +40,14 @@ export default function TrackCard({ domain }) {
         >
           {track.code}
         </div>
-        {/* Large Icon Placeholder */}
-        <span className="text-6xl opacity-30" style={{ color: track.accent }}>
-          {domain.icon || '📚'}
-        </span>
+        {/* Lucide Icon */}
+        <IconComponent
+          size={72}
+          strokeWidth={1.5}
+          style={{ color: track.accent, opacity: 0.35 }}
+        />
       </div>
+
 
       {/* Card Body */}
       <div className="p-6 flex-grow flex flex-col">
