@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-export default function LevelNode({ level, domainName, accentColor, isActive }) {
+export default function LevelNode({ level, domainName, isActive }) {
   const lessonCount = level.lessons?.length || 0;
   const mandatoryCount = level.lessons?.filter(l => l.is_mandatory).length || 0;
 
@@ -11,8 +11,8 @@ export default function LevelNode({ level, domainName, accentColor, isActive }) 
         <div
           className="w-12 h-12 flex items-center justify-center border-2 border-ink font-bold text-lg z-10"
           style={{
-            background: isActive ? accentColor : 'var(--color-surface)',
-            color: isActive ? '#fff' : 'var(--color-ink)',
+            background: isActive ? 'var(--color-primary)' : 'var(--color-surface)',
+            color: isActive ? 'var(--color-canvas)' : 'var(--color-ink)',
             boxShadow: isActive ? 'var(--shadow-brutal-sm)' : 'none',
           }}
         >
@@ -69,7 +69,7 @@ export default function LevelNode({ level, domainName, accentColor, isActive }) 
 
         {/* Mandatory count */}
         <div className="mt-3 flex items-center gap-2">
-          <span className="label-mono text-xs" style={{ color: accentColor }}>
+          <span className="label-mono text-xs" style={{ color: 'var(--color-primary)' }}>
             {mandatoryCount} mandatory
           </span>
           {lessonCount - mandatoryCount > 0 && (

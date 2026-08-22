@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Cloud, Bot, BarChart3, BookOpen, BrainCircuit, Database, Code, Rocket } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const ICON_MAP = {
   'cloud': Cloud,
@@ -11,18 +12,17 @@ const ICON_MAP = {
   'rocket': Rocket,
 };
 
-const TRACK_COLORS = {
-  'data-science': { accent: '#059669', bg: '#f0fdf4', label: 'Emerald Track', code: 'TS-01' },
-  'ai-ml': { accent: '#6D28D9', bg: '#f5f3ff', label: 'Violet Track', code: 'TS-02' },
-  'cloud': { accent: '#2563EB', bg: '#eff6ff', label: 'Cobalt Track', code: 'TS-03' },
-  'ai': { accent: '#6D28D9', bg: '#f5f3ff', label: 'Violet Track', code: 'TS-02' },
-  'data': { accent: '#059669', bg: '#f0fdf4', label: 'Emerald Track', code: 'TS-01' },
+const TRACK_CODES = {
+  'data-science': 'TS-01',
+  'ai-ml': 'TS-02',
+  'cloud': 'TS-03',
+  'ai': 'TS-02',
+  'data': 'TS-01',
 };
 
-const DEFAULT_TRACK = { accent: '#E52E2E', bg: '#fef2f2', label: 'Track', code: 'TS-00' };
-
 export default function TrackCard({ domain }) {
-  const track = TRACK_COLORS[domain.name] || DEFAULT_TRACK;
+  const { themeKey } = useTheme();
+  const trackCode = TRACK_CODES[domain.name] || 'TS-00';
   const levelCount = domain.levels?.length || 0;
   const IconComponent = ICON_MAP[domain.icon] || BookOpen;
 
@@ -30,39 +30,48 @@ export default function TrackCard({ domain }) {
     <article className="brutalist-card flex flex-col overflow-hidden">
       {/* Track Image Header */}
       <div
-        className="h-52 border-b-2 border-ink relative flex items-center justify-center"
-        style={{ background: track.bg }}
+        className="h-52 border-b-2 relative flex items-center justify-center"
+        style={{
+          borderColor: 'var(--color-border)',
+          background: 'var(--color-canvas)',
+        }}
       >
         {/* Track Code Badge */}
         <div
-          className="absolute top-4 left-4 label-mono px-2 py-1 border border-ink"
-          style={{ background: track.accent, color: '#000' }}
+          className="absolute top-4 left-4 label-mono px-2 py-1 border"
+          style={{
+            background: 'var(--color-primary)',
+            color: 'var(--color-canvas)',
+            borderColor: 'var(--color-border)',
+          }}
         >
-          {track.code}
+          {trackCode}
         </div>
         {/* Lucide Icon */}
         <IconComponent
           size={72}
           strokeWidth={1.5}
-          style={{ color: track.accent, opacity: 0.35 }}
+          style={{ color: 'var(--color-primary)', opacity: 0.3 }}
         />
       </div>
-
 
       {/* Card Body */}
       <div className="p-6 flex-grow flex flex-col">
         <div className="mb-4">
           <span
             className="brutalist-badge mb-2"
-            style={{ background: track.accent, color: '#000' }}
+            style={{
+              background: 'var(--color-primary)',
+              color: 'var(--color-canvas)',
+            }}
           >
-            {track.label}
+            TRACK
           </span>
           <h2 className="heading-md mt-2">{domain.title}</h2>
         </div>
 
         {/* Level info */}
-        <div className="border-t-2 border-ink pt-4 flex-grow">
+        <div className="border-t-2 pt-4 flex-grow" style={{ borderColor: 'var(--color-border)' }}>
           <div className="flex items-center gap-2 mb-2 text-muted">
             <span className="label-mono">{levelCount} Levels</span>
             <span className="text-border-light">•</span>
@@ -78,8 +87,13 @@ export default function TrackCard({ domain }) {
                 key={level.id}
                 className="border-b border-border-light py-2 flex items-center gap-2 text-sm"
               >
-                <span className="w-6 h-6 flex items-center justify-center border border-ink text-xs font-bold"
-                      style={{ background: track.bg }}>
+                <span
+                  className="w-6 h-6 flex items-center justify-center border text-xs font-bold"
+                  style={{
+                    background: 'var(--color-canvas)',
+                    borderColor: 'var(--color-border)',
+                  }}
+                >
                   {level.number}
                 </span>
                 {level.title}

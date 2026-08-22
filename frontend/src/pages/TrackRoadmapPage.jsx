@@ -1,23 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getDomain } from '../services/api';
+import { useTheme } from '../context/ThemeContext';
 import LevelNode from '../components/LevelNode';
-
-const TRACK_META = {
-  'data-science': { accent: '#059669', label: 'Data Science' },
-  'ai-ml': { accent: '#6D28D9', label: 'AI & Machine Learning' },
-  'cloud': { accent: '#2563EB', label: 'Cloud Computing' },
-};
-
-const DEFAULT_META = { accent: '#E52E2E', label: 'Track' };
 
 export default function TrackRoadmapPage() {
   const { name } = useParams();
+  const { themeKey } = useTheme();
   const [domain, setDomain] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const meta = TRACK_META[name] || DEFAULT_META;
 
   useEffect(() => {
     setLoading(true);
@@ -59,7 +51,7 @@ export default function TrackRoadmapPage() {
       <div className="mb-6 flex items-center gap-2 label-mono text-muted">
         <Link to="/" className="no-underline text-muted hover:text-ink">Tracks</Link>
         <span>/</span>
-        <span style={{ color: meta.accent }}>{domain?.title || name}</span>
+        <span style={{ color: 'var(--color-primary)' }}>{domain?.title || name}</span>
       </div>
 
       {/* Hero */}
@@ -69,15 +61,15 @@ export default function TrackRoadmapPage() {
           <div className="flex items-center gap-4 mb-2">
             <div
               className="brutalist-badge"
-              style={{ background: meta.accent, color: '#000' }}
+              style={{ background: 'var(--color-primary)', color: 'var(--color-canvas)' }}
             >
-              {meta.label}
+              TRACK
             </div>
             <span className="label-mono text-muted">
               {levels.length} Levels • {totalLessons} Lessons
             </span>
           </div>
-          <h1 className="heading-xl m-0" style={{ color: meta.accent }}>
+          <h1 className="heading-xl m-0" style={{ color: 'var(--color-primary)' }}>
             {domain?.title || name}
           </h1>
         </div>
@@ -93,7 +85,6 @@ export default function TrackRoadmapPage() {
                 key={level.id}
                 level={level}
                 domainName={name}
-                accentColor={meta.accent}
                 isActive={level.number === 1}
               />
             ))
@@ -112,13 +103,13 @@ export default function TrackRoadmapPage() {
             <div className="flex flex-col items-center">
               <div
                 className="w-12 h-12 flex items-center justify-center border-2 border-ink text-white text-xl"
-                style={{ background: meta.accent, boxShadow: 'var(--shadow-brutal-sm)' }}
+                style={{ background: 'var(--color-primary)', boxShadow: 'var(--shadow-brutal-sm)' }}
               >
                 🏆
               </div>
             </div>
-            <div className="flex-1 border-2 border-ink p-4" style={{ background: meta.accent + '15' }}>
-              <p className="heading-md m-0" style={{ color: meta.accent }}>
+            <div className="flex-1 border-2 border-ink p-4" style={{ background: 'color-mix(in srgb, var(--color-primary) 8%, transparent)' }}>
+              <p className="heading-md m-0" style={{ color: 'var(--color-primary)' }}>
                 Track Complete!
               </p>
               <p className="text-sm text-muted m-0 mt-1">
