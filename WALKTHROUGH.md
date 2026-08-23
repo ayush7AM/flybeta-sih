@@ -441,4 +441,144 @@ Added `@action(detail=True, methods=['post'])` named `complete` on `LessonViewSe
 
 ---
 
-*Last updated: 2026-08-22 — Phase 4 complete.*
+## Phase 4c: Curriculum Expansion (Levels 1–7) ✅
+
+**Goal:** Populate all three learning tracks with complete, professional-grade curriculum content spanning 7 levels each.
+
+### Content Files Created
+
+21 JSON files total, following the established schema (`domain`, `level`, `lessons[]`):
+
+```
+backend/content/
+├── cloud/
+│   ├── level_01.json   # Cloud Foundations (5 lessons)
+│   ├── level_02.json   # Storage & Networking Fundamentals (4 lessons)
+│   ├── level_03.json   # Compute & Virtual Machines (4 lessons)
+│   ├── level_04.json   # Containers & Docker (4 lessons)
+│   ├── level_05.json   # Kubernetes & Orchestration (4 lessons)
+│   ├── level_06.json   # Serverless Architecture (4 lessons)
+│   └── level_07.json   # Cloud Capstone (4 lessons)
+├── ai/
+│   ├── level_01.json   # AI Foundations (5 lessons)
+│   ├── level_02.json   # Neural Networks & Deep Learning Anatomy (4 lessons)
+│   ├── level_03.json   # CNNs & Computer Vision (4 lessons)
+│   ├── level_04.json   # RNNs, LSTMs & Sequence Models (4 lessons)
+│   ├── level_05.json   # Transformers & Attention (4 lessons)
+│   ├── level_06.json   # Generative AI & Diffusion Models (4 lessons)
+│   └── level_07.json   # AI Capstone (4 lessons)
+└── data/
+    ├── level_01.json   # Data Science Foundations (5 lessons)
+    ├── level_02.json   # Data Wrangling & Feature Engineering (4 lessons)
+    ├── level_03.json   # Supervised Learning (4 lessons)
+    ├── level_04.json   # Unsupervised Learning & Clustering (4 lessons)
+    ├── level_05.json   # Model Evaluation & Hyperparameter Tuning (4 lessons)
+    ├── level_06.json   # Time Series & Advanced Regression (4 lessons)
+    └── level_07.json   # Data Science Capstone (4 lessons)
+```
+
+### Content Quality
+
+- Each lesson contains detailed `content_md` with Markdown headings, tables, code blocks, and comparisons
+- XP rewards: 10–20 per lesson; Coin rewards: 5–10 per lesson
+- Final lesson per level marked `is_mandatory: false` (bonus/hands-on)
+- All content loaded into SQLite via `python manage.py load_level_content` (idempotent)
+
+---
+
+## Phase 4d: Multi-Theme System ✅
+
+**Goal:** Expand the theme system from 2 themes to 5, with per-theme character images, background images, and a scalable architecture for adding future themes.
+
+### Theme Architecture
+
+The theme system was refactored for scalability:
+
+| Config | File | Purpose |
+|--------|------|---------|
+| `THEMES` | [ThemeContext.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/context/ThemeContext.jsx) | CSS variable definitions per theme (colors, shadows, fonts) |
+| `THEME_IMAGES` | [TrackCard.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/TrackCard.jsx) | Per-theme domain→character image mapping |
+| `THEME_BACKGROUNDS` | [Layout.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/layout/Layout.jsx) | Per-theme background image paths |
+
+Adding a new theme requires:
+1. Add entry to `THEMES` in ThemeContext.jsx (CSS variables)
+2. Add entry to `THEME_IMAGES` in TrackCard.jsx (character images)
+3. Add entry to `THEME_BACKGROUNDS` in Layout.jsx (background image)
+4. Place assets in `frontend/public/<theme-name>/`
+
+### Themes Registered
+
+| Theme | Key | Primary | Borders | Characters | Background |
+|-------|-----|---------|---------|------------|------------|
+| 🏗️ Neo-Brutalism | `neo-brutalism` | `#E52E2E` | `#111111` | Lucide icons (fallback) | Grid CSS pattern |
+| 🤖 Doraemon Blue | `doraemon-blue` | `#3182ce` | `#2b6cb0` | Doraemon, Shizuka, Nobita | `doremon_flybeta.png` |
+| 🖍️ Shinchan | `shinchan` | `#FDE047` | `#DC2626` | Shinchan, Bo-chan, Meni | `shinchan-theme-bg.png` |
+| 👑 Princess | `princess` | `#A21CAF` | `#A21CAF` | Rapunzel, Mulan, Belle | `bg-theme.jpeg` |
+| ⚔️ Anime | `anime` | `#F97316` | `#0F172A` | Zoro, Luffy, Nami | `anime-theme.jpeg` |
+
+### Character Image Mapping (TrackCard.jsx)
+
+| Theme | Cloud Track | AI Track | Data Track |
+|-------|-------------|----------|------------|
+| Doraemon | `doremon.png` | `sizuka.png` | `nobita.png` |
+| Shinchan | `shinchan.png` | `bo chain.png` | `meni.png` |
+| Princess | `rapunzel_new.png` | `Mulan.png` | `belle.png` |
+| Anime | `zoro.png` | `luffy.png` | `nami.png` |
+| Neo-Brutalism | Lucide `Cloud` icon | Lucide `Bot` icon | Lucide `BarChart3` icon |
+
+### Asset Directories
+
+```
+frontend/public/
+├── doremon-theme/
+│   ├── doremon.png, sizuka.png, nobita.png   # Characters (bg-removed)
+│   └── doremon_flybeta.png                    # Background
+├── shinchan-theme/
+│   ├── shinchan.png, bo chain.png, meni.png  # Characters
+│   └── shinchan-theme-bg.png                  # Background
+├── disney-princess-thene/
+│   ├── rapunzel_new.png, Mulan.png, belle.png # Characters
+│   └── bg-theme.jpeg                          # Background (compressed: 18MB → 388KB)
+└── anime-theme/
+    ├── zoro.png, luffy.png, nami.png          # Characters
+    └── anime-theme.jpeg                        # Background
+```
+
+### Key Implementation Details
+
+- **Background overlay:** All themed backgrounds get a fixed `#F9F8F6` cream overlay at 80% opacity for Neo-Brutalist text legibility
+- **Z-stacking:** Overlay sits at `z-0`, all content at `z-10`
+- **Character images:** Use `object-contain object-bottom p-2` to display fully without cropping
+- **Badge positioning:** `absolute top-4 left-4 z-20` pins the track code badge above character images
+- **Shinchan badge text:** Uses `var(--color-ink)` (dark) instead of `var(--color-canvas)` since yellow primary needs dark text for contrast
+- **Image optimization:** Princess background was 18MB raw; compressed to 388KB via `sips` (resolved latency when navigating)
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| [ThemeContext.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/context/ThemeContext.jsx) | Added 3 theme entries (Shinchan, Princess, Anime) with full CSS variable sets |
+| [TrackCard.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/TrackCard.jsx) | Refactored to unified `THEME_IMAGES` map; conditional character rendering; badge positioning fix |
+| [Layout.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/layout/Layout.jsx) | Refactored to `THEME_BACKGROUNDS` config map; conditional bg + overlay for all themes |
+| [TrackRoadmapPage.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/TrackRoadmapPage.jsx) | Switched hardcoded colors to CSS variables for theme compatibility |
+| [LevelNode.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/LevelNode.jsx) | Removed `accentColor` prop; uses CSS variables |
+
+### Documentation Created
+
+| File | Purpose |
+|------|---------|
+| [theme-context.md](file:///Users/ayush/Desktop/code/flybeta-project/docs/theme-context.md) | Developer blueprint for adding future themes (asset naming, overlay strategy, step-by-step checklist) |
+
+### Phase 4c/4d Verification
+
+| Check | Result |
+|-------|--------|
+| `npm run build` | ✅ 0 warnings, 2035 modules, 333ms |
+| Bundle size | CSS: 22.87 kB (5.49 gzip), JS: 434.96 kB (137.23 gzip) |
+| Theme cycling | ✅ All 5 themes cycle correctly via navbar dropdown |
+| Content loading | ✅ All 21 JSON files loaded via `load_level_content` |
+
+---
+
+*Last updated: 2026-08-23 — Phase 4d complete (curriculum + themes).*
+

@@ -6,6 +6,7 @@ import { useTheme } from '../../context/ThemeContext';
 const NAV_LINKS = [
   { label: 'Tracks', path: '/' },
   { label: 'Labs', path: '/labs' },
+  { label: 'Vision', path: '/vision' },
 ];
 
 export default function Navbar() {

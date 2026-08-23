@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
+import OracleWidget from '../OracleWidget';
 import { useTheme } from '../../context/ThemeContext';
 
 // ── Per-theme background images ──────────────────────────────────────────
@@ -43,6 +44,7 @@ export default function Layout() {
         <main className="max-w-[1440px] mx-auto px-4 md:px-12 pt-28 pb-16">
           <Outlet />
         </main>
+        <OracleWidget />
       </div>
     </div>
   );

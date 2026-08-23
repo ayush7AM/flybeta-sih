@@ -7,6 +7,7 @@ import TrackRoadmapPage from './pages/TrackRoadmapPage';
 import LessonRunnerPage from './pages/LessonRunnerPage';
 import ProjectArchitectPage from './pages/ProjectArchitectPage';
 import CodeReviewerPage from './pages/CodeReviewerPage';
+import VisionPage from './pages/VisionPage';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
               <Route path="/labs" element={<Navigate to="/labs/architect" replace />} />
               <Route path="/labs/architect" element={<ProjectArchitectPage />} />
               <Route path="/labs/reviewer" element={<CodeReviewerPage />} />
+              <Route path="/vision" element={<VisionPage />} />
             </Route>
           </Routes>
         </UserProvider>
