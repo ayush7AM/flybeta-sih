@@ -20,39 +20,75 @@ const TRACK_CODES = {
   'data': 'TS-01',
 };
 
+// ── Per-theme domain → character image mappings ──────────────────────────
+const THEME_IMAGES = {
+  'doraemon-blue': {
+    'cloud': '/doremon-theme/doremon.png',
+    'ai':    '/doremon-theme/sizuka.png',
+    'data':  '/doremon-theme/nobita.png',
+  },
+  'shinchan': {
+    'cloud': '/shinchan-theme/shinchan.png',
+    'ai':    '/shinchan-theme/bo chain.png',
+    'data':  '/shinchan-theme/meni.png',
+  },
+  'princess': {
+    'cloud': '/disney-princess-thene/rapunzel_new.png',
+    'ai':    '/disney-princess-thene/Mulan.png',
+    'data':  '/disney-princess-thene/belle.png',
+  },
+  'anime': {
+    'cloud': '/anime-theme/zoro.png',
+    'ai':    '/anime-theme/luffy.png',
+    'data':  '/anime-theme/nami.png',
+  },
+};
+
 export default function TrackCard({ domain }) {
   const { themeKey } = useTheme();
   const trackCode = TRACK_CODES[domain.name] || 'TS-00';
   const levelCount = domain.levels?.length || 0;
   const IconComponent = ICON_MAP[domain.icon] || BookOpen;
 
+  const themeImages = THEME_IMAGES[themeKey];
+  const characterImg = themeImages?.[domain.name];
+
   return (
-    <article className="brutalist-card flex flex-col overflow-hidden">
+    <article className="brutalist-card flex flex-col overflow-hidden group">
       {/* Track Image Header */}
       <div
-        className="h-52 border-b-2 relative flex items-center justify-center"
+        className="h-52 border-b-2 relative overflow-hidden flex items-center justify-center"
         style={{
           borderColor: 'var(--color-border)',
           background: 'var(--color-canvas)',
         }}
       >
-        {/* Track Code Badge */}
+        {/* Track Code Badge — always above images */}
         <div
-          className="absolute top-4 left-4 label-mono px-2 py-1 border"
+          className="absolute top-4 left-4 z-20 label-mono px-2 py-1 border"
           style={{
             background: 'var(--color-primary)',
-            color: 'var(--color-canvas)',
+            color: themeKey === 'shinchan' ? 'var(--color-ink)' : 'var(--color-canvas)',
             borderColor: 'var(--color-border)',
           }}
         >
           {trackCode}
         </div>
-        {/* Lucide Icon */}
-        <IconComponent
-          size={72}
-          strokeWidth={1.5}
-          style={{ color: 'var(--color-primary)', opacity: 0.3 }}
-        />
+
+        {/* Theme character image OR Lucide icon fallback */}
+        {characterImg ? (
+          <img
+            src={characterImg}
+            alt={`${domain.title} character`}
+            className="absolute inset-0 w-full h-full object-contain object-bottom p-2 group-hover:-translate-y-2 transition-transform duration-300"
+          />
+        ) : (
+          <IconComponent
+            size={72}
+            strokeWidth={1.5}
+            style={{ color: 'var(--color-primary)', opacity: 0.3 }}
+          />
+        )}
       </div>
 
       {/* Card Body */}
@@ -62,7 +98,7 @@ export default function TrackCard({ domain }) {
             className="brutalist-badge mb-2"
             style={{
               background: 'var(--color-primary)',
-              color: 'var(--color-canvas)',
+              color: themeKey === 'shinchan' ? 'var(--color-ink)' : 'var(--color-canvas)',
             }}
           >
             TRACK
