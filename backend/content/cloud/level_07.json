@@ -8,13 +8,65 @@
   "level": {
     "number": 7,
     "title": "Kubernetes: The Conductor",
-    "description": "How do you manage thousands of containers at the same time? You need an orchestrator."
+    "description": "How do you manage thousands of containers at the same time? You need an orchestrator.",
+    "quiz_data": [
+      {
+        "question": "If containers are the musicians, what is Kubernetes?",
+        "options": [
+          "The audience",
+          "The stage",
+          "The Symphony Conductor",
+          "The instruments"
+        ],
+        "correct_index": 2
+      },
+      {
+        "question": "What is Kubernetes primarily used for?",
+        "options": [
+          "Writing code",
+          "Orchestrating and managing thousands of containers",
+          "Storing databases",
+          "Designing websites"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What does 'Self-Healing' mean in Kubernetes?",
+        "options": [
+          "It fixes broken code automatically",
+          "If a container crashes, Kubernetes automatically restarts or replaces it",
+          "It repairs physical server hardware",
+          "It removes computer viruses"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What is a Kubernetes 'Pod'?",
+        "options": [
+          "A type of coffee",
+          "The smallest deployable unit, often holding one or more containers",
+          "A physical server rack",
+          "A database table"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "How does Kubernetes handle traffic spikes?",
+        "options": [
+          "It turns off the website",
+          "It automatically scales up by adding more pods",
+          "It slows down the internet",
+          "It emails the developer"
+        ],
+        "correct_index": 1
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
       "title": "The Symphony Conductor",
-      "content_md": "# The Symphony Conductor 🎼\n\nIf you have one or two Docker containers, you can manage them yourself. You start them, you stop them, and it's easy.\n\nBut what if you are a massive company like Spotify or Netflix? You aren't running two containers. You are running **ten thousand** containers across hundreds of servers all over the world!\n\nIf you try to manage 10,000 containers by hand, it would be absolute chaos. It would sound like an orchestra where every musician is playing a different song at a different speed.\n\nYou need a **Conductor**.\n\n## Container Orchestration\n\nIn the Cloud world, we call this conductor an **Orchestrator**. The most famous orchestrator in the world is called **Kubernetes** (often shortened to K8s).\n\nKubernetes stands on the podium and tells the 10,000 containers exactly what to do. \n- *\"I need 500 database containers running right now!\"*\n- *\"The traffic in Japan just spiked, start 1,000 more frontend web containers immediately!\"*\n\n<flipcard front=\"🎼 What is Kubernetes?\" back=\"Kubernetes is an open-source Container Orchestration system. It automates the deployment, scaling, and management of thousands of containerized applications.\"></flipcard>",
+      "content_md": "# The Symphony Conductor \ud83c\udfbc\n\nIf you have one or two Docker containers, you can manage them yourself. You start them, you stop them, and it's easy.\n\nBut what if you are a massive company like Spotify or Netflix? You aren't running two containers. You are running **ten thousand** containers across hundreds of servers all over the world!\n\nIf you try to manage 10,000 containers by hand, it would be absolute chaos. It would sound like an orchestra where every musician is playing a different song at a different speed.\n\nYou need a **Conductor**.\n\n## Container Orchestration\n\nIn the Cloud world, we call this conductor an **Orchestrator**. The most famous orchestrator in the world is called **Kubernetes** (often shortened to K8s).\n\nKubernetes stands on the podium and tells the 10,000 containers exactly what to do. \n- *\"I need 500 database containers running right now!\"*\n- *\"The traffic in Japan just spiked, start 1,000 more frontend web containers immediately!\"*\n\n<flipcard front=\"\ud83c\udfbc What is Kubernetes?\" back=\"Kubernetes is an open-source Container Orchestration system. It automates the deployment, scaling, and management of thousands of containerized applications.\"></flipcard>",
       "xp_reward": 15,
       "coins_reward": 10,
       "is_mandatory": true,
@@ -23,7 +75,7 @@
     {
       "order": 2,
       "title": "The Magic of Self-Healing",
-      "content_md": "# The Magic of Self-Healing 🩹\n\nOne of the most powerful abilities of Kubernetes is **Self-Healing**.\n\nImagine a symphony where the violinist suddenly drops their bow and stops playing. The conductor (Kubernetes) instantly notices!\n\nIf you tell Kubernetes: *\"I must always have exactly 10 web servers running.\"*\n\nAnd suddenly, a physical server in a data center crashes, destroying 3 of your containers. You now only have 7.\n\nKubernetes doesn't panic. It doesn't page you at 3:00 AM to fix it. It instantly notices that 7 is less than 10. Without humans doing anything, it automatically starts up 3 brand new containers on a healthy server to replace the dead ones!\n\n<flipcard front=\"🩹 What is Self-Healing in Kubernetes?\" back=\"Self-Healing means if a container crashes, fails, or the server it is on dies, Kubernetes will automatically restart or replace it to ensure your app stays online.\"></flipcard>",
+      "content_md": "# The Magic of Self-Healing \ud83e\ude79\n\nOne of the most powerful abilities of Kubernetes is **Self-Healing**.\n\nImagine a symphony where the violinist suddenly drops their bow and stops playing. The conductor (Kubernetes) instantly notices!\n\nIf you tell Kubernetes: *\"I must always have exactly 10 web servers running.\"*\n\nAnd suddenly, a physical server in a data center crashes, destroying 3 of your containers. You now only have 7.\n\nKubernetes doesn't panic. It doesn't page you at 3:00 AM to fix it. It instantly notices that 7 is less than 10. Without humans doing anything, it automatically starts up 3 brand new containers on a healthy server to replace the dead ones!\n\n<flipcard front=\"\ud83e\ude79 What is Self-Healing in Kubernetes?\" back=\"Self-Healing means if a container crashes, fails, or the server it is on dies, Kubernetes will automatically restart or replace it to ensure your app stays online.\"></flipcard>",
       "xp_reward": 20,
       "coins_reward": 10,
       "is_mandatory": true,

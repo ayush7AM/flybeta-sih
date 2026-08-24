@@ -8,17 +8,69 @@
   "level": {
     "number": 1,
     "title": "The Pattern Machine",
-    "description": "Welcome to the sandbox. Discover how AI fundamentally changes the way we talk to computers."
+    "description": "Welcome to the Sandbox. Discover how Artificial Intelligence fundamentally changes the way we talk to computers.",
+    "quiz_data": [
+      {
+        "question": "What is the core difference between traditional coding and Machine Learning?",
+        "options": [
+          "Traditional coding uses math, ML uses magic",
+          "Traditional coding gives rules, ML learns rules from data",
+          "ML doesn't require computers",
+          "Traditional coding is faster"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "In the Pattern Machine metaphor, what is the AI looking for?",
+        "options": [
+          "Errors in code",
+          "Underlying patterns in examples to predict future outcomes",
+          "Passwords",
+          "Specific lines of text"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "Which of these is an example of a Pattern Machine at work?",
+        "options": [
+          "A calculator adding 2+2",
+          "A thermostat turning on at 72 degrees",
+          "A spam filter learning which emails are junk",
+          "A clock ticking"
+        ],
+        "correct_index": 2
+      },
+      {
+        "question": "Why do we call AI a 'Pattern Machine'?",
+        "options": [
+          "Because it prints patterns on paper",
+          "Because it relies on recognizing statistical patterns in large datasets",
+          "Because it follows a rigid pattern of code",
+          "It was invented by Mr. Pattern"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "Can an AI accurately predict something it has absolutely no data for?",
+        "options": [
+          "Yes, it can guess",
+          "No, it requires training data to learn the pattern first",
+          "Yes, using internet search",
+          "Only if it is a strong AI"
+        ],
+        "correct_index": 1
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
       "title": "Traditional Coding vs. AI",
-      "content_md": "# Traditional Coding vs. AI 🤖\n\nFor the last 50 years, programming has worked exactly the same way: Humans write the **rules**, give the computer some **data**, and the computer gives back the **answers**.\n\nImagine you want a computer to identify pictures of apples.\n\nIn traditional coding, a programmer has to write a massive list of rules:\n1. IF the shape is perfectly round...\n2. AND the color is red or green...\n3. AND there is a small brown stick on top...\n4. THEN it is an apple.\n\nBut what if the apple is half-eaten? What if the photo is blurry? Traditional code breaks instantly because humans can't possibly write a rule for every single scenario.\n\n<flipcard front=\"📜 How does traditional programming work?\" back=\"Humans write a rigid set of rules (the code). The computer blindly follows those rules to process data and produce an answer.\"></flipcard>\n\n## Flipping the Script\n\nArtificial Intelligence (specifically Machine Learning) flips this entire process upside down.\n\nInstead of giving the computer the rules, we give the computer the **data** (10,000 pictures of apples) and the **answers** (we label them \"This is an apple\").\n\nThe computer then uses math to figure out the **rules** on its own!\n\nIt analyzes the 10,000 pictures, notices patterns we wouldn't even think of, and builds its own internal logic for what an apple looks like.\n\n<flipcard front=\"🧠 How is Machine Learning different?\" back=\"Instead of writing rules, we feed the computer Data and Answers. The computer then learns the Patterns and writes the Rules itself!\"></flipcard>",
-      "xp_reward": 15,
-      "coins_reward": 10,
+      "content_md": "# The Pattern Machine \ud83e\udd16\n\nFor the last 50 years, programming has worked exactly the same way. We call this **Traditional Programming**. Humans write the **rules**, give the computer some **data**, and the computer gives back the **answers**.\n\nImagine you want a computer to identify pictures of apples.\n\nIn traditional coding, a programmer has to write a massive list of rules:\n1. IF the shape is perfectly round...\n2. AND the color is red or green...\n3. AND there is a small brown stick on top...\n4. THEN it is an apple.\n\nBut what if the apple is half-eaten? What if the photo is blurry? Traditional code breaks instantly because humans can't possibly write a rule for every single scenario in the universe.\n\n<flipcard front=\"\ud83d\udcdc How does traditional programming work?\" back=\"Humans write a rigid set of rules (the code). The computer blindly follows those rules to process data and produce an answer.\"></flipcard>\n\n## Flipping the Script\n\nArtificial Intelligence (specifically Machine Learning) flips this entire process upside down.\n\nInstead of giving the computer the rules, we give the computer the **data** (10,000 pictures of apples) and the **answers** (we label them 'This is an apple').\n\nThe computer then uses math to figure out the **rules** on its own!\n\nIt analyzes the 10,000 pictures, notices patterns we wouldn't even think of, and builds its own internal logic for what an apple looks like. It becomes a **Pattern Machine**.\n\n<flipcard front=\"\ud83e\udde0 How is Machine Learning different?\" back=\"Instead of writing rules, we feed the computer Data and Answers. The computer then learns the Patterns and writes the Rules itself!\"></flipcard>\n\n<flipcard front=\"\ud83d\udca1 What if the apple is half-eaten?\" back=\"An AI that has seen enough examples of half-eaten apples in its data will still recognize it, whereas rigid traditional code would fail.\"></flipcard>",
+      "xp_reward": 20,
+      "coins_reward": 15,
       "is_mandatory": true,
-      "illustration_url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800"
+      "illustration_url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80"
     }
   ]
 }

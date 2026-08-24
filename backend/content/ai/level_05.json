@@ -8,17 +8,69 @@
   "level": {
     "number": 5,
     "title": "Deep Learning",
-    "description": "What happens when the factory gets incredibly large? The power of the hidden layers."
+    "description": "Go deeper into the network. What happens when you add dozens, hundreds, or thousands of hidden layers?",
+    "quiz_data": [
+      {
+        "question": "What is Computer Vision?",
+        "options": [
+          "A brand of monitors",
+          "AI trained to interpret and understand visual information from the world",
+          "A VR headset",
+          "A type of camera lens"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "How does a computer 'see' an image?",
+        "options": [
+          "It looks at the colors",
+          "It translates the image into a grid of numbers (pixels)",
+          "It uses a tiny camera inside the screen",
+          "It guesses based on text"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "Which architecture is most famous for Computer Vision tasks?",
+        "options": [
+          "Recurrent Neural Networks (RNN)",
+          "Convolutional Neural Networks (CNN)",
+          "Decision Trees",
+          "Linear Regression"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What is a real-world application of Computer Vision?",
+        "options": [
+          "Facial recognition on smartphones",
+          "Translating French to English text",
+          "Predicting stock prices",
+          "Generating music"
+        ],
+        "correct_index": 0
+      },
+      {
+        "question": "What is Object Detection?",
+        "options": [
+          "Finding bugs in code",
+          "Locating and classifying multiple objects within a single image",
+          "Sorting files",
+          "Detecting viruses"
+        ],
+        "correct_index": 1
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
-      "title": "The Hidden Layers",
-      "content_md": "# The Hidden Layers 🕵️‍♂️\n\nYou've probably heard the buzzword **Deep Learning**. What does it actually mean? It simply means a Neural Network that is very, very *deep*.\n\nIn our factory metaphor, the first row of workers is the **Input Layer**. The final worker is the **Output Layer**.\n\nEverything in between is called a **Hidden Layer**.\n\n## Going Deep\n\nEarly AI from the 1990s only had one or two hidden layers. They could solve simple math problems, but they weren't very smart.\n\nModern **Deep Learning** models (like ChatGPT or Self-Driving Cars) have dozens, hundreds, or even thousands of hidden layers!\n\nThis depth allows the AI to understand incredibly complex concepts. \n- Layer 1 finds edges.\n- Layer 5 finds shapes.\n- Layer 20 finds a human face.\n- Layer 100 figures out if the human face looks happy or sad!\n\n<flipcard front=\"🕵️‍♂️ What makes Deep Learning 'Deep'?\" back=\"Deep Learning refers to Neural Networks that have many 'Hidden Layers' of neurons between the input and the output, allowing them to learn highly complex patterns.\"></flipcard>",
-      "xp_reward": 15,
-      "coins_reward": 10,
+      "title": "The Power of Depth",
+      "content_md": "# Deep Learning \ud83c\udf0a\n\nYou've probably heard the buzzword **Deep Learning**. But what exactly makes learning \"deep\"?\n\nRemember our factory assembly line from the previous lesson? A standard Neural Network might have an Input Layer, one or two Hidden Layers, and an Output Layer.\n\n**Deep Learning** is simply a Neural Network that has *many* Hidden Layers. Instead of just 1 or 2 rows of workers, imagine a mega-factory with 50, 100, or even 1000 rows of workers passing information down the line.\n\n## The Magic of Hidden Layers\n\nWhy do we need so many layers? Because complex problems require breaking things down into many tiny steps.\n\nLet's say the AI is trying to recognize a human face:\n- **Layer 1** might just look for edges and dark spots.\n- **Layer 10** combines those edges to find shapes like circles and lines.\n- **Layer 50** combines those shapes to identify an eye or a nose.\n- **Layer 100** combines the eyes and nose to recognize a specific person's face.\n\n<flipcard front=\"\ud83c\udf0a What makes Deep Learning 'Deep'?\" back=\"The word 'Deep' literally refers to the number of Hidden Layers in the neural network. More layers = Deeper network.\"></flipcard>\n\nDeep Learning is what powers the most advanced AI today, including self-driving cars, ChatGPT, and medical imaging analysis.\n\n<flipcard front=\"\ud83c\udfad What do Hidden Layers actually do?\" back=\"They break down incredibly complex data into smaller and smaller pieces, identifying increasingly complicated patterns at each layer.\"></flipcard>\n\n<flipcard front=\"\ud83d\udda5\ufe0f Why didn't we have Deep Learning in the 1990s?\" back=\"We didn't have fast enough computers (GPUs) or enough data to train networks with that many layers!\"></flipcard>",
+      "xp_reward": 30,
+      "coins_reward": 25,
       "is_mandatory": true,
-      "illustration_url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800"
+      "illustration_url": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=800&q=80"
     }
   ]
 }

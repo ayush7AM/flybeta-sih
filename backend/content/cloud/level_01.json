@@ -8,7 +8,34 @@
   "level": {
     "number": 1,
     "title": "The Sandbox: Intro to the Cloud",
-    "description": "Discover the true nature of the Cloud. Hint: It's not in the sky!"
+    "description": "Discover the true nature of the Cloud. Hint: It's not in the sky!",
+    "quiz_data": [
+      {
+        "question": "What is 'The Cloud' in reality?",
+        "options": ["Satellites in space", "Someone else's computer in a Data Center", "A magical wireless network", "A hard drive on your desk"],
+        "correct_index": 1
+      },
+      {
+        "question": "Which of these best describes a Data Center?",
+        "options": ["A small office building", "A massive warehouse filled with servers", "A single supercomputer", "A cell tower"],
+        "correct_index": 1
+      },
+      {
+        "question": "What does CapEx (Capital Expenditure) refer to in computing?",
+        "options": ["Renting servers by the minute", "Paying for software subscriptions", "Buying your own expensive physical servers upfront", "Hiring cloud engineers"],
+        "correct_index": 2
+      },
+      {
+        "question": "What is the main advantage of OpEx (Operational Expenditure) in the Cloud?",
+        "options": ["You own the servers forever", "You pay only for what you use", "You get free electricity", "It prevents hackers"],
+        "correct_index": 1
+      },
+      {
+        "question": "What does 'Elasticity' mean in Cloud Computing?",
+        "options": ["The ability to stretch cables further", "The ability to instantly rent more servers when busy, and return them when quiet", "The ability to run the servers on rubber tracks", "The ability to bounce back from a power outage"],
+        "correct_index": 1
+      }
+    ]
   },
   "lessons": [
     {

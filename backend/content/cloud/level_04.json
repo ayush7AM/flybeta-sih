@@ -8,13 +8,65 @@
   "level": {
     "number": 4,
     "title": "Virtual Machines",
-    "description": "Computers inside computers! Unlocking the secret of the Russian nesting doll."
+    "description": "Computers inside computers! Unlocking the secret of the Russian nesting doll.",
+    "quiz_data": [
+      {
+        "question": "What is a Virtual Machine (VM)?",
+        "options": [
+          "A physical computer",
+          "A software-based simulation of a physical computer",
+          "A type of cloud storage",
+          "A networking cable"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What is the 'Russian Nesting Doll' metaphor describing?",
+        "options": [
+          "Computers running inside of other computers",
+          "Servers being physically stacked",
+          "Data encryption",
+          "Cloud pricing"
+        ],
+        "correct_index": 0
+      },
+      {
+        "question": "What is a Hypervisor?",
+        "options": [
+          "A super-fast CPU",
+          "Software that creates and runs virtual machines",
+          "A security firewall",
+          "A type of database"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "How does the Hypervisor act as a 'Grand Illusionist'?",
+        "options": [
+          "It tricks VMs into thinking they have their own dedicated hardware",
+          "It hides your IP address",
+          "It creates fake websites",
+          "It makes servers invisible"
+        ],
+        "correct_index": 0
+      },
+      {
+        "question": "Can multiple VMs run on a single physical server?",
+        "options": [
+          "No, only one per server",
+          "Yes, and they are completely isolated from each other",
+          "Yes, but they share the exact same operating system",
+          "Only if they are from the same company"
+        ],
+        "correct_index": 1
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
       "title": "The Russian Nesting Doll",
-      "content_md": "# The Russian Nesting Doll 🪆\n\nHave you ever seen a Russian nesting doll? You open the big wooden doll, and inside is a smaller doll. Open that one, and there's an even smaller doll inside!\n\nIn the Cloud, we do this exact same trick with computers. We put **computers inside of computers**.\n\n## The Hardware Problem\n\nImagine a massive, super-powerful server in a Data Center. It has 128 processor cores and 2,000 Gigabytes of RAM. It's an absolute beast.\n\nIf you want to host a tiny website, putting it alone on this massive server is a huge waste! It's like renting a giant 10-bedroom mansion for just one person.\n\nSo, how do cloud companies like Amazon or Google share this giant server among hundreds of different customers? They use **Virtual Machines (VMs)**.\n\n<flipcard front=\"🪆 What is a Virtual Machine?\" back=\"A Virtual Machine is a software computer running inside a physical computer. It acts exactly like a real computer, but it's completely made of code!\"></flipcard>",
+      "content_md": "# The Russian Nesting Doll \ud83e\ude86\n\nHave you ever seen a Russian nesting doll? You open the big wooden doll, and inside is a smaller doll. Open that one, and there's an even smaller doll inside!\n\nIn the Cloud, we do this exact same trick with computers. We put **computers inside of computers**.\n\n## The Hardware Problem\n\nImagine a massive, super-powerful server in a Data Center. It has 128 processor cores and 2,000 Gigabytes of RAM. It's an absolute beast.\n\nIf you want to host a tiny website, putting it alone on this massive server is a huge waste! It's like renting a giant 10-bedroom mansion for just one person.\n\nSo, how do cloud companies like Amazon or Google share this giant server among hundreds of different customers? They use **Virtual Machines (VMs)**.\n\n<flipcard front=\"\ud83e\ude86 What is a Virtual Machine?\" back=\"A Virtual Machine is a software computer running inside a physical computer. It acts exactly like a real computer, but it's completely made of code!\"></flipcard>",
       "xp_reward": 15,
       "coins_reward": 10,
       "is_mandatory": true,
@@ -23,7 +75,7 @@
     {
       "order": 2,
       "title": "The Hypervisor: The Grand Illusionist",
-      "content_md": "# The Hypervisor: The Grand Illusionist 🎩\n\nIf you have a giant physical server, and you want to run 10 smaller Virtual Machines inside of it, you need a special kind of magic. That magic is called a **Hypervisor**.\n\n## Slicing the Pie 🥧\n\nA Hypervisor is a special piece of software that gets installed directly onto the giant physical server.\n\nIts only job is to take the physical resources (CPU, RAM, Hard Drive) and slice them up into smaller pieces, handing them out to the Virtual Machines.\n\n- VM #1 thinks it is a real computer with 4 CPUs and 8GB of RAM.\n- VM #2 thinks it is a real computer with 2 CPUs and 4GB of RAM.\n\nThe Hypervisor is the illusionist. It makes every VM believe it is a completely independent, physical computer. \n\n## Absolute Isolation 🛡️\n\nThe most important job of the Hypervisor is **Isolation**. If Customer A's virtual machine gets a virus, or crashes entirely, it will **not** affect Customer B's virtual machine running right next to it on the exact same physical server!\n\n<flipcard front=\"🎩 What is a Hypervisor?\" back=\"A Hypervisor is the software that creates and manages Virtual Machines. It slices up the physical server's resources and keeps the VMs perfectly isolated from each other.\"></flipcard>",
+      "content_md": "# The Hypervisor: The Grand Illusionist \ud83c\udfa9\n\nIf you have a giant physical server, and you want to run 10 smaller Virtual Machines inside of it, you need a special kind of magic. That magic is called a **Hypervisor**.\n\n## Slicing the Pie \ud83e\udd67\n\nA Hypervisor is a special piece of software that gets installed directly onto the giant physical server.\n\nIts only job is to take the physical resources (CPU, RAM, Hard Drive) and slice them up into smaller pieces, handing them out to the Virtual Machines.\n\n- VM #1 thinks it is a real computer with 4 CPUs and 8GB of RAM.\n- VM #2 thinks it is a real computer with 2 CPUs and 4GB of RAM.\n\nThe Hypervisor is the illusionist. It makes every VM believe it is a completely independent, physical computer. \n\n## Absolute Isolation \ud83d\udee1\ufe0f\n\nThe most important job of the Hypervisor is **Isolation**. If Customer A's virtual machine gets a virus, or crashes entirely, it will **not** affect Customer B's virtual machine running right next to it on the exact same physical server!\n\n<flipcard front=\"\ud83c\udfa9 What is a Hypervisor?\" back=\"A Hypervisor is the software that creates and manages Virtual Machines. It slices up the physical server's resources and keeps the VMs perfectly isolated from each other.\"></flipcard>",
       "xp_reward": 20,
       "coins_reward": 10,
       "is_mandatory": true,

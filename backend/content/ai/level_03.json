@@ -8,26 +8,69 @@
   "level": {
     "number": 3,
     "title": "Supervised vs Unsupervised",
-    "description": "How do we actually teach these machines? Meet the two main methods of learning."
+    "description": "Learn the two main ways AI learns: with a teacher, and without a teacher.",
+    "quiz_data": [
+      {
+        "question": "What is Supervised Learning compared to?",
+        "options": [
+          "A messy room",
+          "A teacher grading homework with an answer key",
+          "A self-driving car",
+          "A random guess"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "In Supervised Learning, the data must be...",
+        "options": [
+          "Labeled (having known answers)",
+          "Unlabeled",
+          "Completely random",
+          "Text-only"
+        ],
+        "correct_index": 0
+      },
+      {
+        "question": "What is Unsupervised Learning compared to?",
+        "options": [
+          "Organizing a messy room into logical groups without an answer key",
+          "Following strict instructions",
+          "Reading a dictionary",
+          "Riding a bike"
+        ],
+        "correct_index": 0
+      },
+      {
+        "question": "Which algorithm type is used for finding hidden groups in customer data?",
+        "options": [
+          "Supervised Classification",
+          "Unsupervised Clustering",
+          "Reinforcement Learning",
+          "Linear Regression"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "If you want an AI to predict house prices based on past sales, you should use:",
+        "options": [
+          "Unsupervised Learning",
+          "Supervised Learning",
+          "Reinforcement Learning",
+          "Generative AI"
+        ],
+        "correct_index": 1
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
-      "title": "Supervised Learning: The Teacher",
-      "content_md": "# Supervised Learning: The Teacher 👩‍🏫\n\nThere are two main ways to teach an AI. The first, and most common, is called **Supervised Learning**.\n\nImagine a student doing math homework, and a teacher sitting right next to them holding an answer key.\n- The student looks at a math problem (the Data).\n- The student guesses an answer.\n- The teacher immediately says: *\"Wrong, the answer is 4.\"*\n- The student adjusts their thinking and tries the next problem.\n\nIn Supervised Learning, humans provide the AI with data that is already **labeled** with the correct answers.\n\nFor example, we feed the AI 100,000 photos, and every single photo is explicitly tagged by a human as either \"Dog\" or \"Cat\". The AI practices guessing, checks the tag to see if it was right, and slowly improves its accuracy.\n\n<flipcard front=\"👩‍🏫 What is Supervised Learning?\" back=\"Training an AI using data that is already labeled with the correct answers, so the AI can check its work and learn from its mistakes.\"></flipcard>",
-      "xp_reward": 15,
-      "coins_reward": 10,
+      "title": "Supervised vs Unsupervised Learning",
+      "content_md": "# Supervised vs Unsupervised Learning \ud83c\udf93\n\nHow exactly do we feed data into an AI? It turns out there are two main ways an AI can learn: **Supervised Learning** and **Unsupervised Learning**.\n\n## The Teacher Grading Homework (Supervised Learning)\n\nImagine a student doing math homework with a strict teacher looking over their shoulder. For every problem, the student makes a guess, and the teacher immediately says \"Correct\" or \"Incorrect\" because the teacher holds the answer key.\n\nThis is **Supervised Learning**.\n\nWe give the AI a dataset that is fully **labeled**. For example, 10,000 photos of cats and dogs, where every single photo has a tag attached saying \"Cat\" or \"Dog\". The AI makes a guess, checks the label (the answer key), and adjusts its internal math if it was wrong.\n\n<flipcard front=\"\ud83d\udc69\u200d\ud83c\udfeb What is Supervised Learning?\" back=\"Learning with labeled data. The AI has an 'answer key' and learns by comparing its predictions to the correct answers.\"></flipcard>\n\n## Organizing a Messy Room (Unsupervised Learning)\n\nNow imagine a child is told to clean a very messy playroom. There are no instructions, no labels, and no teacher. The child has to figure out how to organize things on their own.\n\nThey might put all the round things (balls) in one box. They might put all the colorful things (blocks) in another box. They found patterns and grouped things without ever knowing the official names for \"balls\" or \"blocks\".\n\nThis is **Unsupervised Learning**.\n\nWe give the AI a massive pile of **unlabeled** data. It has no answer key. The AI's job is simply to find hidden structures, group similar things together (clustering), or find anomalies.\n\n<flipcard front=\"\ud83e\udde9 What is Unsupervised Learning?\" back=\"Learning with unlabeled data. The AI looks at raw data without an answer key and tries to find hidden patterns and groupings on its own.\"></flipcard>\n\n<flipcard front=\"\ud83d\uded2 Give a real world example of Unsupervised Learning!\" back=\"Netflix recommendations! Netflix groups users with similar watch histories together, even without explicitly labeling them, to suggest new shows.\"></flipcard>",
+      "xp_reward": 25,
+      "coins_reward": 20,
       "is_mandatory": true,
-      "illustration_url": "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800"
-    },
-    {
-      "order": 2,
-      "title": "Unsupervised Learning: The Messy Room",
-      "content_md": "# Unsupervised Learning: The Messy Room 🧹\n\nThe second way to teach an AI is called **Unsupervised Learning**.\n\nImagine you walk into a giant, messy room filled with thousands of random toys. There is no teacher. There are no labels. There is no answer key.\n\nYou tell the AI: *\"I don't know what these are. Just organize them into groups that make sense.\"*\n\nThe AI looks at all the toys and starts finding its own patterns. \n- It puts all the round bouncy things in one pile (Balls).\n- It puts all the things with wheels in another pile (Cars).\n- It puts all the soft fuzzy things in a third pile (Stuffed Animals).\n\nIn Unsupervised Learning, we give the AI a massive pile of raw, unlabeled data and ask it to find hidden structures, clusters, or anomalies that humans can't see.\n\n<flipcard front=\"🧹 What is Unsupervised Learning?\" back=\"Giving an AI raw, unlabeled data and asking it to find hidden patterns or group similar things together on its own, without an answer key.\"></flipcard>",
-      "xp_reward": 15,
-      "coins_reward": 10,
-      "is_mandatory": true,
-      "illustration_url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800"
+      "illustration_url": "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80"
     }
   ]
 }

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
+import { Lock } from 'lucide-react';
 
-export default function LevelNode({ level, domainName, isActive }) {
+export default function LevelNode({ level, domainName, isActive, isLocked }) {
   const lessonCount = level.lessons?.length || 0;
   const mandatoryCount = level.lessons?.filter(l => l.is_mandatory).length || 0;
 
@@ -24,14 +25,20 @@ export default function LevelNode({ level, domainName, isActive }) {
 
       {/* Level Card */}
       <div
-        className={`flex-1 border-2 border-ink p-4 mb-4 transition-all ${
+        className={`flex-1 border-2 border-ink p-4 mb-4 transition-all relative ${
           isActive ? 'bg-white' : 'bg-canvas'
-        }`}
+        } ${isLocked ? 'grayscale opacity-60 pointer-events-none select-none' : ''}`}
         style={{
-          boxShadow: isActive ? 'var(--shadow-brutal-sm)' : 'none',
+          boxShadow: isActive && !isLocked ? 'var(--shadow-brutal-sm)' : 'none',
         }}
       >
-        <div className="flex items-center justify-between mb-2">
+        {isLocked && (
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <Lock className="w-20 h-20 text-ink" strokeWidth={3} />
+          </div>
+        )}
+        <div className={`relative z-10`}>
+          <div className="flex items-center justify-between mb-2">
           <h3 className="heading-md text-lg m-0">{level.title}</h3>
           <span className="label-mono text-muted">
             {lessonCount} lesson{lessonCount !== 1 ? 's' : ''}
@@ -77,6 +84,7 @@ export default function LevelNode({ level, domainName, isActive }) {
               • {lessonCount - mandatoryCount} bonus
             </span>
           )}
+        </div>
         </div>
       </div>
     </div>

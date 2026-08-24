@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getDomain } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
+import { useUser } from '../context/UserContext';
 import LevelNode from '../components/LevelNode';
 
 export default function TrackRoadmapPage() {
   const { name } = useParams();
   const { themeKey } = useTheme();
+  const { user } = useUser();
   const [domain, setDomain] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,6 +46,9 @@ export default function TrackRoadmapPage() {
 
   const levels = domain?.levels || [];
   const totalLessons = levels.reduce((acc, l) => acc + (l.lessons?.length || 0), 0);
+  
+  const domainProgress = user?.domain_progress?.find(p => p.domain_name === name);
+  const highestUnlockedLevel = domainProgress?.highest_unlocked_level || 1;
 
   return (
     <div>
@@ -86,6 +91,7 @@ export default function TrackRoadmapPage() {
                 level={level}
                 domainName={name}
                 isActive={level.number === 1}
+                isLocked={level.number > highestUnlockedLevel}
               />
             ))
         ) : (

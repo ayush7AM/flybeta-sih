@@ -8,13 +8,65 @@
   "level": {
     "number": 2,
     "title": "The Three Magic Services",
-    "description": "IaaS, PaaS, and SaaS explained through the greatest metaphor of all time: Pizza."
+    "description": "IaaS, PaaS, and SaaS explained through the greatest metaphor of all time: Pizza.",
+    "quiz_data": [
+      {
+        "question": "What does IaaS stand for?",
+        "options": [
+          "Internet as a Service",
+          "Infrastructure as a Service",
+          "Internal as a System",
+          "Information as a Service"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "In the Pizza-as-a-Service metaphor, what does IaaS represent?",
+        "options": [
+          "Dining at a restaurant",
+          "Getting a delivery pizza",
+          "Buying frozen pizza to bake at home",
+          "Making pizza from scratch"
+        ],
+        "correct_index": 2
+      },
+      {
+        "question": "Which of these is an example of PaaS (Platform as a Service)?",
+        "options": [
+          "A bare-metal server",
+          "A managed database or app engine",
+          "Google Workspace (Docs, Sheets)",
+          "A home router"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "SaaS (Software as a Service) is built for which target audience?",
+        "options": [
+          "End Users",
+          "System Administrators",
+          "Network Engineers",
+          "Hardware Technicians"
+        ],
+        "correct_index": 0
+      },
+      {
+        "question": "Which service model requires you to manage the operating system?",
+        "options": [
+          "SaaS",
+          "PaaS",
+          "IaaS",
+          "None of the above"
+        ],
+        "correct_index": 2
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
       "title": "The Pizza-as-a-Service Metaphor",
-      "content_md": "# The Pizza-as-a-Service Metaphor 🍕\n\nWhen you use the Cloud, you get to choose exactly how much work you want to do yourself, and how much work you want the Cloud provider (like Amazon or Google) to do for you.\n\nWe break this down into three main categories: **IaaS**, **PaaS**, and **SaaS**. \n\nThe easiest way to understand them is to think about eating pizza!\n\n## 1. Traditional IT (Made at Home) 🏠\nImagine making a pizza completely from scratch at home. You have to make the dough, buy the tomatoes, grate the cheese, own the oven, pay for the electricity, and wash the dishes. You do **everything**.\n- In tech, this is owning your own servers in your own building. It's hard work!\n\n## 2. IaaS (Take-and-Bake) 🛒\n*IaaS stands for **Infrastructure as a Service**.*\nImagine going to the grocery store and buying a frozen pizza. They provided the dough, sauce, and toppings. But you still have to take it home, use your own oven, and provide the dining table.\n- In tech, the Cloud provider gives you the physical server, the hard drive, and the network. **You** have to install the operating system and build the app.\n\n## 3. PaaS (Pizza Delivery) 🛵\n*PaaS stands for **Platform as a Service**.*\nImagine ordering a pizza for delivery. They made the pizza and cooked it in their oven. It arrives hot and ready! You just provide the dining table and the drinks.\n- In tech, the Cloud provider gives you a ready-to-use environment. **You** just write the code for your app and hit \"Run.\" They handle all the server setup behind the scenes.\n\n## 4. SaaS (Dining Out) 🍽️\n*SaaS stands for **Software as a Service**.*\nImagine going to a fancy restaurant. They make the pizza, cook it, serve it on their table, and wash the dishes. You just eat it and enjoy!\n- In tech, this is a complete, finished app. You don't manage servers, and you don't write code. You just log in and use it.\n\n<flipcard front=\"🍕 Which 'As-a-Service' is like Pizza Delivery?\" back=\"PaaS (Platform as a Service)! They do the heavy lifting of cooking it (managing servers), but you still eat it at your own house (writing your own code).\"></flipcard>",
+      "content_md": "# The Pizza-as-a-Service Metaphor \ud83c\udf55\n\nWhen you use the Cloud, you get to choose exactly how much work you want to do yourself, and how much work you want the Cloud provider (like Amazon or Google) to do for you.\n\nWe break this down into three main categories: **IaaS**, **PaaS**, and **SaaS**. \n\nThe easiest way to understand them is to think about eating pizza!\n\n## 1. Traditional IT (Made at Home) \ud83c\udfe0\nImagine making a pizza completely from scratch at home. You have to make the dough, buy the tomatoes, grate the cheese, own the oven, pay for the electricity, and wash the dishes. You do **everything**.\n- In tech, this is owning your own servers in your own building. It's hard work!\n\n## 2. IaaS (Take-and-Bake) \ud83d\uded2\n*IaaS stands for **Infrastructure as a Service**.*\nImagine going to the grocery store and buying a frozen pizza. They provided the dough, sauce, and toppings. But you still have to take it home, use your own oven, and provide the dining table.\n- In tech, the Cloud provider gives you the physical server, the hard drive, and the network. **You** have to install the operating system and build the app.\n\n## 3. PaaS (Pizza Delivery) \ud83d\udef5\n*PaaS stands for **Platform as a Service**.*\nImagine ordering a pizza for delivery. They made the pizza and cooked it in their oven. It arrives hot and ready! You just provide the dining table and the drinks.\n- In tech, the Cloud provider gives you a ready-to-use environment. **You** just write the code for your app and hit \"Run.\" They handle all the server setup behind the scenes.\n\n## 4. SaaS (Dining Out) \ud83c\udf7d\ufe0f\n*SaaS stands for **Software as a Service**.*\nImagine going to a fancy restaurant. They make the pizza, cook it, serve it on their table, and wash the dishes. You just eat it and enjoy!\n- In tech, this is a complete, finished app. You don't manage servers, and you don't write code. You just log in and use it.\n\n<flipcard front=\"\ud83c\udf55 Which 'As-a-Service' is like Pizza Delivery?\" back=\"PaaS (Platform as a Service)! They do the heavy lifting of cooking it (managing servers), but you still eat it at your own house (writing your own code).\"></flipcard>",
       "xp_reward": 15,
       "coins_reward": 8,
       "is_mandatory": true,
@@ -23,7 +75,7 @@
     {
       "order": 2,
       "title": "IaaS In-Depth: Building Blocks",
-      "content_md": "# IaaS In-Depth: Building Blocks 🧱\n\n**Infrastructure as a Service (IaaS)** is the foundation of the Cloud. It gives you the raw building blocks of computing.\n\nWhen you rent IaaS, you are basically renting an empty, super-powerful computer inside a data center. It's a blank canvas. \n\n## What Exactly Are You Renting?\n\nYou are renting three main things:\n\n1. **Compute (CPU & RAM):** The \"brain\" and \"short-term memory\" of the computer. This is what does the actual thinking and processing for your application.\n2. **Storage:** The hard drives where your data is permanently saved.\n3. **Networking:** The virtual cables and routers that connect your rented computer to the internet.\n\n## The Builder's Choice\n\nIaaS gives you the **most control**, but requires the **most work**. \n\nYou have to log into that empty computer, install Windows or Linux, install security updates, and set up your databases. If the computer crashes because you configured it wrong, that's your fault!\n\n<flipcard front=\"🛠️ Why would a company choose IaaS?\" back=\"A company chooses IaaS when they want complete, total control over their servers, security, and networking. They want the raw building blocks to build exactly what they need.\"></flipcard>\n\n## Real-World IaaS Example: AWS EC2\n\nThe most famous example of IaaS is **Amazon EC2 (Elastic Compute Cloud)**. When you spin up an EC2 instance, you are renting a virtual server from Amazon. Netflix uses hundreds of thousands of EC2 instances to stream movies to you!",
+      "content_md": "# IaaS In-Depth: Building Blocks \ud83e\uddf1\n\n**Infrastructure as a Service (IaaS)** is the foundation of the Cloud. It gives you the raw building blocks of computing.\n\nWhen you rent IaaS, you are basically renting an empty, super-powerful computer inside a data center. It's a blank canvas. \n\n## What Exactly Are You Renting?\n\nYou are renting three main things:\n\n1. **Compute (CPU & RAM):** The \"brain\" and \"short-term memory\" of the computer. This is what does the actual thinking and processing for your application.\n2. **Storage:** The hard drives where your data is permanently saved.\n3. **Networking:** The virtual cables and routers that connect your rented computer to the internet.\n\n## The Builder's Choice\n\nIaaS gives you the **most control**, but requires the **most work**. \n\nYou have to log into that empty computer, install Windows or Linux, install security updates, and set up your databases. If the computer crashes because you configured it wrong, that's your fault!\n\n<flipcard front=\"\ud83d\udee0\ufe0f Why would a company choose IaaS?\" back=\"A company chooses IaaS when they want complete, total control over their servers, security, and networking. They want the raw building blocks to build exactly what they need.\"></flipcard>\n\n## Real-World IaaS Example: AWS EC2\n\nThe most famous example of IaaS is **Amazon EC2 (Elastic Compute Cloud)**. When you spin up an EC2 instance, you are renting a virtual server from Amazon. Netflix uses hundreds of thousands of EC2 instances to stream movies to you!",
       "xp_reward": 15,
       "coins_reward": 8,
       "is_mandatory": true,
@@ -32,7 +84,7 @@
     {
       "order": 3,
       "title": "PaaS In-Depth: The Developer's Dream",
-      "content_md": "# PaaS In-Depth: The Developer's Dream 🧑‍💻\n\n**Platform as a Service (PaaS)** is designed specifically for one group of people: **Software Developers**.\n\nDevelopers just want to write code. They want to build cool apps and games. They *hate* having to spend hours installing operating systems, configuring firewalls, and managing server updates (the stuff you have to do with IaaS).\n\n## Focus on the Code\n\nWith PaaS, the Cloud provider says:\n> *\"Hey, don't worry about the servers. We will handle all the operating systems, security patches, and network settings. Just upload your code, and we'll make it run perfectly on the internet.\"*\n\nThis makes building apps incredibly fast. A developer can write a new game on their laptop, upload it to a PaaS provider, and it's live for the whole world to play in minutes.\n\n<flipcard front=\"🧑‍💻 Who is PaaS designed for?\" back=\"PaaS is designed for Software Developers! It lets them focus entirely on writing code without worrying about managing the underlying servers.\"></flipcard>\n\n## Real-World PaaS Example: Heroku\n\nA classic example of PaaS is **Heroku**. You write your web application in a language like Python or Node.js, and type `git push heroku master`. Boom! Heroku takes your code, automatically sets up the server, connects a database, and gives you a live URL.",
+      "content_md": "# PaaS In-Depth: The Developer's Dream \ud83e\uddd1\u200d\ud83d\udcbb\n\n**Platform as a Service (PaaS)** is designed specifically for one group of people: **Software Developers**.\n\nDevelopers just want to write code. They want to build cool apps and games. They *hate* having to spend hours installing operating systems, configuring firewalls, and managing server updates (the stuff you have to do with IaaS).\n\n## Focus on the Code\n\nWith PaaS, the Cloud provider says:\n> *\"Hey, don't worry about the servers. We will handle all the operating systems, security patches, and network settings. Just upload your code, and we'll make it run perfectly on the internet.\"*\n\nThis makes building apps incredibly fast. A developer can write a new game on their laptop, upload it to a PaaS provider, and it's live for the whole world to play in minutes.\n\n<flipcard front=\"\ud83e\uddd1\u200d\ud83d\udcbb Who is PaaS designed for?\" back=\"PaaS is designed for Software Developers! It lets them focus entirely on writing code without worrying about managing the underlying servers.\"></flipcard>\n\n## Real-World PaaS Example: Heroku\n\nA classic example of PaaS is **Heroku**. You write your web application in a language like Python or Node.js, and type `git push heroku master`. Boom! Heroku takes your code, automatically sets up the server, connects a database, and gives you a live URL.",
       "xp_reward": 15,
       "coins_reward": 8,
       "is_mandatory": true,
@@ -41,7 +93,7 @@
     {
       "order": 4,
       "title": "SaaS In-Depth: The End User Experience",
-      "content_md": "# SaaS In-Depth: The End User Experience 📱\n\n**Software as a Service (SaaS)** is the cloud model that you interact with every single day.\n\nWith SaaS, you don't manage any servers (like IaaS) and you don't write any code (like PaaS). You just open your web browser or an app on your phone, log in, and use the finished product.\n\n## Everything is Managed For You\n\nThe company providing the SaaS handles absolutely everything:\n- If the server crashes, they fix it.\n- If a new feature is added, it updates automatically.\n- Your data is synced across your phone, tablet, and laptop seamlessly.\n\nAll you have to do is pay a monthly subscription fee (or watch ads, if it's free).\n\n<flipcard front=\"📱 What is the main benefit of SaaS?\" back=\"You don't have to install, update, or manage anything! You just open a web browser and use the software immediately.\"></flipcard>\n\n## Real-World SaaS Examples\n\nYou use SaaS all the time! Here are some massive examples:\n- **Gmail:** You don't run your own email server. Google does. You just log in and read emails.\n- **Netflix:** You don't store the movies on your TV. You just stream them via their finished app.\n- **Spotify:** Millions of songs available instantly without downloading MP3 files to a hard drive.\n\n<flipcard front=\"🤔 Is Microsoft Word a SaaS?\" back=\"If you buy a CD and install Word 2010 on your computer, no. But if you use Microsoft Office 365 or Google Docs in your web browser, YES! That is SaaS.\"></flipcard>",
+      "content_md": "# SaaS In-Depth: The End User Experience \ud83d\udcf1\n\n**Software as a Service (SaaS)** is the cloud model that you interact with every single day.\n\nWith SaaS, you don't manage any servers (like IaaS) and you don't write any code (like PaaS). You just open your web browser or an app on your phone, log in, and use the finished product.\n\n## Everything is Managed For You\n\nThe company providing the SaaS handles absolutely everything:\n- If the server crashes, they fix it.\n- If a new feature is added, it updates automatically.\n- Your data is synced across your phone, tablet, and laptop seamlessly.\n\nAll you have to do is pay a monthly subscription fee (or watch ads, if it's free).\n\n<flipcard front=\"\ud83d\udcf1 What is the main benefit of SaaS?\" back=\"You don't have to install, update, or manage anything! You just open a web browser and use the software immediately.\"></flipcard>\n\n## Real-World SaaS Examples\n\nYou use SaaS all the time! Here are some massive examples:\n- **Gmail:** You don't run your own email server. Google does. You just log in and read emails.\n- **Netflix:** You don't store the movies on your TV. You just stream them via their finished app.\n- **Spotify:** Millions of songs available instantly without downloading MP3 files to a hard drive.\n\n<flipcard front=\"\ud83e\udd14 Is Microsoft Word a SaaS?\" back=\"If you buy a CD and install Word 2010 on your computer, no. But if you use Microsoft Office 365 or Google Docs in your web browser, YES! That is SaaS.\"></flipcard>",
       "xp_reward": 15,
       "coins_reward": 8,
       "is_mandatory": true,

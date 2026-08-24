@@ -12,7 +12,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.decorators import action
 from rest_framework import status
 
-from learn.models import Domain, Level, Lesson, LevelProgress
+from learn.models import Domain, Level, Lesson, LevelProgress, DomainProgress
 from accounts.models import UserProfile
 from api.serializers import (
     DomainSerializer, LevelSerializer, LessonSerializer, UserStatsSerializer,
@@ -63,6 +63,30 @@ class LevelViewSet(ReadOnlyModelViewSet):
         if domain_name:
             qs = qs.filter(domain__name=domain_name)
         return qs
+
+    @action(detail=True, methods=['post'], permission_classes=[AllowAny])
+    def pass_quiz(self, request, pk=None):
+        level = self.get_object()
+        user = get_dev_user()
+        
+        with transaction.atomic():
+            domain_progress, _ = DomainProgress.objects.get_or_create(
+                user=user,
+                domain=level.domain
+            )
+            
+            if domain_progress.highest_unlocked_level == level.number:
+                domain_progress.highest_unlocked_level += 1
+                domain_progress.save()
+                
+                profile = user.profile
+                profile.xp += 50
+                profile.save()
+                
+        return Response({
+            'status': 'success',
+            'user': UserStatsSerializer(user.profile).data
+        }, status=status.HTTP_200_OK)
 
 
 class LessonViewSet(ReadOnlyModelViewSet):

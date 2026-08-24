@@ -8,17 +8,69 @@
   "level": {
     "number": 4,
     "title": "Neural Networks",
-    "description": "How do computers mimic the human brain? Step inside the factory assembly line of AI."
+    "description": "Step into the workshop. Discover how Neural Networks process data like an intricate factory assembly line.",
+    "quiz_data": [
+      {
+        "question": "What is the metaphor for a Neural Network?",
+        "options": [
+          "A factory assembly line of workers passing information",
+          "A giant calculator",
+          "A search engine",
+          "A digital library"
+        ],
+        "correct_index": 0
+      },
+      {
+        "question": "What are the 'workers' on the assembly line called?",
+        "options": [
+          "Functions",
+          "Neurons (or Nodes)",
+          "Cores",
+          "Databases"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What do the hidden layers in a Neural Network do?",
+        "options": [
+          "Hide data from hackers",
+          "Process different levels of features before passing to the next layer",
+          "Store the final output",
+          "Collect input data"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "Deep Learning refers to a Neural Network that...",
+        "options": [
+          "Thinks very hard",
+          "Has many hidden layers (is 'deep')",
+          "Runs on the dark web",
+          "Uses deep sea cables"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What happens during 'Backpropagation'?",
+        "options": [
+          "The AI crashes",
+          "The network adjusts the 'weights' (importance) of connections to reduce errors",
+          "Data is deleted",
+          "The AI prints the result"
+        ],
+        "correct_index": 1
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
       "title": "The Factory Assembly Line",
-      "content_md": "# The Factory Assembly Line 🏭\n\nTo build truly smart AI, scientists looked at how the human brain works. The brain is made up of billions of tiny cells called **neurons** that pass electricity to each other.\n\nIn AI, we created a digital version of this called an **Artificial Neural Network**. \n\nThe best way to understand a Neural Network is to imagine a massive factory assembly line.\n\n## The Workers\n\nImagine you own a factory that tries to guess whether a picture is a \"Car\" or a \"Truck\".\n\n- **The Input Row:** The first row of workers stand at the factory door. They just look at the raw pixels of the image and shout what they see to the workers behind them (e.g., \"I see a shiny red pixel!\").\n- **The Middle Rows:** These workers take the information from the first row and start combining it. One worker says: *\"Shiny red pixels + black round pixels = maybe a tire?\"* They shout their guesses to the row behind them.\n- **The Final Row:** The last worker in the factory listens to all the combined guesses from the middle rows and makes the final decision: *\"It's a Truck!\"*\n\n<flipcard front=\"🏭 How is a Neural Network like a factory?\" back=\"It is made of rows of digital 'workers' (neurons) that pass information backward, combining simple details into complex decisions.\"></flipcard>",
-      "xp_reward": 15,
-      "coins_reward": 10,
+      "content_md": "# Neural Networks \ud83c\udfed\n\nThe most powerful form of AI today is based on a concept called the **Artificial Neural Network**. It's loosely inspired by the human brain, but it's much easier to understand if you think of it as a **Factory Assembly Line**.\n\nImagine a factory whose only job is to look at a photo and decide if it's a hotdog or not.\n\nInside this factory, there are hundreds of workers standing in lines (called **Layers**). Every single worker (called a **Neuron** or **Node**) has a very simple, specific job.\n\n## The Workflow\n\n1. **The Receiving Dock (Input Layer):** The first row of workers receives the raw photo. They look at the pixels. Worker A looks for red colors. Worker B looks for curves. They then pass their findings to the next line of workers.\n2. **The Assembly Line (Hidden Layers):** The middle workers take the simple findings and combine them. Worker C hears \"red\" and \"curved\" and yells \"I think it's a sausage!\" to the next line. They pass the information forward.\n3. **The Final Manager (Output Layer):** The last worker takes all the combined reports from the assembly line and makes the final decision: \"Yes, this is a hotdog!\"\n\n<flipcard front=\"\ud83c\udfed What is a Neural Network?\" back=\"A system of interconnected 'nodes' arranged in layers that pass information forward, just like workers on an assembly line.\"></flipcard>\n\n<flipcard front=\"\ud83e\uddcd\u200d\u2642\ufe0f What does a single Neuron (Node) do?\" back=\"It takes an input, does a small math calculation, and passes the result to the next layer of nodes.\"></flipcard>\n\nThis simple concept\u2014passing small pieces of information down a line and combining them\u2014is the foundation of almost all modern AI!\n\n<flipcard front=\"\ud83e\udde0 Why 'Neural'?\" back=\"Because the nodes are connected and fire signals to each other, similar to how neurons fire in a biological brain.\"></flipcard>",
+      "xp_reward": 30,
+      "coins_reward": 25,
       "is_mandatory": true,
-      "illustration_url": "https://images.unsplash.com/photo-1565158671408-769b7640f1a9?w=800"
+      "illustration_url": "https://images.unsplash.com/photo-1565515268481-c423ba096898?w=800&q=80"
     }
   ]
 }

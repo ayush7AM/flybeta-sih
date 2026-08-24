@@ -176,6 +176,7 @@ class Command(BaseCommand):
             defaults={
                 'title': level_data.get('title', f'Level {level_data["number"]}'),
                 'description': level_data.get('description', ''),
+                'quiz_data': level_data.get('quiz_data', None),
             },
         )
         if created:

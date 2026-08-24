@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getDomain, completeLesson } from '../services/api';
 import { useUser } from '../context/UserContext';
 import MarkdownRenderer from '../components/MarkdownRenderer';
+import LevelBossQuiz from '../components/interactive/LevelBossQuiz';
 
 const TRACK_META = {
   'data-science': { accent: '#059669' },
@@ -116,6 +117,8 @@ export default function LessonRunnerPage() {
       setCompleting(false);
     }
   };
+
+  console.log("Current Level Data:", currentLevel);
 
   return (
     <div>
@@ -280,6 +283,17 @@ export default function LessonRunnerPage() {
             <MarkdownRenderer content={currentLesson.content_md} />
           </div>
 
+          {/* Boss Quiz */}
+          {!nextLesson && (currentLevel.quiz_data || currentLevel.quiz_data === null) && (
+            <div className="mt-8">
+              <LevelBossQuiz 
+                quizData={currentLevel.quiz_data || []} 
+                levelId={currentLevel.id} 
+                onUnlock={handleComplete} 
+              />
+            </div>
+          )}
+
           {/* Navigation Buttons */}
           <div className="flex items-center justify-between mt-6 gap-4">
             {prevLesson ? (
@@ -295,13 +309,15 @@ export default function LessonRunnerPage() {
               </Link>
             )}
 
-            <button
-              onClick={handleComplete}
-              disabled={completing}
-              className={`brutalist-btn brutalist-btn-primary ${completing ? 'opacity-60 cursor-not-allowed' : ''}`}
-            >
-              {completing ? 'Saving...' : nextLesson ? 'Complete & Continue →' : '✓ Complete Level →'}
-            </button>
+            {!(!nextLesson && currentLevel.quiz_data) && (
+              <button
+                onClick={handleComplete}
+                disabled={completing}
+                className={`brutalist-btn brutalist-btn-primary ${completing ? 'opacity-60 cursor-not-allowed' : ''}`}
+              >
+                {completing ? 'Saving...' : nextLesson ? 'Complete & Continue →' : '✓ Complete Level →'}
+              </button>
+            )}
           </div>
         </div>
       </div>

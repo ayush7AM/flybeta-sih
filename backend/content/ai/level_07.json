@@ -8,17 +8,69 @@
   "level": {
     "number": 7,
     "title": "Computer Vision",
-    "description": "How do machines actually 'see'? It's all just math and matrices."
+    "description": "Enter the Laboratory. Discover exactly how an AI 'sees' the world by turning pictures into raw numbers.",
+    "quiz_data": [
+      {
+        "question": "What is the best metaphor for Reinforcement Learning?",
+        "options": [
+          "A factory assembly line",
+          "Training a dog with treats and scoldings",
+          "Organizing a messy room",
+          "Grading a test"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "In Reinforcement Learning, what is the 'Agent'?",
+        "options": [
+          "The AI that is taking actions",
+          "The environment",
+          "The human programmer",
+          "The reward system"
+        ],
+        "correct_index": 0
+      },
+      {
+        "question": "How does the Agent learn?",
+        "options": [
+          "By reading a manual",
+          "By exploring the environment and receiving positive or negative rewards",
+          "By copying other AIs",
+          "By random chance"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What is a famous achievement of Reinforcement Learning?",
+        "options": [
+          "AlphaGo beating the world champion at Go",
+          "Generating a realistic painting",
+          "Translating 100 languages",
+          "Sorting emails"
+        ],
+        "correct_index": 0
+      },
+      {
+        "question": "What is the 'Exploration vs. Exploitation' dilemma?",
+        "options": [
+          "Choosing between cheap or expensive servers",
+          "Choosing between trying a new unknown action or sticking to a known good action",
+          "Choosing between text and image data",
+          "Choosing between human or AI workers"
+        ],
+        "correct_index": 1
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
-      "title": "Turning Pictures into Numbers",
-      "content_md": "# Turning Pictures into Numbers 👁️\n\nWhen you look at a photo of a cat, your eyes see fur, ears, and whiskers.\n\nWhen a computer looks at that exact same photo, it sees nothing but a massive spreadsheet of numbers.\n\n## The Pixel Grid 🔢\n\nEvery digital image is made of tiny dots called **pixels**. \n\nIf you zoom all the way into a black-and-white photo, you'll see a grid. Each square in that grid is assigned a number from 0 (pure black) to 255 (pure white). \n\nSo, an image of a cat isn't a \"picture\" to a computer; it's just a matrix of numbers like this:\n\n```\n[0,   50,  120]\n[255, 200, 10]\n[10,  0,   255]\n```\n\n## Finding Edges\n\nHow does the AI know it's looking at a cat? It uses math to find **Edges**.\n\nIf the AI is scanning the numbers and sees a bunch of 0s (black) suddenly turn into a bunch of 255s (white), it mathematically calculates that there must be a sharp edge right there. \n\nBy finding thousands of these edges, the hidden layers of the neural network piece together shapes, textures, and eventually, a cat!\n\n<flipcard front=\"👁️ How does a computer see an image?\" back=\"Computers see images as massive grids of numbers, representing the color value of each pixel.\"></flipcard>",
-      "xp_reward": 15,
-      "coins_reward": 10,
+      "title": "Seeing in Numbers",
+      "content_md": "# Computer Vision \ud83d\udc41\ufe0f\n\nHumans look at a photo and instantly see a cat, a tree, or a stop sign. But a computer doesn't have eyes. To a computer, an image is just a massive grid of numbers.\n\n## The Pixel Grid\n\nIf you zoom into a digital photograph far enough, you'll see tiny squares called **Pixels**. Each pixel is represented by numbers that describe its color.\n\nFor a black and white image, the number might be 0 for pure black and 255 for pure white. \n\nWhen you feed an image into an AI, you aren't feeding it a picture. You are feeding it an Excel spreadsheet of thousands of numbers.\n\n<flipcard front=\"\ud83d\udd22 How does a computer see an image?\" back=\"As a giant 2D array (a grid) of numbers, where every number represents the color intensity of a single pixel.\"></flipcard>\n\n## Finding Edges\n\nSo how does the AI turn those numbers into a \"cat\"? It uses a special kind of hidden layer called a Convolutional Layer.\n\nThese layers slide a small \"magnifying glass\" (called a filter) over the numbers, looking for dramatic changes. If the numbers suddenly jump from 0 (black) to 255 (white), the AI knows it just found a hard **Edge**.\n\nBy finding all the edges, it can find shapes. By finding shapes, it can find objects.\n\n<flipcard front=\"\ud83d\udcd0 How does AI find an object in an image?\" back=\"It scans the grid of numbers for sudden mathematical changes, which represent the edges and outlines of shapes.\"></flipcard>\n\n<flipcard front=\"\ud83d\ude97 Why is Computer Vision important?\" back=\"It's how self-driving cars 'see' pedestrians and stop signs, and how medical AI detects tumors in X-rays!\"></flipcard>",
+      "xp_reward": 35,
+      "coins_reward": 30,
       "is_mandatory": true,
-      "illustration_url": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800"
+      "illustration_url": "https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?w=800&q=80"
     }
   ]
 }

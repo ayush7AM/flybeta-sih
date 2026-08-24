@@ -8,13 +8,65 @@
   "level": {
     "number": 3,
     "title": "Storage & Databases",
-    "description": "How the Internet remembers everything. The difference between Object Storage and Relational Databases."
+    "description": "How the Internet remembers everything. The difference between Object Storage and Relational Databases.",
+    "quiz_data": [
+      {
+        "question": "How does Object Storage save files?",
+        "options": [
+          "In a rigid folder hierarchy",
+          "As independent objects with metadata in a flat structure",
+          "On physical tape drives",
+          "Inside relational tables"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What is the best use case for Object Storage?",
+        "options": [
+          "Running a high-speed database",
+          "Storing millions of photos or backups",
+          "Installing an operating system",
+          "Running active applications"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "Relational databases are best compared to what?",
+        "options": [
+          "A messy room",
+          "A massive filing cabinet with strict tables",
+          "A digital locker",
+          "A cloud server"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "Which query language is used for Relational Databases?",
+        "options": [
+          "HTML",
+          "Python",
+          "SQL",
+          "CSS"
+        ],
+        "correct_index": 2
+      },
+      {
+        "question": "What happens if a database region goes offline in the cloud?",
+        "options": [
+          "All data is permanently lost",
+          "Data is usually replicated to another region automatically",
+          "You have to fly out to fix it",
+          "The internet breaks"
+        ],
+        "correct_index": 1
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
       "title": "How the Internet Remembers",
-      "content_md": "# How the Internet Remembers 🧠\n\nWhen you turn off your computer, it doesn't forget your files. When you close the Instagram app, your photos don't disappear.\n\nThis is because of **Storage**. Storage is how computers remember things permanently. In the Cloud, storage is incredibly important because there are billions of people generating mountains of data every single second.\n\nBut not all data is the same!\n\n## Structured vs. Unstructured Data\n\nCloud engineers divide all data in the world into two main types:\n\n### 1. Structured Data 📊\nThis is data that fits perfectly into a spreadsheet. It has rows and columns. \n- **Examples:** A list of users (Name, Email, Age), your bank account transactions (Date, Amount, Merchant), or a store's inventory.\n- Structured data is highly organized and easy to search.\n\n### 2. Unstructured Data 🎨\nThis is everything else! It's data that doesn't fit into neat rows and columns. It's messy, large, and comes in all shapes and sizes.\n- **Examples:** A 4K video of your dog, an MP3 music file, a PDF document, or a JPEG photo.\n\n<flipcard front=\"🤔 Is an MP3 music file Structured or Unstructured data?\" back=\"Unstructured! You can't easily fit the audio of a song into a spreadsheet column. It requires a different type of storage.\"></flipcard>\n\nBecause these two types of data are so different, the Cloud has two completely different ways to store them: **Databases** (for structured) and **Object Storage** (for unstructured).",
+      "content_md": "# How the Internet Remembers \ud83e\udde0\n\nWhen you turn off your computer, it doesn't forget your files. When you close the Instagram app, your photos don't disappear.\n\nThis is because of **Storage**. Storage is how computers remember things permanently. In the Cloud, storage is incredibly important because there are billions of people generating mountains of data every single second.\n\nBut not all data is the same!\n\n## Structured vs. Unstructured Data\n\nCloud engineers divide all data in the world into two main types:\n\n### 1. Structured Data \ud83d\udcca\nThis is data that fits perfectly into a spreadsheet. It has rows and columns. \n- **Examples:** A list of users (Name, Email, Age), your bank account transactions (Date, Amount, Merchant), or a store's inventory.\n- Structured data is highly organized and easy to search.\n\n### 2. Unstructured Data \ud83c\udfa8\nThis is everything else! It's data that doesn't fit into neat rows and columns. It's messy, large, and comes in all shapes and sizes.\n- **Examples:** A 4K video of your dog, an MP3 music file, a PDF document, or a JPEG photo.\n\n<flipcard front=\"\ud83e\udd14 Is an MP3 music file Structured or Unstructured data?\" back=\"Unstructured! You can't easily fit the audio of a song into a spreadsheet column. It requires a different type of storage.\"></flipcard>\n\nBecause these two types of data are so different, the Cloud has two completely different ways to store them: **Databases** (for structured) and **Object Storage** (for unstructured).",
       "xp_reward": 15,
       "coins_reward": 10,
       "is_mandatory": true,
@@ -23,7 +75,7 @@
     {
       "order": 2,
       "title": "Object Storage: Digital Lockers",
-      "content_md": "# Object Storage: Digital Lockers 🗄️\n\nLet's talk about how the Cloud stores **Unstructured Data** (photos, videos, backups). It uses something called **Object Storage**.\n\n## The Digital Locker Metaphor\n\nImagine a massive warehouse filled with millions of identical metal lockers. \n\nWhen you want to store a file (like a profile picture), you put it inside a locker. You put a lock on it, and the system hands you a unique key with a number on it (like `#9472A`). \n\n- It doesn't matter what's inside the locker (a tiny text file or a massive 10GB video). \n- The system doesn't organize the lockers by alphabetical order or by category. \n- The *only* way to get your file back is to hand the system your exact unique key.\n\nThis is how Object Storage works! Every file is an \"Object.\" It gets dumped into a massive flat space, and the system gives you a unique URL to find it later.\n\n<flipcard front=\"🗄️ How do you retrieve a file from Object Storage?\" back=\"You must have the exact, unique URL (the 'key') assigned to that specific file. You can't easily 'search' inside Object Storage like you can in a database.\"></flipcard>\n\n## Infinite Space\n\nThe superpower of Object Storage is that it is virtually **infinite** and very cheap. \n\nIf you build a new social media app and suddenly 10 million people upload photos on day one, you don't need to panic or buy new hard drives. The Cloud provider's Object Storage just keeps accepting the files and giving you URLs back. It scales automatically!\n\n## Real-World Example: Amazon S3\n\nThe most famous Object Storage in the world is **Amazon S3 (Simple Storage Service)**. When you watch a movie on Netflix, the actual video file you are streaming is stored in a massive digital locker on Amazon S3!",
+      "content_md": "# Object Storage: Digital Lockers \ud83d\uddc4\ufe0f\n\nLet's talk about how the Cloud stores **Unstructured Data** (photos, videos, backups). It uses something called **Object Storage**.\n\n## The Digital Locker Metaphor\n\nImagine a massive warehouse filled with millions of identical metal lockers. \n\nWhen you want to store a file (like a profile picture), you put it inside a locker. You put a lock on it, and the system hands you a unique key with a number on it (like `#9472A`). \n\n- It doesn't matter what's inside the locker (a tiny text file or a massive 10GB video). \n- The system doesn't organize the lockers by alphabetical order or by category. \n- The *only* way to get your file back is to hand the system your exact unique key.\n\nThis is how Object Storage works! Every file is an \"Object.\" It gets dumped into a massive flat space, and the system gives you a unique URL to find it later.\n\n<flipcard front=\"\ud83d\uddc4\ufe0f How do you retrieve a file from Object Storage?\" back=\"You must have the exact, unique URL (the 'key') assigned to that specific file. You can't easily 'search' inside Object Storage like you can in a database.\"></flipcard>\n\n## Infinite Space\n\nThe superpower of Object Storage is that it is virtually **infinite** and very cheap. \n\nIf you build a new social media app and suddenly 10 million people upload photos on day one, you don't need to panic or buy new hard drives. The Cloud provider's Object Storage just keeps accepting the files and giving you URLs back. It scales automatically!\n\n## Real-World Example: Amazon S3\n\nThe most famous Object Storage in the world is **Amazon S3 (Simple Storage Service)**. When you watch a movie on Netflix, the actual video file you are streaming is stored in a massive digital locker on Amazon S3!",
       "xp_reward": 20,
       "coins_reward": 10,
       "is_mandatory": true,
@@ -32,7 +84,7 @@
     {
       "order": 3,
       "title": "Relational Databases: The Filing Cabinet",
-      "content_md": "# Relational Databases: The Filing Cabinet 📁\n\nNow, let's talk about how the Cloud stores **Structured Data** (users, scores, transactions). It uses **Relational Databases**.\n\n## The Highly Organized Filing Cabinet\n\nImagine the most organized filing cabinet in the world. Inside, there are folders, and inside those folders are perfectly lined-up spreadsheets.\n\nOne spreadsheet is called `Users` and has columns for ID, Name, and Email. \nAnother spreadsheet is called `Purchases` and has columns for Purchase ID, User ID, and Item Name.\n\nThe magic of a relational database is that the spreadsheets talk to each other (they have \"relationships\"). Because the `Purchases` sheet includes a User ID, you can instantly ask the database a highly complex question:\n\n> *\"Give me a list of all the Names of Users who purchased an item called 'Magic Sword' in the last 24 hours.\"*\n\nThe database can search through millions of rows and give you the exact answer in a fraction of a second.\n\n<flipcard front=\"📁 What is the main superpower of a Relational Database?\" back=\"Its ability to quickly search, filter, and connect structured data across multiple tables (spreadsheets) using complex queries!\"></flipcard>\n\n## SQL: The Language of Databases\n\nTo talk to this organized filing cabinet, you use a special programming language called **SQL (Structured Query Language)**. \n\nWhen a developer writes `SELECT Name FROM Users WHERE Age > 18`, they are using SQL to filter the spreadsheet!\n\n## Real-World Example: Amazon RDS\n\nIn the cloud, you don't want to install and manage your own database server. You use a managed service like **Amazon RDS (Relational Database Service)**. Amazon sets up the filing cabinet, backs it up automatically, and makes sure it never crashes, leaving you free to just write your SQL queries!",
+      "content_md": "# Relational Databases: The Filing Cabinet \ud83d\udcc1\n\nNow, let's talk about how the Cloud stores **Structured Data** (users, scores, transactions). It uses **Relational Databases**.\n\n## The Highly Organized Filing Cabinet\n\nImagine the most organized filing cabinet in the world. Inside, there are folders, and inside those folders are perfectly lined-up spreadsheets.\n\nOne spreadsheet is called `Users` and has columns for ID, Name, and Email. \nAnother spreadsheet is called `Purchases` and has columns for Purchase ID, User ID, and Item Name.\n\nThe magic of a relational database is that the spreadsheets talk to each other (they have \"relationships\"). Because the `Purchases` sheet includes a User ID, you can instantly ask the database a highly complex question:\n\n> *\"Give me a list of all the Names of Users who purchased an item called 'Magic Sword' in the last 24 hours.\"*\n\nThe database can search through millions of rows and give you the exact answer in a fraction of a second.\n\n<flipcard front=\"\ud83d\udcc1 What is the main superpower of a Relational Database?\" back=\"Its ability to quickly search, filter, and connect structured data across multiple tables (spreadsheets) using complex queries!\"></flipcard>\n\n## SQL: The Language of Databases\n\nTo talk to this organized filing cabinet, you use a special programming language called **SQL (Structured Query Language)**. \n\nWhen a developer writes `SELECT Name FROM Users WHERE Age > 18`, they are using SQL to filter the spreadsheet!\n\n## Real-World Example: Amazon RDS\n\nIn the cloud, you don't want to install and manage your own database server. You use a managed service like **Amazon RDS (Relational Database Service)**. Amazon sets up the filing cabinet, backs it up automatically, and makes sure it never crashes, leaving you free to just write your SQL queries!",
       "xp_reward": 20,
       "coins_reward": 10,
       "is_mandatory": true,

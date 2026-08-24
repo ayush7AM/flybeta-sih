@@ -8,17 +8,69 @@
   "level": {
     "number": 6,
     "title": "Training vs Inference",
-    "description": "The difference between learning a skill and actually using it in the real world."
+    "description": "Understand the two distinct phases of an AI's lifecycle: hitting the gym vs playing the game.",
+    "quiz_data": [
+      {
+        "question": "What does NLP stand for?",
+        "options": [
+          "Neural Language Programming",
+          "Natural Language Processing",
+          "New Learning Protocol",
+          "Network Language Parsing"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What is the primary goal of NLP?",
+        "options": [
+          "To make computers talk faster",
+          "To give computers the ability to understand text and spoken words",
+          "To translate code into English",
+          "To write books"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What is Sentiment Analysis?",
+        "options": [
+          "An AI having feelings",
+          "Determining if a piece of text is positive, negative, or neutral",
+          "Analyzing a dataset for errors",
+          "Predicting stock prices"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "Which modern architecture revolutionized NLP?",
+        "options": [
+          "Transformers",
+          "CNNs",
+          "Decision Trees",
+          "K-Means"
+        ],
+        "correct_index": 0
+      },
+      {
+        "question": "How do computers understand words?",
+        "options": [
+          "They read dictionaries",
+          "They convert words into numbers (word embeddings) based on context",
+          "They spell them out",
+          "They don't understand words"
+        ],
+        "correct_index": 1
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
-      "title": "The Gym vs. The Real World",
-      "content_md": "# The Gym vs. The Real World 🏋️‍♂️\n\nRunning an AI system is broken down into two completely different phases: **Training** and **Inference**.\n\n## 1. Training (The Gym)\n\nImagine a boxer preparing for a championship fight. They spend months in the gym lifting weights, running miles, and sparring. It takes massive amounts of energy, sweat, and time to build those muscles.\n\nIn AI, this is **Training**. \nWe lock the AI in a massive data center and force it to analyze millions of examples over and over again until it learns the patterns. \nTraining can take weeks or months and costs millions of dollars in electricity and supercomputer time!\n\n## 2. Inference (The Real World)\n\nThe boxer steps out of the gym and into the real world. If someone drops a glass, the boxer's reflexes instantly catch it before it hits the floor. It took zero effort because the muscle memory was already built.\n\nIn AI, this is **Inference**. \nThe model is fully trained. Now, we put it on a smartphone or a website. When a user asks it a question, the AI uses its \"muscle memory\" to instantly provide an answer in milliseconds. Inference requires very little computing power compared to Training.\n\n<flipcard front=\"🏋️‍♂️ What is the difference between Training and Inference?\" back=\"Training is the expensive, slow process of teaching the AI (the gym). Inference is the cheap, lightning-fast process of using the trained AI in the real world.\"></flipcard>",
-      "xp_reward": 15,
-      "coins_reward": 10,
+      "title": "The Gym vs The Real World",
+      "content_md": "# Training vs Inference \ud83c\udfcb\ufe0f\u200d\u2642\ufe0f\n\nBuilding an AI happens in two completely separate phases. Confusing them is one of the most common beginner mistakes.\n\n## Phase 1: Training (Going to the Gym)\n\nImagine an athlete preparing for the Olympics. They spend months in the gym lifting weights, running drills, failing, adjusting their technique, and trying again. It takes massive amounts of time, energy, and sweat.\n\nIn AI, this is called **Training**. We feed the massive dataset into the empty neural network. The network makes guesses, gets them wrong, adjusts the \"weights\" (the math) between its neurons, and tries again. \n\nTraining a massive AI model like ChatGPT can take months and cost tens of millions of dollars in electricity and supercomputer time.\n\n<flipcard front=\"\ud83c\udfcb\ufe0f\u200d\u2642\ufe0f What is Training?\" back=\"The intensive phase where the AI learns from data. It requires massive computing power to calculate and adjust the internal math of the network.\"></flipcard>\n\n## Phase 2: Inference (Playing the Game)\n\nOnce the athlete goes to the Olympics, they aren't lifting weights anymore. They are taking all that built-up muscle and *using* it in the real world to win the race. It happens in seconds.\n\nIn AI, this is called **Inference**.\n\nOnce the network is trained, we freeze the math. When you ask ChatGPT a question on your phone, it isn't \"learning\" anything new. It's just taking your question and running it through the pre-calculated math to give you an answer instantly.\n\n<flipcard front=\"\ud83c\udfc3\u200d\u2642\ufe0f What is Inference?\" back=\"Using a fully trained AI model to make predictions on new, unseen data. It is fast and requires very little computing power compared to training.\"></flipcard>\n\n<flipcard front=\"\ud83d\udcf1 Can you run Inference on a phone?\" back=\"Yes! Because inference just requires running data through frozen math equations, many AI models can run directly on your smartphone.\"></flipcard>",
+      "xp_reward": 35,
+      "coins_reward": 30,
       "is_mandatory": true,
-      "illustration_url": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800"
+      "illustration_url": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80"
     }
   ]
 }

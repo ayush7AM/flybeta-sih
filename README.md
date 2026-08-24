@@ -37,6 +37,10 @@ python manage.py runserver
 
 ## Build Phases
 1. ✅ Django DRF Models, Auth, SQLite
-2. ⬜ React Vite Setup, Global UI Shell
-3. ⬜ Gamification Logic, Theme Switcher
-4. ⬜ AI Features (Project Architect & Code Reviewer)
+2. ✅ React Vite Setup, Global UI Shell
+3. ✅ Gamification Logic, Theme Switcher
+4. ✅ AI Features (Project Architect & Code Reviewer)
+5. ✅ Vision Suite UI Scaffold
+6. ✅ Real AI API integration (Gemini 2.5)
+7. ✅ Beginner Curriculum Upgrade (30 Levels & Boss Quiz)
+8. ⬜ Phase 8 (TBD)

@@ -31,6 +31,7 @@ class Level(models.Model):
     number = models.PositiveSmallIntegerField(help_text='Level number 1-10')
     title = models.CharField(max_length=128)
     description = models.TextField(blank=True)
+    quiz_data = models.JSONField(blank=True, null=True, help_text='List of 5 dicts: {question, options, correct_index}')
 
     class Meta:
         ordering = ['domain', 'number']
@@ -75,6 +76,7 @@ class DomainProgress(models.Model):
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE, related_name='user_progress')
     is_unlocked = models.BooleanField(default=True)
     current_level = models.PositiveSmallIntegerField(default=1)
+    highest_unlocked_level = models.PositiveSmallIntegerField(default=1)
 
     class Meta:
         verbose_name = 'Domain Progress'

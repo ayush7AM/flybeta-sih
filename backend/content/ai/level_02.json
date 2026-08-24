@@ -8,17 +8,69 @@
   "level": {
     "number": 2,
     "title": "The Fuel of AI",
-    "description": "Why AI is so hungry, and why data is the most valuable resource on Earth."
+    "description": "Understand why AI is completely helpless without its most crucial resource: massive datasets.",
+    "quiz_data": [
+      {
+        "question": "What is considered the 'Fuel' of AI?",
+        "options": [
+          "Electricity",
+          "Massive Datasets",
+          "Expensive GPUs",
+          "Complex algorithms"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "Why does an AI need massive datasets?",
+        "options": [
+          "To slow down the computer",
+          "Because more examples allow it to find more accurate patterns",
+          "To take up hard drive space",
+          "To confuse hackers"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What happens if you train an AI on low-quality or biased data?",
+        "options": [
+          "It automatically fixes the data",
+          "It produces biased or inaccurate results (Garbage In, Garbage Out)",
+          "It stops working completely",
+          "It asks for better data"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "Which of these is NOT considered 'data' for an AI?",
+        "options": [
+          "Text documents",
+          "Images and video",
+          "Audio recordings",
+          "None of the above (they are all data)"
+        ],
+        "correct_index": 3
+      },
+      {
+        "question": "How did modern AI become so powerful recently?",
+        "options": [
+          "The invention of the mouse",
+          "The explosion of digital data and computing power",
+          "The discovery of a perfect algorithm",
+          "Aliens"
+        ],
+        "correct_index": 1
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
-      "title": "The Fuel of AI: Massive Datasets",
-      "content_md": "# The Fuel of AI: Massive Datasets ⛽\n\nIf Machine Learning is an incredibly powerful sports car, then **Data** is the high-octane fuel that makes it run.\n\nWithout data, an AI model is completely useless. It's like a newborn baby; it has the potential to learn, but it doesn't know anything yet until it experiences the world.\n\n## The Power of Volume 📚\n\nIf you want an AI to learn how to play chess, you don't just show it 5 games. You show it 5 **million** games.\n\nIf you want an AI to translate English to Spanish, you feed it millions of books, articles, and translated documents.\n\nWhy? Because AI learns by finding **patterns**. If you only show it a little bit of data, it might learn the wrong pattern. \n\nImagine you only showed an AI pictures of red apples. If you later showed it a green apple, the AI would say: *\"That's not an apple, apples must be red!\"* \n\nTo build a smart AI, you need **Massive Datasets** that cover every possible variation, edge case, and scenario.\n\n<flipcard front=\"⛽ Why does AI need so much Data?\" back=\"AI learns by finding patterns. Without a massive and diverse dataset, the AI won't have enough examples to figure out the correct, reliable rules.\"></flipcard>",
-      "xp_reward": 15,
-      "coins_reward": 10,
+      "title": "Data: The Fuel of AI",
+      "content_md": "# The Fuel of AI \u26fd\n\nIf an Artificial Intelligence is a high-performance sports car, then **Data** is the high-octane fuel that makes it go. Without data, even the most sophisticated AI algorithm is completely useless.\n\nThink about how a human baby learns to recognize a dog. They don't read a dictionary definition of a dog. They see hundreds of dogs! Big dogs, small dogs, fluffy dogs, short-haired dogs. After seeing enough examples, their brain just *knows* what a dog is.\n\nAI works exactly the same way.\n\n## The Appetite for Examples\n\nBecause AI learns by finding patterns, it needs an enormous amount of examples to find accurate patterns. If you only show an AI 5 pictures of Dalmatians, it might think *all* dogs are black and white with spots.\n\n<flipcard front=\"\ud83d\udc15 What happens if the data is too limited?\" back=\"The AI learns the wrong patterns! If it only sees Dalmatians, it will fail to recognize a Golden Retriever as a dog.\"></flipcard>\n\nThis is why modern AI models require **Massive Datasets**. We're talking about millions of images, billions of text documents, and centuries worth of audio recordings.\n\n- To teach an AI to drive, we give it millions of hours of driving footage.\n- To teach an AI to translate languages, we feed it millions of translated books and websites.\n- To teach an AI to play chess, we show it millions of grandmaster games.\n\n<flipcard front=\"\ud83d\udcca Why does AI need MASSIVE datasets?\" back=\"The more data an AI sees, the more edge cases it covers, making its pattern recognition much more accurate and robust in the real world.\"></flipcard>\n\n<flipcard front=\"\u2699\ufe0f The Golden Rule of AI\" back=\"Garbage In, Garbage Out. If you feed an AI bad, biased, or incomplete data, it will learn bad, biased, and incomplete patterns.\"></flipcard>",
+      "xp_reward": 20,
+      "coins_reward": 15,
       "is_mandatory": true,
-      "illustration_url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800"
+      "illustration_url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
     }
   ]
 }

@@ -8,13 +8,65 @@
   "level": {
     "number": 5,
     "title": "The Internet's Highway",
-    "description": "How do computers actually talk to each other? Let's explore the street addresses of the web."
+    "description": "How do computers actually talk to each other? Let's explore the street addresses of the web.",
+    "quiz_data": [
+      {
+        "question": "What is an IP Address compared to in the real world?",
+        "options": [
+          "A person's name",
+          "A house number or mailing address",
+          "A car license plate",
+          "A phone number"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What does DNS (Domain Name System) do?",
+        "options": [
+          "Encrypts your data",
+          "Translates human-readable domain names into IP addresses",
+          "Blocks viruses",
+          "Speeds up your internet"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "Why is DNS called 'The Phonebook of the Web'?",
+        "options": [
+          "Because it lists phone numbers",
+          "Because it maps names you can remember to technical numbers (IPs)",
+          "Because it's a physical book",
+          "Because you have to dial in"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "What happens when you type 'google.com' into your browser?",
+        "options": [
+          "Your computer already knows the IP",
+          "It asks a DNS server for the IP address first",
+          "It sends an email to Google",
+          "It connects via Bluetooth"
+        ],
+        "correct_index": 1
+      },
+      {
+        "question": "Which protocol guarantees that data packets arrive correctly?",
+        "options": [
+          "TCP",
+          "UDP",
+          "DNS",
+          "HTTP"
+        ],
+        "correct_index": 0
+      }
+    ]
   },
   "lessons": [
     {
       "order": 1,
       "title": "IP Addresses: The House Numbers",
-      "content_md": "# IP Addresses: The House Numbers 🏠\n\nIf you want to send a birthday card to your friend through the mail, what do you need? You need their exact home address.\n\nComputers are exactly the same. When your laptop wants to talk to a Google server to load a YouTube video, it needs to know Google's address. On the internet, this address is called an **IP Address**.\n\n## The Format\n\nAn IP (Internet Protocol) address looks like a string of numbers separated by dots. \nFor example: `142.250.190.46`\n\nEvery single device connected to the internet — your phone, your laptop, your smart TV, and every server in a Data Center — has an IP address. Without it, the internet's delivery trucks (routers) wouldn't know where to send your data!\n\n<flipcard front=\"🏠 What is an IP Address?\" back=\"An IP Address is a unique string of numbers that acts like a house address for a device on the internet, allowing computers to find and talk to each other.\"></flipcard>",
+      "content_md": "# IP Addresses: The House Numbers \ud83c\udfe0\n\nIf you want to send a birthday card to your friend through the mail, what do you need? You need their exact home address.\n\nComputers are exactly the same. When your laptop wants to talk to a Google server to load a YouTube video, it needs to know Google's address. On the internet, this address is called an **IP Address**.\n\n## The Format\n\nAn IP (Internet Protocol) address looks like a string of numbers separated by dots. \nFor example: `142.250.190.46`\n\nEvery single device connected to the internet \u2014 your phone, your laptop, your smart TV, and every server in a Data Center \u2014 has an IP address. Without it, the internet's delivery trucks (routers) wouldn't know where to send your data!\n\n<flipcard front=\"\ud83c\udfe0 What is an IP Address?\" back=\"An IP Address is a unique string of numbers that acts like a house address for a device on the internet, allowing computers to find and talk to each other.\"></flipcard>",
       "xp_reward": 15,
       "coins_reward": 10,
       "is_mandatory": true,
@@ -23,7 +75,7 @@
     {
       "order": 2,
       "title": "DNS: The Phonebook of the Web",
-      "content_md": "# DNS: The Phonebook of the Web 📖\n\nWe have a problem. Human brains are very bad at remembering random numbers. \n\nImagine if, to watch a movie, you had to type `142.250.190.46` into your browser instead of `youtube.com`. You would never remember it!\n\nTo solve this, the internet uses **DNS (Domain Name System)**.\n\n## The Magic Translator ✨\n\nDNS is literally the phonebook of the internet. When you open your browser and type `youtube.com`, your computer instantly calls the DNS Phonebook and asks:\n\n> *\"Hey DNS, what is the IP address for youtube.com?\"*\n\nThe DNS Phonebook flips through its pages and replies:\n\n> *\"youtube.com is located at 142.250.190.46!\"*\n\nYour browser then uses that IP address to connect to the server. This all happens in milliseconds, completely invisibly!\n\n<flipcard front=\"📖 What does DNS do?\" back=\"DNS translates human-readable names (like google.com) into computer-readable IP addresses (like 142.250.190.46). It's the internet's phonebook!\"></flipcard>",
+      "content_md": "# DNS: The Phonebook of the Web \ud83d\udcd6\n\nWe have a problem. Human brains are very bad at remembering random numbers. \n\nImagine if, to watch a movie, you had to type `142.250.190.46` into your browser instead of `youtube.com`. You would never remember it!\n\nTo solve this, the internet uses **DNS (Domain Name System)**.\n\n## The Magic Translator \u2728\n\nDNS is literally the phonebook of the internet. When you open your browser and type `youtube.com`, your computer instantly calls the DNS Phonebook and asks:\n\n> *\"Hey DNS, what is the IP address for youtube.com?\"*\n\nThe DNS Phonebook flips through its pages and replies:\n\n> *\"youtube.com is located at 142.250.190.46!\"*\n\nYour browser then uses that IP address to connect to the server. This all happens in milliseconds, completely invisibly!\n\n<flipcard front=\"\ud83d\udcd6 What does DNS do?\" back=\"DNS translates human-readable names (like google.com) into computer-readable IP addresses (like 142.250.190.46). It's the internet's phonebook!\"></flipcard>",
       "xp_reward": 20,
       "coins_reward": 10,
       "is_mandatory": true,

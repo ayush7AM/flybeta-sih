@@ -16,7 +16,7 @@ Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v
 - SQLite database created and migrated
 - DRF read-only API at `/api/v1/` (domains, levels, lessons)
 - Content pipeline: `python manage.py load_level_content` (JSON → DB, supports `illustration_url`)
-- **Full curriculum**: 3 tracks × 7 levels = 21 JSON content files loaded into DB
+- **Full curriculum**: 3 tracks × 10 levels = 30 JSON content files loaded into DB
 - React + Vite + Tailwind v4 frontend in `/frontend`
 - Design system: All DESIGN.md tokens mapped to CSS custom properties
 - 3 pages: Track Selection, Track Roadmap, Lesson Runner
@@ -36,7 +36,12 @@ Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v
 - **Phase 4d**: Multi-theme system (5 themes with character images, backgrounds, overlays)
 - **Phase 5**: Vision Suite UI Scaffold (Oracle Widget, Channel Feed, Synapse Engine, Video Detail 60/40 Split)
 - **Phase 6**: Real AI API integration (Gemini 2.5 Flash for Oracle, Synapse, Architect, Code Review)
-- **Phase 7**: Beginner Curriculum Upgrade (interactive `<FlipCard/>`, `rehype-raw`, `illustration_url`, Python for Kids test track)
+- **Phase 7 (Completed)**: Beginner Curriculum Upgrade 
+  - Complete rewrite of 30 levels across all 3 tracks with strong metaphors.
+  - Interactive `<FlipCard/>` components embedded in all lessons.
+  - `LevelBossQuiz` gatekeeper (60% pass rate) implemented for all 30 levels.
+  - Track Roadmap UI updated to enforce level locking based on user progress.
+  - `pass_quiz` API endpoint added to unlock levels and award XP.
 
 ### What's Next
 - **Phase 8**: TBD
@@ -45,9 +50,9 @@ Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v
 ## Curriculum
 | Track | Levels | Lessons | Content Directory |
 |-------|--------|---------|-------------------|
-| Cloud Computing | 7 (Foundations → Capstone) | ~28 | `backend/content/cloud/` |
-| AI & Machine Learning | 7 (Foundations → Capstone) | ~28 | `backend/content/ai/` |
-| Data Science | 7 (Foundations → Capstone) | ~28 | `backend/content/data/` |
+| Cloud Computing | 10 (Foundations → Capstone) | ~40 | `backend/content/cloud/` |
+| AI & Machine Learning | 10 (Foundations → Capstone) | ~40 | `backend/content/ai/` |
+| Data Science | 10 (Foundations → Capstone) | ~40 | `backend/content/data/` |
 
 ## Theme System
 5 registered themes in `ThemeContext.jsx`, switchable via navbar dropdown:
