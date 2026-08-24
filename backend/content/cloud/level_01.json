@@ -7,49 +7,27 @@
   },
   "level": {
     "number": 1,
-    "title": "Cloud Foundations",
-    "description": "Master the fundamental concepts of cloud computing — what it is, why it matters, and how the major providers (AWS, GCP, Azure) organize their services."
+    "title": "The Sandbox: Intro to the Cloud",
+    "description": "Discover the true nature of the Cloud. Hint: It's not in the sky!"
   },
   "lessons": [
     {
       "order": 1,
-      "title": "What is Cloud Computing?",
-      "content_md": "# What is Cloud Computing?\n\nCloud computing is the delivery of computing services — servers, storage, databases, networking, software, analytics, and intelligence — over the internet (\"the cloud\") to offer faster innovation, flexible resources, and economies of scale.\n\n## Key Characteristics\n\n- **On-demand self-service**: Provision resources automatically without human interaction.\n- **Broad network access**: Available over the network via standard mechanisms.\n- **Resource pooling**: Provider resources are pooled to serve multiple consumers.\n- **Rapid elasticity**: Scale up or down quickly based on demand.\n- **Measured service**: Pay only for what you use.\n\n## Why Cloud?\n\nBefore the cloud, companies had to buy and maintain their own physical servers. This meant:\n- Huge upfront capital expenditure\n- Capacity planning guesswork\n- Slow provisioning (weeks to months)\n- Wasted resources during low-usage periods\n\nCloud computing eliminates these problems by letting you rent exactly the resources you need, when you need them.",
-      "xp_reward": 10,
-      "coins_reward": 5,
-      "is_mandatory": true
+      "title": "What is the Cloud?",
+      "content_md": "# What is the Cloud? ☁️\n\nLet's get one thing straight right away: **The Cloud is not actually in the sky.**\n\nThere are no magical servers floating around in the atmosphere. When people talk about \"The Cloud,\" they are actually talking about massive, heavily-guarded buildings on the ground called **Data Centers**.\n\n## The Data Center Reality 🏢\n\nImagine a warehouse the size of several football fields. Inside, there are row after row of tall metal racks. Each rack is filled with incredibly powerful computers (called **servers**), blinking lights, and miles of colorful cables.\n\nThese servers run 24/7. They need massive air conditioning units so they don't melt down, and they have backup generators the size of school buses just in case the power goes out.\n\nWhen you upload a photo to Instagram or save a document to Google Drive, your data travels through cables (many of them deep under the ocean!) and gets stored on one of these servers in a data center.\n\n<flipcard front=\"☁️ So, what exactly is 'The Cloud'?\" back=\"The Cloud is simply someone else's computer. It refers to massive data centers filled with servers that you access over the internet.\"></flipcard>\n\n## Someone Else's Computer\n\nA famous saying in the tech world is:\n\n> *\"There is no cloud, it's just someone else's computer.\"*\n\nInstead of saving your files on your phone or your laptop's hard drive (which can break or get lost), you send them to Amazon, Google, or Microsoft. They promise to keep them safe, secure, and available to you anywhere in the world, on any device.\n\n<flipcard front=\"🌎 How does your data get to a Data Center?\" back=\"Your data travels over the internet through fiber-optic cables, cellular networks, and massive underwater cables that connect continents!\"></flipcard>",
+      "xp_reward": 15,
+      "coins_reward": 10,
+      "is_mandatory": true,
+      "illustration_url": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800"
     },
     {
       "order": 2,
-      "title": "Cloud Service Models: IaaS, PaaS, SaaS",
-      "content_md": "# Cloud Service Models\n\nCloud services are typically categorized into three models, each offering a different level of control, flexibility, and management.\n\n## Infrastructure as a Service (IaaS)\n\nProvides virtualized computing resources over the internet.\n\n**You manage:** Applications, data, runtime, middleware, OS.\n**Provider manages:** Virtualization, servers, storage, networking.\n\n**Examples:** AWS EC2, Google Compute Engine, Azure Virtual Machines.\n\n## Platform as a Service (PaaS)\n\nProvides a platform allowing customers to develop, run, and manage applications without dealing with infrastructure.\n\n**You manage:** Applications and data.\n**Provider manages:** Runtime, middleware, OS, virtualization, servers.\n\n**Examples:** Google App Engine, Heroku, AWS Elastic Beanstalk.\n\n## Software as a Service (SaaS)\n\nDelivers software applications over the internet, on a subscription basis.\n\n**You manage:** Just your data and user access.\n**Provider manages:** Everything else.\n\n**Examples:** Gmail, Slack, Salesforce, Dropbox.",
-      "xp_reward": 15,
-      "coins_reward": 5,
-      "is_mandatory": true
-    },
-    {
-      "order": 3,
-      "title": "Public vs Private vs Hybrid Cloud",
-      "content_md": "# Cloud Deployment Models\n\n## Public Cloud\n\nOwned and operated by third-party providers. Resources are shared across multiple organizations (multi-tenant).\n\n**Pros:** No upfront costs, infinite scalability, no maintenance.\n**Cons:** Less control, potential compliance concerns.\n\n**Examples:** AWS, Google Cloud, Microsoft Azure.\n\n## Private Cloud\n\nCloud infrastructure dedicated to a single organization. Can be hosted on-premises or by a third party.\n\n**Pros:** Full control, enhanced security, regulatory compliance.\n**Cons:** Higher cost, limited scalability.\n\n## Hybrid Cloud\n\nCombines public and private clouds, allowing data and applications to move between them.\n\n**Pros:** Flexibility, optimized existing infrastructure, compliance balance.\n**Cons:** Complexity, integration challenges.\n\n## Multi-Cloud\n\nUsing services from multiple public cloud providers simultaneously.\n\n**Pros:** Avoid vendor lock-in, best-of-breed services.\n**Cons:** Operational complexity, data transfer costs.",
-      "xp_reward": 15,
-      "coins_reward": 5,
-      "is_mandatory": true
-    },
-    {
-      "order": 4,
-      "title": "Meet the Big Three: AWS, GCP, Azure",
-      "content_md": "# The Major Cloud Providers\n\n## Amazon Web Services (AWS)\n\nThe pioneer and market leader in cloud computing (launched 2006).\n\n- **Market share:** ~31%\n- **Strengths:** Broadest service catalog, largest ecosystem, most mature.\n- **Key services:** EC2, S3, Lambda, RDS, DynamoDB.\n\n## Google Cloud Platform (GCP)\n\nGoogle's cloud offering, leveraging their expertise in data and ML.\n\n- **Market share:** ~12%\n- **Strengths:** Big data & ML/AI, Kubernetes (GKE), competitive pricing.\n- **Key services:** Compute Engine, BigQuery, Cloud Functions, GKE.\n\n## Microsoft Azure\n\nMicrosoft's cloud platform, strong in enterprise and hybrid scenarios.\n\n- **Market share:** ~24%\n- **Strengths:** Enterprise integration, hybrid cloud, .NET ecosystem.\n- **Key services:** Azure VMs, Azure SQL, Azure Functions, AKS.\n\n## How to Choose?\n\nConsider: existing tech stack, specific service needs, pricing, compliance requirements, and team expertise. Many organizations use multi-cloud strategies.",
-      "xp_reward": 10,
-      "coins_reward": 5,
-      "is_mandatory": true
-    },
-    {
-      "order": 5,
-      "title": "Hands-On: Your First Cloud Resource",
-      "content_md": "# Your First Cloud Resource\n\nIn this bonus lesson, we'll conceptually walk through launching your first virtual machine in the cloud.\n\n## The Steps (Any Provider)\n\n1. **Sign up** for a free-tier account.\n2. **Navigate** to the compute service (EC2, Compute Engine, or Azure VMs).\n3. **Choose** an operating system image (e.g., Ubuntu 22.04).\n4. **Select** instance size (start with the smallest free-tier eligible).\n5. **Configure** networking (allow SSH access on port 22).\n6. **Launch** and connect via SSH.\n\n## What Just Happened?\n\nYou just provisioned a virtual machine running on physical hardware in a data center, possibly thousands of miles away. You:\n- Didn't buy any hardware\n- Didn't configure any networking equipment\n- Didn't install an operating system from a disc\n- Got a running server in under 60 seconds\n\nThis is the power of cloud computing.\n\n## Clean Up!\n\nAlways remember to **terminate** or **stop** resources you're not using to avoid unexpected charges.",
+      "title": "Why Rent Instead of Buy?",
+      "content_md": "# Why Rent Instead of Buy? 🏎️ vs 🚲\n\nImagine you want to start a new business delivering pizzas. You need a vehicle.\n\nYou could **buy** a delivery bicycle. It's yours forever, but it's slow, and if you get a huge order for 100 pizzas, you're in trouble.\n\nOr, you could **rent** a super-fast racecar, but only pay for the exact minutes you use it. If you need 10 racecars for one hour, you rent 10! When the rush is over, you return 9 of them. You never have to pay for oil changes, repairs, or a garage to store them.\n\nThis is exactly why companies use the Cloud!\n\n## CapEx vs OpEx 💰\n\nIn the business world, this choice is known as **CapEx vs OpEx**.\n\n### 1. CapEx (Capital Expenditure) = Buying\nIn the old days, if a company wanted to build a website, they had to **buy** their own servers (CapEx). \n- They had to pay thousands of dollars upfront.\n- They had to build a server room with cooling and security.\n- If their website became suddenly popular, their server would crash because they didn't have enough power. \n\n### 2. OpEx (Operational Expenditure) = Renting (The Cloud)\nToday, companies use the Cloud (OpEx).\n- They don't buy any physical servers.\n- They **rent** computing power from Amazon (AWS), Microsoft (Azure), or Google (GCP).\n- They only pay for what they use, by the minute or even the second!\n\n<flipcard front=\"💸 What is the difference between CapEx and OpEx?\" back=\"CapEx is buying expensive equipment upfront (like buying your own servers). OpEx is paying as you go for a service (like renting Cloud servers by the minute).\"></flipcard>\n\n## The Magic of Elasticity 🪄\n\nBecause the Cloud lets you rent servers, you get a superpower called **Elasticity**.\n\nThink about a rubber band. It can stretch when you need it to be big, and snap back when you don't.\n\nIf you run a shopping website and it's Black Friday, you might suddenly get 1 million visitors. In the Cloud, you can instantly rent 1,000 extra servers for that day (stretching). The next day, when things are quiet, you give 999 servers back and stop paying for them (snapping back).\n\n<flipcard front=\"📈 What does 'Elasticity' mean in the Cloud?\" back=\"Elasticity is the ability to instantly get more computing power when you need it, and shrink it back down when you don't — so you only pay for exactly what you use!\"></flipcard>",
       "xp_reward": 20,
       "coins_reward": 10,
-      "is_mandatory": false
+      "is_mandatory": true,
+      "illustration_url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800"
     }
   ]
 }

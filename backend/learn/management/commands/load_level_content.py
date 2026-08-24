@@ -29,7 +29,8 @@ JSON Schema (per file):
       "content_md": "# What is Cloud Computing?\\n\\n...",
       "xp_reward": 10,
       "coins_reward": 5,
-      "is_mandatory": true
+      "is_mandatory": true,
+      "illustration_url": "https://example.com/cloud.png"
     }
   ]
 }
@@ -195,6 +196,7 @@ class Command(BaseCommand):
                     'xp_reward': lesson_data.get('xp_reward', 10),
                     'coins_reward': lesson_data.get('coins_reward', 5),
                     'is_mandatory': lesson_data.get('is_mandatory', True),
+                    'illustration_url': lesson_data.get('illustration_url', ''),
                 },
             )
             if created:

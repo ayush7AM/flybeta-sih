@@ -5,22 +5,24 @@ FlyBeta is a gamified, level-based learning platform for Data Science, AI, and C
 Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v4).
 
 ## Current Phase
-**Phase 6 — Planned**: Real AI integration (replacing mock AI services with Gemini) for The Oracle, Synapse Engine, and AI Mentors.
+**Phase 8 — Planned**: Next feature development TBD.
 
 ### What's Done
 - Django project scaffold (`flybeta` config) in `/backend`
 - 3 Django apps: `accounts`, `learn`, `api`
-- All models: `UserProfile`, `Domain`, `Level`, `Lesson`, `DomainProgress`, `LevelProgress`
+- All models: `UserProfile`, `Domain`, `Level`, `Lesson` (+ `illustration_url`), `DomainProgress`, `LevelProgress`
 - UserProfile auto-creation via post_save signal
 - Admin registrations with filters, inlines, and search
 - SQLite database created and migrated
 - DRF read-only API at `/api/v1/` (domains, levels, lessons)
-- Content pipeline: `python manage.py load_level_content` (JSON → DB)
+- Content pipeline: `python manage.py load_level_content` (JSON → DB, supports `illustration_url`)
 - **Full curriculum**: 3 tracks × 7 levels = 21 JSON content files loaded into DB
 - React + Vite + Tailwind v4 frontend in `/frontend`
 - Design system: All DESIGN.md tokens mapped to CSS custom properties
 - 3 pages: Track Selection, Track Roadmap, Lesson Runner
 - 5 components: Navbar, Layout, TrackCard, LevelNode, MarkdownRenderer
+- **Interactive components**: `FlipCard` (3D Neo-Brutalist flip card, click-to-flip)
+- **MarkdownRenderer upgrade**: `rehype-raw` plugin for custom HTML tag parsing (`<flipcard>` → `<FlipCard/>`)
 - API service layer with Axios + Vite proxy
 - Stitch prototypes preserved at `/design/stitch-reference/`
 - Mock auth with dev user (`python manage.py create_dev_user`)
@@ -33,9 +35,11 @@ Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v
 - **Phase 4c**: Full curriculum expansion (Levels 1–7 for all 3 tracks)
 - **Phase 4d**: Multi-theme system (5 themes with character images, backgrounds, overlays)
 - **Phase 5**: Vision Suite UI Scaffold (Oracle Widget, Channel Feed, Synapse Engine, Video Detail 60/40 Split)
+- **Phase 6**: Real AI API integration (Gemini 2.5 Flash for Oracle, Synapse, Architect, Code Review)
+- **Phase 7**: Beginner Curriculum Upgrade (interactive `<FlipCard/>`, `rehype-raw`, `illustration_url`, Python for Kids test track)
 
 ### What's Next
-- **Phase 6**: Real AI API integration (replacing mock AI services with Gemini)
+- **Phase 8**: TBD
 
 
 ## Curriculum

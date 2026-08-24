@@ -18,6 +18,7 @@ class LessonSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'level', 'order', 'title',
             'content_md', 'xp_reward', 'coins_reward', 'is_mandatory',
+            'illustration_url',
         ]
 
 

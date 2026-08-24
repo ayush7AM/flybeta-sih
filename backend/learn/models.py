@@ -52,6 +52,7 @@ class Lesson(models.Model):
     xp_reward = models.PositiveIntegerField(default=10)
     coins_reward = models.PositiveIntegerField(default=5)
     is_mandatory = models.BooleanField(default=True, help_text='Must complete to unlock next level')
+    illustration_url = models.URLField(blank=True, null=True, help_text='Optional illustration image URL for visual lesson headers')
 
     class Meta:
         ordering = ['level', 'order']
