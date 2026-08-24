@@ -1,17 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { Sparkles, X, Send, Bot } from 'lucide-react';
+import { askOracle } from '../services/api';
 
 const ORACLE_WELCOME = {
   role: 'ai',
   content: "I'm The Oracle — your AI mentor across FlyBeta. Ask me anything about Data Science, AI, or Cloud Computing. 🔮",
 };
-
-const MOCK_RESPONSES = [
-  "Great question! Gemini integration is coming soon — I'll be able to give you real-time, personalized answers. For now, keep exploring the tracks! 🚀",
-  "That's a solid topic to dive into. Once my neural pathways are wired up, I'll break it down step by step. Stay tuned! ⚡",
-  "Interesting! I'm currently in scaffolding mode, but soon I'll be powered by Gemini to help you master any concept. Keep learning! 🧠",
-  "Love the curiosity! My full AI capabilities are being integrated. Meanwhile, check out the Vision Channels for curated video content. 📡",
-];
 
 export default function OracleWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,22 +27,27 @@ export default function OracleWidget() {
     }
   }, [isOpen]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const trimmed = input.trim();
     if (!trimmed || isTyping) return;
 
     // Push user message
-    setMessages((prev) => [...prev, { role: 'user', content: trimmed }]);
+    const currentMessages = [...messages, { role: 'user', content: trimmed }];
+    setMessages(currentMessages);
     setInput('');
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const randomResponse =
-        MOCK_RESPONSES[Math.floor(Math.random() * MOCK_RESPONSES.length)];
-      setMessages((prev) => [...prev, { role: 'ai', content: randomResponse }]);
+    try {
+      // Call live Gemini API
+      const reply = await askOracle(trimmed, messages);
+      setMessages((prev) => [...prev, { role: 'ai', content: reply }]);
+    } catch (error) {
+      console.error(error);
+      const errorMsg = error.response?.data?.error || "The Oracle is meditating. Please try again.";
+      setMessages((prev) => [...prev, { role: 'ai', content: errorMsg }]);
+    } finally {
       setIsTyping(false);
-    }, 800);
+    }
   };
 
   const handleKeyDown = (e) => {

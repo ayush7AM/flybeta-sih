@@ -22,6 +22,9 @@
   - Data Science: Construction Emerald/Forest Green (`#059669`).
   - AI & ML: Deep Violet (`#6D28D9`).
   - Cloud Computing: Cobalt Blue (`#2563EB`).
+- **Vision Suite Tokens:**
+  - Oracle Accent: Vibrant Violet (`#7C3AED`).
+  - Synapse UI: High-contrast ink border with white/cream backgrounds, accented by Violet/Emerald for correct/incorrect interaction states.
 - **Gamification Tokens:**
   - Coins/Badges: Industrial Gold/Yellow (`#EAB308`).
   - Streaks: Flame Orange (`#EA580C`).

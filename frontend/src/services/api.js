@@ -63,4 +63,14 @@ export const reviewCode = async (code, language = 'python') => {
   return data;
 };
 
+export const extractVideoKnowledge = async (videoUrl) => {
+  const { data } = await api.post('ai/synapse/', { video_url: videoUrl });
+  return data;
+};
+
+export const askOracle = async (message, history) => {
+  const { data } = await api.post('ai/oracle/', { message, history });
+  return data.reply;
+};
+
 export default api;

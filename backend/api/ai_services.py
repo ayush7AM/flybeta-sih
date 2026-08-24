@@ -8,6 +8,7 @@ import json
 from google import genai
 from google.genai import types
 from pydantic import BaseModel, Field
+from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
 
 # Ensure we have the API key from Django settings (via .env)
 # In a real Django app you'd import settings, but for this standalone file
@@ -43,6 +44,14 @@ class ReviewFinding(BaseModel):
 class ReviewResponse(BaseModel):
     findings: list[ReviewFinding]
 
+class QuizQuestion(BaseModel):
+    question: str
+    options: list[str] = Field(description="Must contain exactly 4 options.")
+    correct_index: int = Field(description="Must be 0, 1, 2, or 3 representing the index of the correct option.")
+
+class QuizResponse(BaseModel):
+    questions: list[QuizQuestion]
+
 
 # ── AI Service Functions ──────────────────────────────────────────────────
 
@@ -51,16 +60,7 @@ def generate_project_blueprint(prompt):
     Generate a step-by-step project blueprint from a user prompt using Gemini.
     """
     if not client:
-        # Fallback if no API key is set
-        return [
-            {
-                "step_number": 1,
-                "tag": "SETUP_ERROR",
-                "title": "Missing API Key",
-                "tasks": ["Add GEMINI_API_KEY to backend/.env", "Restart Django server"],
-                "estimate": "5 Mins",
-            }
-        ]
+        raise ValueError("Missing API Key. The Project Architect cannot run.")
 
     try:
         response = client.models.generate_content(
@@ -68,9 +68,8 @@ def generate_project_blueprint(prompt):
             contents=prompt,
             config=types.GenerateContentConfig(
                 system_instruction=(
-                    "You are a master software architect. Break down the user's project "
-                    "idea into exactly 4 high-level architectural steps. Use a tactile, "
-                    "brutalist engineering tone. Ensure 'tag' is a short, uppercase code."
+                    "You are an elite software architect. Break down the user's project "
+                    "idea into a logical, step-by-step development blueprint."
                 ),
                 response_mime_type="application/json",
                 response_schema=BlueprintResponse,
@@ -84,15 +83,7 @@ def generate_project_blueprint(prompt):
         
     except Exception as e:
         print(f"Gemini API Error: {e}")
-        return [
-            {
-                "step_number": 1,
-                "tag": "API_ERROR",
-                "title": "Generation Failed",
-                "tasks": [f"Error details: {str(e)}"],
-                "estimate": "N/A",
-            }
-        ]
+        raise ValueError(f"AI Generation failed: {str(e)}")
 
 
 def generate_code_review(code, language="python"):
@@ -100,18 +91,7 @@ def generate_code_review(code, language="python"):
     Generate a structured code review using Gemini.
     """
     if not client:
-        # Fallback if no API key is set
-        return [
-            {
-                "id": 1,
-                "severity": "CRITICAL",
-                "category": "SECURITY",
-                "title": "Missing API Key",
-                "description": "The Gemini API key is missing. The Code Drishti feature cannot analyze your code.",
-                "suggestion": "Add GEMINI_API_KEY to your backend/.env file and restart the Django server.",
-                "line_range": "N/A",
-            }
-        ]
+        raise ValueError("Missing API Key. The Code Reviewer cannot run.")
 
     try:
         prompt = f"Review the following {language} code:\n\n{code}"
@@ -121,10 +101,8 @@ def generate_code_review(code, language="python"):
             contents=prompt,
             config=types.GenerateContentConfig(
                 system_instruction=(
-                    "You are a strict, senior code auditor. Analyze the provided code "
-                    "and return exactly 3 to 5 critical or notable findings. "
-                    "Categorize them strictly as SECURITY, PERFORMANCE, LOGIC, or STYLE. "
-                    "Severity must be exactly one of: CRITICAL, WARNING, INFO, STYLE."
+                    "You are a strict, senior code reviewer. Analyze the provided code "
+                    "for bugs, security flaws, performance issues, and style guide violations."
                 ),
                 response_mime_type="application/json",
                 response_schema=ReviewResponse,
@@ -137,14 +115,101 @@ def generate_code_review(code, language="python"):
         
     except Exception as e:
         print(f"Gemini API Error: {e}")
-        return [
-            {
-                "id": 1,
-                "severity": "CRITICAL",
-                "category": "LOGIC",
-                "title": "API Request Failed",
-                "description": f"An error occurred while contacting the Gemini API: {str(e)}",
-                "suggestion": "Check your network connection and API key quotas.",
-                "line_range": "N/A",
-            }
-        ]
+        raise ValueError(f"AI Generation failed: {str(e)}")
+
+def generate_video_quiz(video_id):
+    """
+    Extracts transcript from a YouTube video and generates a 3-question 
+    multiple choice quiz using Gemini Structured Outputs.
+    """
+    if not client:
+        raise ValueError("GEMINI_API_KEY is missing. Quiz generation cannot proceed.")
+
+    # 1. Fetch Transcript
+    try:
+        transcript_list = YouTubeTranscriptApi().fetch(video_id)
+        # Concatenate transcript texts
+        raw_text = " ".join([t.text for t in transcript_list])
+    except TranscriptsDisabled:
+        raise ValueError("Captions are disabled for this video.")
+    except NoTranscriptFound:
+        raise ValueError("No transcript found for this video.")
+    except Exception as e:
+        raise ValueError(f"Could not extract transcript: {str(e)}")
+
+    # 2. Prompt Gemini
+    prompt = f"Create a 3-question multiple-choice quiz based on this transcript:\n\n{raw_text}"
+    
+    try:
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction=(
+                    "You are an expert educator. Based on the provided video transcript, "
+                    "create a strict 3-question multiple-choice quiz. "
+                    "Each question must have exactly 4 options and 1 correct_index."
+                ),
+                response_mime_type="application/json",
+                response_schema=QuizResponse,
+                temperature=0.3,
+            ),
+        )
+        
+        data = json.loads(response.text)
+        return data.get("questions", [])
+        
+    except Exception as e:
+        print(f"Gemini API Error: {e}")
+        raise ValueError(f"AI Generation failed: {str(e)}")
+
+
+def ask_oracle(message: str, history: list = None) -> str:
+    """
+    Acts as 'The Oracle', providing context-aware AI mentorship.
+    """
+    if not client:
+        return "The Oracle is currently disconnected (Missing API Key)."
+
+    history = history or []
+    
+    # Format the conversational history
+    formatted_contents = []
+    for msg in history:
+        # Convert roles from our frontend format to Gemini format
+        role = 'model' if msg.get('role') == 'ai' else 'user'
+        formatted_contents.append({
+            "role": role,
+            "parts": [{"text": msg.get('content', '')}]
+        })
+    
+    # Append the new user message
+    formatted_contents.append({
+        "role": "user",
+        "parts": [{"text": message}]
+    })
+    
+    system_instruction = (
+        "You are 'The Oracle', the master AI mentor of FlyBeta — a gamified "
+        "Neo-Brutalist learning platform for Data Science, AI/ML, and Cloud Computing. "
+        "Keep your answers clear, concise, punchy, and technically accurate. "
+        "Use Markdown formatting (bolding, code blocks, lists) to keep explanations "
+        "structured and scannable. Encourage the learner and help them master complex "
+        "engineering concepts."
+    )
+
+    try:
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=formatted_contents,
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction,
+                temperature=0.7,
+            ),
+        )
+        return response.text
+    except Exception as e:
+        print(f"Gemini API Error (Oracle): {e}")
+        raise ValueError(f"Oracle Generation failed: {str(e)}")
+
+

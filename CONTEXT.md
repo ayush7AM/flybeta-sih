@@ -5,7 +5,7 @@ FlyBeta is a gamified, level-based learning platform for Data Science, AI, and C
 Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v4).
 
 ## Current Phase
-**Phase 5 — In Progress**: Theme system expansion & curriculum buildout complete. Next: Real AI integration.
+**Phase 6 — Planned**: Real AI integration (replacing mock AI services with Gemini) for The Oracle, Synapse Engine, and AI Mentors.
 
 ### What's Done
 - Django project scaffold (`flybeta` config) in `/backend`
@@ -32,9 +32,11 @@ Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v
 - **Phase 4b**: Code Reviewer (Code Drishti) UI & mock endpoint (`POST /api/v1/ai/reviewer/`)
 - **Phase 4c**: Full curriculum expansion (Levels 1–7 for all 3 tracks)
 - **Phase 4d**: Multi-theme system (5 themes with character images, backgrounds, overlays)
+- **Phase 5**: Vision Suite UI Scaffold (Oracle Widget, Channel Feed, Synapse Engine, Video Detail 60/40 Split)
 
 ### What's Next
-- **Phase 5**: Real AI API integration (replacing mock AI services with Gemini)
+- **Phase 6**: Real AI API integration (replacing mock AI services with Gemini)
+
 
 ## Curriculum
 | Track | Levels | Lessons | Content Directory |

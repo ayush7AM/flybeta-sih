@@ -1,23 +1,6 @@
 import { useState } from 'react';
-
-// Placeholder components — will be replaced in Tasks 2.2 and 2.3
-function ChannelFeedPlaceholder() {
-  return (
-    <div className="brutalist-card p-12 text-center">
-      <p className="heading-md mb-2">📡 CHANNELS</p>
-      <p className="text-muted">AI-curated video feed coming in Task 2.2</p>
-    </div>
-  );
-}
-
-function SynapseEnginePlaceholder() {
-  return (
-    <div className="brutalist-card p-12 text-center">
-      <p className="heading-md mb-2">⚡ SYNAPSE</p>
-      <p className="text-muted">YouTube-to-Quiz extractor coming in Task 2.3</p>
-    </div>
-  );
-}
+import ChannelFeed from '../components/vision/ChannelFeed';
+import SynapseTab from '../components/vision/SynapseTab';
 
 const VISION_TABS = [
   { key: 'channels', label: '📡 Channels', description: 'AI-Curated Feed' },
@@ -70,8 +53,9 @@ export default function VisionPage() {
       </nav>
 
       {/* ── Active View ──────────────────────────────────────────────── */}
-      {activeTab === 'channels' && <ChannelFeedPlaceholder />}
-      {activeTab === 'synapse' && <SynapseEnginePlaceholder />}
+      {activeTab === 'channels' && <ChannelFeed />}
+      {activeTab === 'synapse' && <SynapseTab />}
     </div>
   );
 }
+

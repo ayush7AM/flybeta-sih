@@ -8,6 +8,7 @@ import LessonRunnerPage from './pages/LessonRunnerPage';
 import ProjectArchitectPage from './pages/ProjectArchitectPage';
 import CodeReviewerPage from './pages/CodeReviewerPage';
 import VisionPage from './pages/VisionPage';
+import VideoDetailPage from './pages/VideoDetailPage';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
               <Route path="/labs/architect" element={<ProjectArchitectPage />} />
               <Route path="/labs/reviewer" element={<CodeReviewerPage />} />
               <Route path="/vision" element={<VisionPage />} />
+              <Route path="/vision/video/:id" element={<VideoDetailPage />} />
             </Route>
           </Routes>
         </UserProvider>

@@ -580,5 +580,191 @@ frontend/public/
 
 ---
 
-*Last updated: 2026-08-23 — Phase 4d complete (curriculum + themes).*
+## Phase 5: Vision Suite (In Progress) 🟡
+
+**Goal:** Build the Vision Suite, an AI-powered video learning hub with curated channels and YouTube-to-Quiz extraction.
+
+### Phase 5.1: Navigation & Global Scaffolding ✅
+
+| Component | Changes |
+|-----------|---------|
+| `Navbar.jsx` | Added "Vision" tab to global navigation (`/vision`). |
+| `OracleWidget.jsx` | Built a floating FAB + slide-out chat panel UI (`brutalist-badge`, typing indicators). Contains mock responses for "The Oracle" AI mentor. |
+| `Layout.jsx` | Integrated `OracleWidget` globally so it persists across all pages. |
+
+### Phase 5.2: The Vision Hub UI (Part 1) ✅
+
+| Component | Changes |
+|-----------|---------|
+| `VisionPage.jsx` | Created the main Vision Hub page with a Hero Header and a Sub-Navigation toggle for "Channels" and "Synapse". Added placeholder components for now. |
+| `App.jsx` | Added routing for `/vision` pointing to `VisionPage`. |
+
+### Phase 5.3: ChannelFeed & VideoCard (Task 2.2) ✅
+
+**Goal:** Build the video feed UI for the Channels tab — track-grouped VideoCards with thumbnails, duration badges, and navigation to a 60/40 video detail page.
+
+#### 1. Mock Data Layer
+
+| File | Purpose |
+|------|---------|
+| [mockVideos.js](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/data/mockVideos.js) | 12 curated YouTube videos (4 per track) with real video IDs and thumbnail URLs. Exports `TRACKS`, `getVideosByTrack()`, `getVideoById()`. |
+
+#### 2. New Components
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| `VideoCard` | [VideoCard.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/vision/VideoCard.jsx) | Brutalist video card with thumbnail, play-overlay on hover, duration badge, track tag, title, and channel name. Wraps in `<Link>` to `/vision/video/:id`. |
+| `ChannelFeed` | [ChannelFeed.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/vision/ChannelFeed.jsx) | Groups VideoCards by learning track with section headers (track-colored icon badges, video count). Responsive grid: 1→2→4 columns. |
+| `VideoDetailPage` | [VideoDetailPage.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/VideoDetailPage.jsx) | 60/40 split layout — embedded YouTube iframe (left) + Synapse Engine placeholder (right). Includes back navigation and video metadata. |
+
+#### 3. Files Modified
+
+| File | Changes |
+|------|---------|
+| [VisionPage.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/VisionPage.jsx) | Replaced `ChannelFeedPlaceholder` with real `<ChannelFeed />` component. |
+| [App.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/App.jsx) | Added `VideoDetailPage` import and route at `/vision/video/:id`. |
+
+#### 4. VideoCard Features
+
+- **Thumbnail:** `aspect-video` with `object-cover`, lazy loading, scale-up on hover
+- **Play overlay:** Black 30% overlay with centered brutalist play button on hover
+- **Duration badge:** Bottom-right `label-mono` with clock icon, dark background
+- **Track tag:** Top-left accent-colored badge (cobalt/violet/emerald per track)
+- **Card body:** Bold title (2-line clamp) + muted channel name
+- **Interaction:** Full card is a `<Link>`, hover lifts card with shadow expansion
+
+#### 5. VideoDetailPage Layout
+
+```
+┌──────────────────────────────┬───────────────────────┐
+│                              │                       │
+│    YouTube Embedded Player   │   Synapse Engine       │
+│    (60%)                     │   Placeholder (40%)    │
+│                              │   [Task 2.3]           │
+│                              │                       │
+├──────────────────────────────┘                       │
+│  Title                       │  "AWAITING             │
+│  Channel Name                │   INTEGRATION"         │
+└──────────────────────────────┴───────────────────────┘
+```
+
+#### 6. Track Filter Bar (spec completion)
+
+Added to `ChannelFeed.jsx`: row of clickable track badges (`All`, `AI`, `Cloud`, `Data Science`) with:
+- Active state: accent-colored background, white text, lifted shadow
+- Inactive state: white background, ink text, subtle shadow
+- Count indicator on "All" badge
+- Filter logic: clicking a badge shows only that track's section; "All" shows all
+
+Grid changed from `lg:grid-cols-4` → `lg:grid-cols-3` per spec.
+
+#### 7. Verification
+
+| Check | Result |
+|-------|--------|
+| `npm run build` | ✅ 0 warnings, 2042 modules, 513ms |
+| Bundle size | CSS: 28.50 kB (6.54 gzip), JS: 459.86 kB (143.77 gzip) |
+
+### Phase 5.4: SynapseEngine (Task 2.3) ✅
+
+**Goal:** Build the YouTube URL-to-Quiz extractor with multi-step loading states, embedded video player, and interactive mock quiz.
+
+#### 1. New Component
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| `SynapseEngine` | [SynapseEngine.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/vision/SynapseEngine.jsx) | URL input → loading stepper → 60/40 results (player + quiz) |
+
+#### 2. SynapseEngine Features
+
+**URL Input Section:**
+- Oversized input field (`border-4`, `text-lg`, full-width) with hard shadow
+- Purple focus state (`border-color: violet`)
+- "EXTRACT ⚡" button with press-down micro-interaction
+- URL validation: extracts video ID from `youtube.com/watch`, `youtu.be`, and `youtube.com/embed` patterns
+- Error state with red alert badge for invalid URLs
+
+**Loading Stepper:**
+- 3-step vertical progress indicator:
+  1. "Extracting Transcript…"
+  2. "Analyzing Content…"
+  3. "Synthesizing Quiz…"
+- Completed steps: green background + checkmark
+- Active step: violet background + spinning loader
+- Pending steps: numbered, muted
+- Steps advance via `setTimeout` cascade (1200ms → 1500ms → 1000ms)
+
+**Results (60/40 Split):**
+- **Left (60%):** Embedded YouTube iframe with brutalist border + shadow
+- **Right (40%):** Interactive quiz card with:
+  - 3 multiple-choice questions with radio buttons
+  - Instant feedback on answer: green (correct) / red (incorrect) with border color + background
+  - Left accent border per question (violet → green/red on answer)
+  - Score summary card after all questions answered
+- "← NEW EXTRACTION" reset button to start over
+
+#### 3. Files Modified
+
+| File | Changes |
+|------|---------|
+| [VisionPage.jsx](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/VisionPage.jsx) | Replaced `SynapseEnginePlaceholder` with real `<SynapseEngine />` |
+| [index.css](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/index.css) | Added `@keyframes spin` for loading stepper animation |
+
+#### 4. Verification
+
+| Check | Result |
+|-------|--------|
+| `npm run build` | ✅ 0 warnings, 2042 modules, 513ms |
+| Bundle size | CSS: 28.50 kB (6.54 gzip), JS: 459.86 kB (143.77 gzip) |
+
+---
+
+## Phase 6: Real AI API Integration ✅
+
+**Goal:** Connect the mock AI placeholders to the live Gemini API using the `google-genai` SDK and robust Pydantic structured outputs.
+
+### Subtask 6a: Synapse Engine Backend ✅
+
+**Goal:** Generate dynamic quizzes from YouTube transcripts using Gemini 2.5 Flash.
+
+| Component | Changes |
+|-----------|---------|
+| Backend AI Service | Created `generate_video_quiz(video_id)` in `ai_services.py` using `youtube-transcript-api` to fetch transcripts and `google-genai` to generate a 3-question quiz adhering to a strict Pydantic `QuizResponse` schema. |
+| Backend API View | Created `SynapseExtractView` (`POST /api/v1/ai/synapse/`) to extract YouTube IDs via regex and return the JSON array of questions, with proper error handling for disabled transcripts. |
+| Frontend API | Added `extractVideoKnowledge(videoUrl)` to `api.js`. |
+| Frontend UI | Replaced `MOCK_QUIZ` in `SynapseEngine.jsx` with real `quizQuestions` state populated via the live API. Dynamic rendering of questions, options, and validation via `correct_index`. |
+
+### Subtask 6b: The Oracle (AI Mentor) ✅
+
+**Goal:** Connect the floating Oracle widget to act as a globally available, context-aware AI mentor for FlyBeta.
+
+| Component | Changes |
+|-----------|---------|
+| Backend AI Service | Created `ask_oracle(message, history)` in `ai_services.py` with a highly specialized system prompt (Neo-Brutalist tone, technical accuracy). Uses Gemini 2.5 Flash and correctly maps conversational roles (`user` -> `user`, `ai` -> `model`) for `google-genai`. |
+| Backend API View | Created `OracleChatView` (`POST /api/v1/ai/oracle/`) to validate history arrays and return `{ "reply": "..." }`, catching errors with a fallback 500 response ("The Oracle is meditating"). |
+| Frontend API | Added `askOracle(message, history)` to `api.js`. |
+| Frontend UI | Replaced mock logic in `OracleWidget.jsx` with real async state updates, `isTyping` indicators, and automated scroll-to-bottom handling. The Oracle now holds conversational memory across interactions! |
+
+### Subtask 6c: AI Mentor Proxies (Blueprint Lab & Code Drishti) ✅
+
+**Goal:** Upgrade the existing project architecture and code review labs from mock data to live Gemini AI execution, while strictly maintaining the original Pydantic schemas.
+
+| Component | Changes |
+|-----------|---------|
+| Backend AI Service | Updated `generate_project_blueprint()` and `generate_code_review()` to remove mock fallback responses. Updated system instructions to an "elite software architect" and a "strict, senior code reviewer." Enforced structured outputs using the original Pydantic schemas (`BlueprintResponse` and `ReviewResponse`). |
+| Backend API View | Updated `BlueprintView` and `CodeReviewView` to wrap the AI service calls in `try...except` blocks, catching API errors gracefully and returning a `500 INTERNAL SERVER ERROR` with user-friendly fallback messages ("The Architect/Reviewer is meditating"). |
+| Frontend | Remains completely unchanged! By strictly honoring the previous mock JSON structures (`step_number`, `tag`, `tasks`, `estimate`, etc.), the live AI responses instantly plugged into the React components with zero front-end breakage. |
+
+### Phase 6 Verification
+
+| Check | Result |
+|-------|--------|
+| Synapse extraction | ✅ Successfully generated JSON quiz from Karpathy's "Let's build GPT" |
+| Oracle context | ✅ Successfully maintained memory across multi-turn conversation |
+| Architect Live | ✅ Blueprint generation yields valid steps that render perfectly |
+| Code Review Live | ✅ Code analysis returns structured severity findings that render perfectly |
+
+---
+
+*Last updated: 2026-08-24 — Phase 6 (Real AI API Integration) complete.*
 

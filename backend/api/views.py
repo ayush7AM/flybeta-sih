@@ -1,6 +1,9 @@
 from datetime import date, timedelta
+import re
 
+# pyrefly: ignore [missing-import]
 from django.contrib.auth.models import User
+# pyrefly: ignore [missing-import]
 from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -14,7 +17,7 @@ from accounts.models import UserProfile
 from api.serializers import (
     DomainSerializer, LevelSerializer, LessonSerializer, UserStatsSerializer,
 )
-from api.ai_services import generate_project_blueprint, generate_code_review
+from api.ai_services import generate_project_blueprint, generate_code_review, generate_video_quiz, ask_oracle
 
 
 def get_dev_user():
@@ -176,12 +179,18 @@ class BlueprintView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        steps = generate_project_blueprint(prompt)
-
-        return Response({
-            'prompt': prompt,
-            'steps': steps,
-        }, status=status.HTTP_200_OK)
+        try:
+            steps = generate_project_blueprint(prompt)
+            return Response({
+                'prompt': prompt,
+                'steps': steps,
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(f"Blueprint API Error: {e}")
+            return Response(
+                {'error': 'The Architect is meditating. Please try again.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class CodeReviewView(APIView):
@@ -203,10 +212,90 @@ class CodeReviewView(APIView):
             )
 
         language = request.data.get('language', 'python').strip()
-        findings = generate_code_review(code, language)
+        try:
+            findings = generate_code_review(code, language)
+            return Response({
+                'code': code,
+                'language': language,
+                'findings': findings,
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(f"Code Review API Error: {e}")
+            return Response(
+                {'error': 'The Reviewer is meditating. Please try again.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
-        return Response({
-            'code': code,
-            'language': language,
-            'findings': findings,
-        }, status=status.HTTP_200_OK)
+class SynapseExtractView(APIView):
+    """
+    POST /api/v1/ai/synapse/
+    Accepts video_url, extracts video_id, calls Gemini for quiz generation.
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        video_url = request.data.get('video_url', '').strip()
+        
+        if not video_url:
+            return Response(
+                {'error': 'A "video_url" field is required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+            
+        # Extract ID using regex
+        video_id = None
+        patterns = [
+            r'(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})',
+            r'(?:youtu\.be\/)([a-zA-Z0-9_-]{11})',
+            r'(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})',
+            r'^([a-zA-Z0-9_-]{11})$' # allow raw ID
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, video_url)
+            if match:
+                video_id = match.group(1)
+                break
+                
+        if not video_id:
+            return Response(
+                {'error': 'Invalid YouTube URL or ID.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+            
+        try:
+            quiz = generate_video_quiz(video_id)
+            return Response(quiz, status=status.HTTP_200_OK)
+        except ValueError as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'error': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class OracleChatView(APIView):
+    """
+    POST /api/v1/ai/oracle/
+    Accepts message and history, calls ask_oracle, returns reply.
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        message = request.data.get('message', '').strip()
+        history = request.data.get('history', [])
+
+        if not message:
+            return Response(
+                {'error': 'A "message" field is required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            reply = ask_oracle(message, history)
+            return Response({'reply': reply}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(f"Oracle API View Error: {e}")
+            return Response(
+                {'error': 'The Oracle is meditating. Please try again.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
