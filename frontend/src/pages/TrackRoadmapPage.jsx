@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getDomain } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 import { useUser } from '../context/UserContext';
-import LevelNode from '../components/LevelNode';
+import LevelNode from '../components/ui/LevelNode';
 
 export default function TrackRoadmapPage() {
   const { name } = useParams();

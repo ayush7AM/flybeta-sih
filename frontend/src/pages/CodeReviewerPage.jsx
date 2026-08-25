@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { reviewCode } from '../services/api';
-import LabsSubNav from '../components/LabsSubNav';
+import LabsSubNav from '../components/layout/LabsSubNav';
 
 const LANGUAGES = ['Python', 'JavaScript', 'SQL', 'Go'];
 

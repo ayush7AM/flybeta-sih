@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
-import OracleWidget from '../OracleWidget';
+import OracleWidget from './OracleWidget';
 import { useTheme } from '../../context/ThemeContext';
 
 // ── Per-theme background images ──────────────────────────────────────────

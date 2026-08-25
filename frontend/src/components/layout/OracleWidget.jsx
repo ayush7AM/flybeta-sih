@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Sparkles, X, Send, Bot } from 'lucide-react';
-import { askOracle } from '../services/api';
+import { askOracle } from "../../services/api";
 
 const ORACLE_WELCOME = {
   role: 'ai',

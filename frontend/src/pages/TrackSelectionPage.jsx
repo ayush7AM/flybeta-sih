@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getDomains } from '../services/api';
-import TrackCard from '../components/TrackCard';
+import TrackCard from '../components/ui/TrackCard';
 
 export default function TrackSelectionPage() {
   const [domains, setDomains] = useState([]);

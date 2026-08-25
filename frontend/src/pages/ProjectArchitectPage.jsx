@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { generateBlueprint } from '../services/api';
-import LabsSubNav from '../components/LabsSubNav';
+import LabsSubNav from '../components/layout/LabsSubNav';
 
 // Alternating card rotations for the "scattered index card" feel
 const CARD_ROTATIONS = ['rotate-0', 'rotate-1', '-rotate-1', 'rotate-[0.5deg]'];

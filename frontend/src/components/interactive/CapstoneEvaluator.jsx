@@ -3,7 +3,7 @@ import axios from 'axios';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 import { Loader2, CheckCircle, XCircle } from 'lucide-react';
-import MarkdownRenderer from '../MarkdownRenderer';
+import MarkdownRenderer from '../ui/MarkdownRenderer';
 
 export default function CapstoneEvaluator({ preselectedDomain = '' }) {
   const [domains, setDomains] = useState([]);

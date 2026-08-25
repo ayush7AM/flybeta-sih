@@ -1,6 +1,6 @@
 import Markdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
-import FlipCard from './interactive/FlipCard';
+import FlipCard from '../interactive/FlipCard';
 
 /**
  * MarkdownRenderer — renders lesson Markdown with support for custom

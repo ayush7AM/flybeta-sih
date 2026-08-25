@@ -1,46 +1,67 @@
-# FlyBeta
+# FlyBeta 🚀
 
-Gamified learning platform for Data Science, AI, and Cloud Computing.
+**FlyBeta** is a gamified, hands-on tech learning platform designed to take users from zero to hero through structured tracks, interactive labs, and AI-powered evaluation. Say goodbye to passive video watching and hello to active, project-based learning.
 
-## Repository Structure
+Built with a striking Neo-Brutalist design system, FlyBeta makes learning programming languages, cloud architecture, and data engineering engaging and visually stunning.
 
-```
-flybeta-project/
-├── SPEC.md           # System architecture & build plan
-├── DESIGN.md         # Design system (Neo-Brutalism tokens)
-├── CONTEXT.md        # Current project state & phase tracking
-├── README.md         # This file
-├── backend/          # Django DRF API server
-│   ├── README.md     # Backend-specific setup & docs
-│   ├── flybeta/      # Django config
-│   ├── accounts/     # User profiles & gamification
-│   ├── learn/        # Content & progress models
-│   ├── api/          # DRF endpoints (Phase 2)
-│   └── content/      # JSON curriculum data
-└── frontend/         # React + Tailwind UI (Stitch prototypes)
-```
+## Features
 
-## Quick Start
+- **Structured Tracks & Roadmaps**: Follow beautifully designed, step-by-step skill trees.
+- **Interactive Labs**: Solve real-world coding problems.
+- **AI-Powered Evaluation**: Get instant, intelligent feedback on your code and architecture using Google's Gemini AI.
+- **Gamification**: Earn XP, collect coins, and maintain your daily streak as you level up your skills.
+- **Neo-Brutalist Design**: A bold, high-contrast, energetic interface that stands out.
 
-### Backend
+## Tech Stack
+
+- **Frontend**: React, Vite, Tailwind CSS (v4)
+- **Backend**: Django, Django REST Framework (DRF)
+- **Database**: SQLite (Development)
+- **AI Integration**: Google Generative AI (Gemini 1.5)
+- **Gamification State**: React Context API
+
+## Local Setup
+
+### 1. Backend Setup (Django)
+
 ```bash
 cd backend
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+
+# Set up your environment variables
+cp .env.example .env
+# Edit .env with your GEMINI_API_KEY and GITHUB_TOKEN
+
+# Run migrations and start the server
 python manage.py migrate
 python manage.py runserver
 ```
 
-### Frontend
-> React Vite setup planned for Phase 2. Currently contains Stitch HTML prototypes.
+The Django API will be available at `http://localhost:8000`.
 
-## Build Phases
-1. ✅ Django DRF Models, Auth, SQLite
-2. ✅ React Vite Setup, Global UI Shell
-3. ✅ Gamification Logic, Theme Switcher
-4. ✅ AI Features (Project Architect & Code Reviewer)
-5. ✅ Vision Suite UI Scaffold
-6. ✅ Real AI API integration (Gemini 2.5)
-7. ✅ Beginner Curriculum Upgrade (30 Levels & Boss Quiz)
-8. ⬜ Phase 8 (TBD)
+### 2. Frontend Setup (React/Vite)
+
+Open a new terminal window:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The React application will be available at `http://localhost:5173`.
+
+## Architecture
+
+```
+flybeta-project/
+├── backend/          # Django REST Framework API, AI Evaluator, Models
+├── frontend/         # React, Vite, Tailwind CSS application
+├── docs/             # Technical documentation and context
+└── README.md         # This file
+```
+
+---
+*Built with 💚 for curious minds everywhere.*

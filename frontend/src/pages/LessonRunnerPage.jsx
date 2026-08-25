@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getDomain, completeLesson } from '../services/api';
 import { useUser } from '../context/UserContext';
-import MarkdownRenderer from '../components/MarkdownRenderer';
+import MarkdownRenderer from '../components/ui/MarkdownRenderer';
 import LevelBossQuiz from '../components/interactive/LevelBossQuiz';
 import CapstoneEvaluator from '../components/interactive/CapstoneEvaluator';
 
@@ -119,7 +119,7 @@ export default function LessonRunnerPage() {
     }
   };
 
-  console.log("Current Level Data:", currentLevel);
+
 
   return (
     <div>
