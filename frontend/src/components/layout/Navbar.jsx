@@ -2,9 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import { useTheme } from '../../context/ThemeContext';
+import Logo from '../ui/Logo';
 
 const NAV_LINKS = [
-  { label: 'Tracks', path: '/' },
+  { label: 'Tracks', path: '/tracks' },
   { label: 'Labs', path: '/labs' },
   { label: 'Vision', path: '/vision' },
 ];
@@ -32,13 +33,11 @@ export default function Navbar() {
          style={{ boxShadow: 'var(--shadow-brutal)' }}>
       {/* Left: Logo + Nav Links */}
       <div className="flex items-center gap-8">
-        <Link to="/" className="heading-md border-2 border-ink px-3 py-1 no-underline text-ink hover:bg-primary hover:text-white transition-colors">
-          FlyBeta
-        </Link>
+        <Logo to="/tracks" />
         <div className="hidden md:flex gap-2">
           {NAV_LINKS.map(({ label, path }) => {
-            const isActive = path === '/'
-              ? location.pathname === '/' || location.pathname.startsWith('/track')
+            const isActive = path === '/tracks'
+              ? location.pathname === '/tracks' || location.pathname.startsWith('/track')
               : location.pathname.startsWith(path);
             return (
               <Link

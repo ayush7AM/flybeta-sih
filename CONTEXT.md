@@ -5,7 +5,7 @@ FlyBeta is a gamified, level-based learning platform for Data Science, AI, and C
 Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v4).
 
 ## Current Phase
-**Phase 8 — Planned**: Next feature development TBD.
+**Phase 9 — Planned**: Next feature development TBD.
 
 ### What's Done
 - Django project scaffold (`flybeta` config) in `/backend`
@@ -42,9 +42,15 @@ Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v
   - `LevelBossQuiz` gatekeeper (60% pass rate) implemented for all 30 levels.
   - Track Roadmap UI updated to enforce level locking based on user progress.
   - `pass_quiz` API endpoint added to unlock levels and award XP.
+- **Phase 8 (Completed)**: The AI Evaluator (Level 10 Capstone)
+  - Created `CapstoneSubmission` model and `CapstoneSubmissionViewSet` API.
+  - Built GitHub service (`github_service.py`) to fetch repository contents via authenticated Github API.
+  - Integrated Google Gemini API (`ai_evaluator.py`) using `gemini-pro` for automated code evaluation.
+  - Developed `<CapstoneEvaluator/>` Neo-Brutalist frontend component with rich Markdown rendering and success/fail states.
+  - Conditionally injected Capstone UI into `LessonRunnerPage` for Level 10.
 
 ### What's Next
-- **Phase 8**: TBD
+- **Phase 9**: TBD
 
 
 ## Curriculum

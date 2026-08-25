@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { UserProvider } from './context/UserContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Layout from './components/layout/Layout';
+import LandingPage from './pages/LandingPage';
 import TrackSelectionPage from './pages/TrackSelectionPage';
 import TrackRoadmapPage from './pages/TrackRoadmapPage';
 import LessonRunnerPage from './pages/LessonRunnerPage';
@@ -16,8 +17,12 @@ export default function App() {
       <ThemeProvider>
         <UserProvider>
           <Routes>
+            {/* Landing page — standalone, no app shell */}
+            <Route path="/" element={<LandingPage />} />
+
+            {/* App routes — inside Layout with Navbar */}
             <Route element={<Layout />}>
-              <Route path="/" element={<TrackSelectionPage />} />
+              <Route path="/tracks" element={<TrackSelectionPage />} />
               <Route path="/track/:name" element={<TrackRoadmapPage />} />
               <Route path="/track/:name/level/:num/lesson/:order" element={<LessonRunnerPage />} />
               <Route path="/labs" element={<Navigate to="/labs/architect" replace />} />

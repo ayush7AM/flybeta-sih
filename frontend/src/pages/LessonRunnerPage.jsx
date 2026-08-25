@@ -4,6 +4,7 @@ import { getDomain, completeLesson } from '../services/api';
 import { useUser } from '../context/UserContext';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import LevelBossQuiz from '../components/interactive/LevelBossQuiz';
+import CapstoneEvaluator from '../components/interactive/CapstoneEvaluator';
 
 const TRACK_META = {
   'data-science': { accent: '#059669' },
@@ -283,14 +284,18 @@ export default function LessonRunnerPage() {
             <MarkdownRenderer content={currentLesson.content_md} />
           </div>
 
-          {/* Boss Quiz */}
-          {!nextLesson && (currentLevel.quiz_data || currentLevel.quiz_data === null) && (
-            <div className="mt-8">
-              <LevelBossQuiz 
-                quizData={currentLevel.quiz_data || []} 
-                levelId={currentLevel.id} 
-                onUnlock={handleComplete} 
-              />
+          {/* Boss Quiz or Capstone */}
+          {!nextLesson && (
+            <div className="mt-16 overflow-visible pb-12">
+              {levelNum === 10 ? (
+                <CapstoneEvaluator preselectedDomain={domain?.id} />
+              ) : (
+                <LevelBossQuiz 
+                  quizData={currentLevel.quiz_data || []} 
+                  levelId={currentLevel.id} 
+                  onUnlock={handleComplete} 
+                />
+              )}
             </div>
           )}
 
@@ -309,7 +314,7 @@ export default function LessonRunnerPage() {
               </Link>
             )}
 
-            {!(!nextLesson && currentLevel.quiz_data) && (
+            {!(!nextLesson && (levelNum === 10 || currentLevel.quiz_data)) && (
               <button
                 onClick={handleComplete}
                 disabled={completing}

@@ -104,3 +104,31 @@ class LevelProgress(models.Model):
     def __str__(self):
         status = '✓' if self.is_completed else '…'
         return f'{self.user.username} → {self.level} [{status}]'
+
+
+class CapstoneSubmission(models.Model):
+    """
+    User submission for a Capstone project.
+    """
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('graded', 'Graded'),
+        ('failed', 'Failed'),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='capstone_submissions')
+    domain = models.ForeignKey(Domain, on_delete=models.CASCADE, related_name='capstone_submissions')
+    github_url = models.URLField(help_text="URL to the user's GitHub repository")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    ai_feedback = models.TextField(blank=True, null=True, help_text="Markdown formatted AI feedback")
+    score = models.IntegerField(blank=True, null=True, help_text="0-100 score")
+    passed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.user.username} → {self.domain.title} Capstone ({self.status})'
+

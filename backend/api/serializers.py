@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from learn.models import Domain, Level, Lesson, DomainProgress
+from learn.models import Domain, Level, Lesson, DomainProgress, CapstoneSubmission
 from accounts.models import UserProfile
 
 class DomainProgressSerializer(serializers.ModelSerializer):
@@ -48,3 +48,18 @@ class DomainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Domain
         fields = ['id', 'name', 'title', 'icon', 'color', 'levels']
+
+
+class CapstoneSubmissionSerializer(serializers.ModelSerializer):
+    domain_name = serializers.CharField(source='domain.title', read_only=True)
+    username = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = CapstoneSubmission
+        fields = [
+            'id', 'user', 'username', 'domain', 'domain_name',
+            'github_url', 'status', 'ai_feedback', 'score', 'passed',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['status', 'ai_feedback', 'score', 'passed', 'user']
+

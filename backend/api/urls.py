@@ -1,12 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from api.views import DomainViewSet, LevelViewSet, LessonViewSet, UserMeView, BlueprintView, CodeReviewView, SynapseExtractView, OracleChatView
+from api.views import DomainViewSet, LevelViewSet, LessonViewSet, UserMeView, BlueprintView, CodeReviewView, SynapseExtractView, OracleChatView, CapstoneSubmissionViewSet
 
 router = DefaultRouter()
 router.register(r'domains', DomainViewSet)
 router.register(r'levels', LevelViewSet)
 router.register(r'lessons', LessonViewSet)
+router.register(r'capstone', CapstoneSubmissionViewSet, basename='capstone')
 
 app_name = 'api'
 

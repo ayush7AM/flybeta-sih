@@ -32,8 +32,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Gemini AI API
+# API Keys
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', '')
 
 
 # Application definition

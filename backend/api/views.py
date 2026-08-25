@@ -12,12 +12,16 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.decorators import action
 from rest_framework import status
 
-from learn.models import Domain, Level, Lesson, LevelProgress, DomainProgress
+from learn.models import Domain, Level, Lesson, LevelProgress, DomainProgress, CapstoneSubmission
 from accounts.models import UserProfile
 from api.serializers import (
     DomainSerializer, LevelSerializer, LessonSerializer, UserStatsSerializer,
+    CapstoneSubmissionSerializer
 )
 from api.ai_services import generate_project_blueprint, generate_code_review, generate_video_quiz, ask_oracle
+from learn.services.github_service import fetch_github_repo_content
+from learn.services.ai_evaluator import evaluate_code
+from rest_framework import viewsets
 
 
 def get_dev_user():
@@ -322,4 +326,59 @@ class OracleChatView(APIView):
                 {'error': 'The Oracle is meditating. Please try again.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class CapstoneSubmissionViewSet(viewsets.ModelViewSet):
+    """
+    POST /api/v1/capstone/
+    Accepts a GitHub URL, extracts code, grades it, and returns the AI report card.
+    """
+    queryset = CapstoneSubmission.objects.all()
+    serializer_class = CapstoneSubmissionSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        user = get_dev_user()
+        domain_id = request.data.get('domain')
+        github_url = request.data.get('github_url')
+        
+        if not domain_id or not github_url:
+            return Response({'error': 'domain and github_url are required'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        try:
+            domain = Domain.objects.get(pk=domain_id)
+        except Domain.DoesNotExist:
+            return Response({'error': 'Domain not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # 1. Save as pending
+        submission = CapstoneSubmission.objects.create(
+            user=user,
+            domain=domain,
+            github_url=github_url,
+            status='pending'
+        )
+
+        try:
+            # 2. Fetch code from GitHub
+            code_content = fetch_github_repo_content(github_url)
+            
+            # 3. Grade using AI
+            eval_result = evaluate_code(domain.title, code_content)
+            
+            # 4. Update the submission
+            submission.score = eval_result['score']
+            submission.passed = eval_result['passed']
+            submission.ai_feedback = eval_result['feedback']
+            submission.status = 'graded'
+            submission.save()
+            
+        except Exception as e:
+            submission.status = 'failed'
+            submission.ai_feedback = f"Error during evaluation: {str(e)}"
+            submission.save()
+
+        # 5. Return updated submission
+        serializer = self.get_serializer(submission)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
