@@ -14,7 +14,10 @@ export default function Logo({ to = '/', className = '' }) {
         src={logoImg}
         alt="FlyBeta Logo"
         className="h-9 w-9 object-contain transition-all"
-        style={{ filter: isDarkMode ? 'brightness(0) invert(1)' : 'none' }}
+        style={{ 
+          filter: isDarkMode ? 'invert(1)' : 'none',
+          mixBlendMode: isDarkMode ? 'screen' : 'multiply'
+        }}
       />
       <span className="font-black text-2xl tracking-tighter uppercase text-ink transition-colors">
         FLYBETA

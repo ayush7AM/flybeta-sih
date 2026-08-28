@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
+import { Moon, Sun } from 'lucide-react';
 import Logo from '../ui/Logo';
+import { useTheme } from '../../context/ThemeContext';
 
 export default function LandingNavbar() {
+  const { isDarkMode, toggleDarkMode } = useTheme();
+
   const scrollToSection = (e, id) => {
     e.preventDefault();
     if (id === 'home') {
@@ -35,13 +39,23 @@ export default function LandingNavbar() {
         </a>
       </div>
 
-      {/* Right: Get Started */}
-      <Link
-        to="/tracks"
-        className="bg-black text-white px-6 py-2.5 font-bold hover:bg-[#EAB308] hover:text-black border-4 border-black transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] uppercase tracking-wider text-sm no-underline"
-      >
-        GET STARTED
-      </Link>
+      {/* Right: Get Started & Toggle */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={toggleDarkMode}
+          className="bg-transparent border-2 border-ink text-ink p-2 hover:bg-canvas transition-colors cursor-pointer"
+          title="Toggle Dark Mode"
+        >
+          {isDarkMode ? <Moon size={20} /> : <Sun size={20} />}
+        </button>
+
+        <Link
+          to="/tracks"
+          className="bg-black text-white px-6 py-2.5 font-bold hover:bg-[#EAB308] hover:text-black border-4 border-black transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] uppercase tracking-wider text-sm no-underline"
+        >
+          GET STARTED
+        </Link>
+      </div>
     </nav>
   );
 }
