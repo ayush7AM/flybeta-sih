@@ -64,7 +64,7 @@ def generate_project_blueprint(prompt):
 
     try:
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3.6-flash',
             contents=prompt,
             config=types.GenerateContentConfig(
                 system_instruction=(
@@ -97,7 +97,7 @@ def generate_code_review(code, language="python"):
         prompt = f"Review the following {language} code:\n\n{code}"
         
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3.6-flash',
             contents=prompt,
             config=types.GenerateContentConfig(
                 system_instruction=(
@@ -142,7 +142,7 @@ def generate_video_quiz(video_id):
     
     try:
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3.6-flash',
             contents=prompt,
             config=types.GenerateContentConfig(
                 system_instruction=(
@@ -190,17 +190,18 @@ def ask_oracle(message: str, history: list = None) -> str:
     })
     
     system_instruction = (
-        "You are 'The Oracle', the master AI mentor of FlyBeta — a gamified "
-        "Neo-Brutalist learning platform for Data Science, AI/ML, and Cloud Computing. "
-        "Keep your answers clear, concise, punchy, and technically accurate. "
-        "Use Markdown formatting (bolding, code blocks, lists) to keep explanations "
-        "structured and scannable. Encourage the learner and help them master complex "
-        "engineering concepts."
+        "You are The Oracle, a friendly, encouraging AI study buddy for students learning tech. "
+        "Speak like a supportive friend. Be enthusiastic, use simple analogies, and keep the language "
+        "highly accessible for kids and teens. "
+        "Keep paragraphs very short (1-2 sentences). "
+        "DO NOT use markdown headers (#, ###) or horizontal rules (---). "
+        "Use relevant emojis frequently to make the text colorful and engaging (e.g., 🚀, 💡, 🎮, ✨). "
+        "Use emojis as bullet points if listing items."
     )
 
     try:
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model='gemini-3.6-flash',
             contents=formatted_contents,
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
