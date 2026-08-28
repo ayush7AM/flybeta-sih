@@ -2,17 +2,25 @@ import { useState, useEffect } from 'react';
 import { getDomains } from '../services/api';
 import TrackCard from '../components/ui/TrackCard';
 
+let cachedDomains = null;
+
 export default function TrackSelectionPage() {
-  const [domains, setDomains] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [domains, setDomains] = useState(cachedDomains || []);
+  const [loading, setLoading] = useState(!cachedDomains);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (cachedDomains) {
+      return; // Skip fetch if cached
+    }
+    
     getDomains()
       .then((data) => {
         // Handle paginated or direct array responses
         const results = data.results || data;
-        setDomains(Array.isArray(results) ? results : []);
+        const finalResults = Array.isArray(results) ? results : [];
+        cachedDomains = finalResults;
+        setDomains(finalResults);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
