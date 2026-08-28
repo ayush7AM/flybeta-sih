@@ -23,7 +23,7 @@ const TRACK_CODES = {
 
 // ── Per-theme domain → character image mappings ──────────────────────────
 const THEME_IMAGES = {
-  'doremon': {
+  'doraemon': {
     'cloud': '/doremon-theme/doremon.webp',
     'ai':    '/doremon-theme/sizuka.webp',
     'data':  '/doremon-theme/nobita.webp',
