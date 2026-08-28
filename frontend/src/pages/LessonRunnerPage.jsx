@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { getDomain, completeLesson } from '../services/api';
+import { getDomain, getCachedDomain, completeLesson } from '../services/api';
 import { useUser } from '../context/UserContext';
 import MarkdownRenderer from '../components/ui/MarkdownRenderer';
 import LevelBossQuiz from '../components/interactive/LevelBossQuiz';
@@ -18,8 +18,9 @@ export default function LessonRunnerPage() {
   const { name, num, order } = useParams();
   const navigate = useNavigate();
   const { updateUser } = useUser();
-  const [domain, setDomain] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const cached = getCachedDomain(name);
+  const [domain, setDomain] = useState(cached);
+  const [loading, setLoading] = useState(!cached);
   const [error, setError] = useState(null);
   const [completing, setCompleting] = useState(false);
   const [reward, setReward] = useState(null); // { xp, coins } flash
@@ -29,12 +30,13 @@ export default function LessonRunnerPage() {
   const lessonOrder = parseInt(order);
 
   useEffect(() => {
+    if (cached) return;
     setLoading(true);
     getDomain(name)
       .then((data) => setDomain(data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [name]);
+  }, [name, cached]);
 
   // Clear reward flash on lesson change
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getDomain } from '../services/api';
+import { getDomain, getCachedDomain } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 import { useUser } from '../context/UserContext';
 import LevelNode from '../components/ui/LevelNode';
@@ -9,17 +9,19 @@ export default function TrackRoadmapPage() {
   const { name } = useParams();
   const { themeKey } = useTheme();
   const { user } = useUser();
-  const [domain, setDomain] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const cached = getCachedDomain(name);
+  const [domain, setDomain] = useState(cached);
+  const [loading, setLoading] = useState(!cached);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (cached) return;
     setLoading(true);
     getDomain(name)
       .then((data) => setDomain(data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [name]);
+  }, [name, cached]);
 
   if (loading) {
     return (

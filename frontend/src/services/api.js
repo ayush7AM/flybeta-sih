@@ -8,14 +8,35 @@ const api = axios.create({
 });
 
 // ── Domain endpoints ────────────────────────────────────────────────────
+export const domainCache = {};
+const domainPromises = {};
+
+export const getCachedDomain = (name) => {
+  return domainCache[name] || null;
+};
+
 export const getDomains = async () => {
   const { data } = await api.get('domains/');
   return data;
 };
 
-export const getDomain = async (name) => {
-  const { data } = await api.get(`domains/${name}/`);
-  return data;
+export const getDomain = (name) => {
+  if (domainCache[name]) return Promise.resolve(domainCache[name]);
+  
+  if (!domainPromises[name]) {
+    domainPromises[name] = api.get(`domains/${name}/`).then(({ data }) => {
+      domainCache[name] = data;
+      return data;
+    });
+  }
+  
+  return domainPromises[name];
+};
+
+export const prefetchDomain = (name) => {
+  if (!domainCache[name]) {
+    getDomain(name).catch(() => {}); // silent fail
+  }
 };
 
 // ── Level endpoints ─────────────────────────────────────────────────────

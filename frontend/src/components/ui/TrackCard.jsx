@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Cloud, Bot, BarChart3, BookOpen, BrainCircuit, Database, Code, Rocket } from 'lucide-react';
 import { useTheme } from "../../context/ThemeContext";
+import { prefetchDomain } from '../../services/api';
 
 const ICON_MAP = {
   'cloud': Cloud,
@@ -54,7 +55,10 @@ export default function TrackCard({ domain }) {
   const characterImg = themeImages?.[domain.name];
 
   return (
-    <article className="brutalist-card flex flex-col overflow-hidden group">
+    <article 
+      className="brutalist-card flex flex-col overflow-hidden group"
+      onMouseEnter={() => prefetchDomain(domain.name)}
+    >
       {/* Track Image Header */}
       <div
         className="h-52 border-b-2 relative overflow-hidden flex items-center justify-center"
