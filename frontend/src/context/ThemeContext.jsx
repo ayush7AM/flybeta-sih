@@ -24,8 +24,8 @@ const THEMES = {
       '--font-heading': '"Anton", "Impact", sans-serif',
     },
   },
-  'doraemon-blue': {
-    label: 'Doraemon Blue',
+  'doremon': {
+    label: 'Doremon',
     icon: '🤖',
     vars: {
       '--color-ink': '#1a365d',

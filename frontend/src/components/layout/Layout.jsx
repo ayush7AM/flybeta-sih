@@ -5,7 +5,7 @@ import { useTheme } from '../../context/ThemeContext';
 
 // ── Per-theme background images ──────────────────────────────────────────
 const THEME_BACKGROUNDS = {
-  'doraemon-blue': '/doremon-theme/doremon_flybeta.webp',
+  'doremon': '/doremon-theme/doremon_flybeta.webp',
   'shinchan':      '/shinchan-theme/shinchan-theme-bg.webp',
   'princess':      '/disney-princess-thene/bg-theme.webp',
   'anime':         '/anime-theme/anime-theme.webp',
