@@ -20,17 +20,17 @@ export default function LandingNavbar() {
       <Logo to="/" />
 
       {/* Center: Marketing Links */}
-      <div className="hidden md:flex items-center gap-8 font-semibold text-black">
-        <a href="#home" onClick={(e) => scrollToSection(e, 'home')} className="no-underline text-black hover:text-[#EAB308] transition-colors uppercase tracking-wider text-sm cursor-pointer">
+      <div className="hidden md:flex items-center gap-8 font-semibold text-ink">
+        <a href="#home" onClick={(e) => scrollToSection(e, 'home')} className="no-underline text-ink hover:text-[#EAB308] transition-colors uppercase tracking-wider text-sm cursor-pointer">
           Home
         </a>
-        <a href="#about-us" onClick={(e) => scrollToSection(e, 'about-us')} className="no-underline text-black hover:text-[#EAB308] transition-colors uppercase tracking-wider text-sm cursor-pointer">
+        <a href="#about-us" onClick={(e) => scrollToSection(e, 'about-us')} className="no-underline text-ink hover:text-[#EAB308] transition-colors uppercase tracking-wider text-sm cursor-pointer">
           About Us
         </a>
-        <a href="#how-it-works" onClick={(e) => scrollToSection(e, 'how-it-works')} className="no-underline text-black hover:text-[#EAB308] transition-colors uppercase tracking-wider text-sm cursor-pointer">
+        <a href="#how-it-works" onClick={(e) => scrollToSection(e, 'how-it-works')} className="no-underline text-ink hover:text-[#EAB308] transition-colors uppercase tracking-wider text-sm cursor-pointer">
           How it Works
         </a>
-        <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="no-underline text-black hover:text-[#EAB308] transition-colors uppercase tracking-wider text-sm cursor-pointer">
+        <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="no-underline text-ink hover:text-[#EAB308] transition-colors uppercase tracking-wider text-sm cursor-pointer">
           Contact
         </a>
       </div>
