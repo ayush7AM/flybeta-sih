@@ -7,88 +7,41 @@
   },
   "level": {
     "number": 3,
-    "title": "Storage & Databases",
-    "description": "How the Internet remembers everything. The difference between Object Storage and Relational Databases.",
-    "quiz_data": [
-      {
-        "question": "How does Object Storage save files?",
-        "options": [
-          "In a rigid folder hierarchy",
-          "As independent objects with metadata in a flat structure",
-          "On physical tape drives",
-          "Inside relational tables"
-        ],
-        "correct_index": 1
-      },
-      {
-        "question": "What is the best use case for Object Storage?",
-        "options": [
-          "Running a high-speed database",
-          "Storing millions of photos or backups",
-          "Installing an operating system",
-          "Running active applications"
-        ],
-        "correct_index": 1
-      },
-      {
-        "question": "Relational databases are best compared to what?",
-        "options": [
-          "A messy room",
-          "A massive filing cabinet with strict tables",
-          "A digital locker",
-          "A cloud server"
-        ],
-        "correct_index": 1
-      },
-      {
-        "question": "Which query language is used for Relational Databases?",
-        "options": [
-          "HTML",
-          "Python",
-          "SQL",
-          "CSS"
-        ],
-        "correct_index": 2
-      },
-      {
-        "question": "What happens if a database region goes offline in the cloud?",
-        "options": [
-          "All data is permanently lost",
-          "Data is usually replicated to another region automatically",
-          "You have to fly out to fix it",
-          "The internet breaks"
-        ],
-        "correct_index": 1
-      }
-    ]
+    "title": "Compute & Virtual Machines",
+    "description": "Spin up, configure, and optimize virtual machines — the backbone of cloud infrastructure that powers everything from web servers to GPU training clusters."
   },
   "lessons": [
     {
       "order": 1,
-      "title": "How the Internet Remembers",
-      "content_md": "# How the Internet Remembers \ud83e\udde0\n\nWhen you turn off your computer, it doesn't forget your files. When you close the Instagram app, your photos don't disappear.\n\nThis is because of **Storage**. Storage is how computers remember things permanently. In the Cloud, storage is incredibly important because there are billions of people generating mountains of data every single second.\n\nBut not all data is the same!\n\n## Structured vs. Unstructured Data\n\nCloud engineers divide all data in the world into two main types:\n\n### 1. Structured Data \ud83d\udcca\nThis is data that fits perfectly into a spreadsheet. It has rows and columns. \n- **Examples:** A list of users (Name, Email, Age), your bank account transactions (Date, Amount, Merchant), or a store's inventory.\n- Structured data is highly organized and easy to search.\n\n### 2. Unstructured Data \ud83c\udfa8\nThis is everything else! It's data that doesn't fit into neat rows and columns. It's messy, large, and comes in all shapes and sizes.\n- **Examples:** A 4K video of your dog, an MP3 music file, a PDF document, or a JPEG photo.\n\n<flipcard front=\"\ud83e\udd14 Is an MP3 music file Structured or Unstructured data?\" back=\"Unstructured! You can't easily fit the audio of a song into a spreadsheet column. It requires a different type of storage.\"></flipcard>\n\nBecause these two types of data are so different, the Cloud has two completely different ways to store them: **Databases** (for structured) and **Object Storage** (for unstructured).",
+      "title": "EC2, Compute Engine & Azure VMs",
+      "content_md": "# EC2, Compute Engine & Azure VMs\n\nVirtual Machines (VMs) are the workhorse of cloud computing. Every major provider offers on-demand, remotely accessible VMs that you can launch in seconds.\n\n## Core Concepts\n\nA cloud VM is a software-emulated computer running on shared physical hardware. You get:\n- A virtual CPU (vCPU)\n- RAM\n- Storage (ephemeral or persistent)\n- A network interface with an IP address\n- An operating system of your choice\n\n## Provider Comparison\n\n| Feature | AWS EC2 | GCP Compute Engine | Azure VMs |\n|---------|---------|-------------------|----------|\n| Launch time | ~60s | ~30s | ~60s |\n| Custom machine types | No (fixed families) | Yes (any vCPU/RAM combo) | Limited |\n| Live migration | Limited | Yes (default) | Yes |\n| GPU support | P4, G5, Inf2 | A100, T4, L4 | A100, T4 |\n| Free tier | t2.micro (750h/mo) | e2-micro (always free) | B1s (750h/mo) |\n\n## Instance Families\n\nProviders organize VMs into families optimized for different workloads:\n\n| Family | Optimized For | Example Use Case |\n|--------|--------------|------------------|\n| General Purpose | Balanced CPU/RAM | Web servers, dev environments |\n| Compute Optimized | High CPU | Batch processing, gaming servers |\n| Memory Optimized | High RAM | In-memory databases, caching |\n| Storage Optimized | High I/O | Data warehouses, log processing |\n| Accelerated (GPU) | ML/Graphics | Model training, video rendering |\n\n## Launching an EC2 Instance (CLI)\n\n```bash\n# Launch a t3.micro instance with Amazon Linux 2\naws ec2 run-instances \\\n  --image-id ami-0c55b159cbfafe1f0 \\\n  --instance-type t3.micro \\\n  --key-name my-key-pair \\\n  --security-group-ids sg-abc123 \\\n  --subnet-id subnet-xyz789 \\\n  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=MyServer}]'\n```\n\n## Launching on GCP (gcloud)\n\n```bash\ngcloud compute instances create my-server \\\n  --zone=us-central1-a \\\n  --machine-type=e2-medium \\\n  --image-family=ubuntu-2204-lts \\\n  --image-project=ubuntu-os-cloud \\\n  --boot-disk-size=20GB\n```\n\n## Key Takeaway\n\nChoosing the right instance type is an art. Over-provisioning wastes money; under-provisioning causes outages. Start small, monitor metrics, and right-size iteratively.",
       "xp_reward": 15,
-      "coins_reward": 10,
-      "is_mandatory": true,
-      "illustration_url": "https://images.unsplash.com/photo-1544396821-4dd40b9388c4?w=800"
+      "coins_reward": 5,
+      "is_mandatory": true
     },
     {
       "order": 2,
-      "title": "Object Storage: Digital Lockers",
-      "content_md": "# Object Storage: Digital Lockers \ud83d\uddc4\ufe0f\n\nLet's talk about how the Cloud stores **Unstructured Data** (photos, videos, backups). It uses something called **Object Storage**.\n\n## The Digital Locker Metaphor\n\nImagine a massive warehouse filled with millions of identical metal lockers. \n\nWhen you want to store a file (like a profile picture), you put it inside a locker. You put a lock on it, and the system hands you a unique key with a number on it (like `#9472A`). \n\n- It doesn't matter what's inside the locker (a tiny text file or a massive 10GB video). \n- The system doesn't organize the lockers by alphabetical order or by category. \n- The *only* way to get your file back is to hand the system your exact unique key.\n\nThis is how Object Storage works! Every file is an \"Object.\" It gets dumped into a massive flat space, and the system gives you a unique URL to find it later.\n\n<flipcard front=\"\ud83d\uddc4\ufe0f How do you retrieve a file from Object Storage?\" back=\"You must have the exact, unique URL (the 'key') assigned to that specific file. You can't easily 'search' inside Object Storage like you can in a database.\"></flipcard>\n\n## Infinite Space\n\nThe superpower of Object Storage is that it is virtually **infinite** and very cheap. \n\nIf you build a new social media app and suddenly 10 million people upload photos on day one, you don't need to panic or buy new hard drives. The Cloud provider's Object Storage just keeps accepting the files and giving you URLs back. It scales automatically!\n\n## Real-World Example: Amazon S3\n\nThe most famous Object Storage in the world is **Amazon S3 (Simple Storage Service)**. When you watch a movie on Netflix, the actual video file you are streaming is stored in a massive digital locker on Amazon S3!",
-      "xp_reward": 20,
-      "coins_reward": 10,
-      "is_mandatory": true,
-      "illustration_url": "https://images.unsplash.com/photo-1587837073080-448bc6a2329b?w=800"
+      "title": "AMIs, Images & Machine Templates",
+      "content_md": "# AMIs, Images & Machine Templates\n\nEvery VM boots from a **machine image** — a snapshot of an operating system plus any pre-installed software. Understanding images is key to reproducible infrastructure.\n\n## What's in an Image?\n\n```\nMachine Image\n├── Operating System (Ubuntu, Amazon Linux, Windows)\n├── Pre-installed packages (Python, Docker, NGINX)\n├── Configuration files\n├── Application code (optional)\n└── Boot scripts\n```\n\n## Provider Terminology\n\n| Provider | Term | Example |\n|----------|------|---------|\n| AWS | AMI (Amazon Machine Image) | ami-0c55b159cbfafe1f0 |\n| GCP | Image / Image Family | ubuntu-2204-lts |\n| Azure | VM Image / Shared Image Gallery | Canonical:UbuntuServer:22.04 |\n\n## Using Public Images\n\nAll providers maintain catalogs of official, pre-built images:\n\n```bash\n# AWS: Find the latest Amazon Linux 2 AMI\naws ec2 describe-images \\\n  --owners amazon \\\n  --filters 'Name=name,Values=amzn2-ami-hvm-*-x86_64-gp2' \\\n  --query 'sort_by(Images,&CreationDate)[-1].ImageId' \\\n  --output text\n\n# GCP: List available image families\ngcloud compute images list --filter=\"family:ubuntu\"\n```\n\n## Creating Custom Images\n\nThe real power is building your own images with your stack pre-installed:\n\n```bash\n# AWS: Create AMI from a running instance\naws ec2 create-image \\\n  --instance-id i-abc123 \\\n  --name \"my-app-v2.1\" \\\n  --description \"Python 3.11 + NGINX + App Code\"\n\n# GCP: Create image from a disk\ngcloud compute images create my-app-image \\\n  --source-disk=my-instance \\\n  --source-disk-zone=us-central1-a\n```\n\n## The Golden Image Pattern\n\n```\n1. Launch base OS image\n2. Install all dependencies (packages, runtimes, agents)\n3. Harden security (disable root, configure firewall)\n4. Test thoroughly\n5. Create image snapshot → \"Golden Image\"\n6. All future instances launch from this image\n```\n\n**Benefits:**\n- Consistent environments across dev, staging, production\n- Faster boot times (no install scripts needed)\n- Reduced configuration drift\n\n## Image Builders\n\nFor production, automate image creation:\n\n| Tool | Provider |\n|------|----------|\n| Packer (HashiCorp) | Multi-cloud |\n| EC2 Image Builder | AWS |\n| Cloud Build | GCP |\n\n```hcl\n# Packer template (simplified)\nsource \"amazon-ebs\" \"base\" {\n  ami_name      = \"my-app-{{timestamp}}\"\n  instance_type = \"t3.micro\"\n  source_ami    = \"ami-0c55b159cbfafe1f0\"\n}\n\nbuild {\n  provisioner \"shell\" {\n    inline = [\n      \"sudo apt-get update\",\n      \"sudo apt-get install -y python3 nginx\"\n    ]\n  }\n}\n```",
+      "xp_reward": 15,
+      "coins_reward": 5,
+      "is_mandatory": true
     },
     {
       "order": 3,
-      "title": "Relational Databases: The Filing Cabinet",
-      "content_md": "# Relational Databases: The Filing Cabinet \ud83d\udcc1\n\nNow, let's talk about how the Cloud stores **Structured Data** (users, scores, transactions). It uses **Relational Databases**.\n\n## The Highly Organized Filing Cabinet\n\nImagine the most organized filing cabinet in the world. Inside, there are folders, and inside those folders are perfectly lined-up spreadsheets.\n\nOne spreadsheet is called `Users` and has columns for ID, Name, and Email. \nAnother spreadsheet is called `Purchases` and has columns for Purchase ID, User ID, and Item Name.\n\nThe magic of a relational database is that the spreadsheets talk to each other (they have \"relationships\"). Because the `Purchases` sheet includes a User ID, you can instantly ask the database a highly complex question:\n\n> *\"Give me a list of all the Names of Users who purchased an item called 'Magic Sword' in the last 24 hours.\"*\n\nThe database can search through millions of rows and give you the exact answer in a fraction of a second.\n\n<flipcard front=\"\ud83d\udcc1 What is the main superpower of a Relational Database?\" back=\"Its ability to quickly search, filter, and connect structured data across multiple tables (spreadsheets) using complex queries!\"></flipcard>\n\n## SQL: The Language of Databases\n\nTo talk to this organized filing cabinet, you use a special programming language called **SQL (Structured Query Language)**. \n\nWhen a developer writes `SELECT Name FROM Users WHERE Age > 18`, they are using SQL to filter the spreadsheet!\n\n## Real-World Example: Amazon RDS\n\nIn the cloud, you don't want to install and manage your own database server. You use a managed service like **Amazon RDS (Relational Database Service)**. Amazon sets up the filing cabinet, backs it up automatically, and makes sure it never crashes, leaving you free to just write your SQL queries!",
+      "title": "Pricing Models: On-Demand, Reserved & Spot",
+      "content_md": "# Pricing Models: On-Demand, Reserved & Spot\n\nCompute is typically the largest line item on a cloud bill. Understanding pricing models can save 60-90% on your infrastructure costs.\n\n## On-Demand Instances\n\nPay by the second (or hour) with no commitment.\n\n```\nCost = hours_running × hourly_rate\n```\n\n| Instance | On-Demand/hr (us-east-1) |\n|----------|-------------------------|\n| t3.micro | $0.0104 |\n| m5.large | $0.096 |\n| c5.2xlarge | $0.340 |\n| p3.2xlarge (GPU) | $3.06 |\n\n**Best for:** Development, unpredictable workloads, short-lived tasks.\n\n## Reserved Instances / Committed Use\n\nCommit to 1 or 3 years in exchange for significant discounts.\n\n| Commitment | Discount vs On-Demand |\n|------------|----------------------|\n| 1 year, no upfront | ~30-40% |\n| 1 year, all upfront | ~40-50% |\n| 3 year, all upfront | ~60-72% |\n\n```bash\n# AWS: Purchase a reserved instance\naws ec2 purchase-reserved-instances-offering \\\n  --reserved-instances-offering-id offering-id \\\n  --instance-count 1\n```\n\n**Best for:** Steady-state production workloads that run 24/7.\n\n## Spot Instances (Preemptible VMs)\n\nUse **spare cloud capacity** at massive discounts — but the provider can reclaim your instance with 2 minutes notice.\n\n| Provider | Term | Discount |\n|----------|------|----------|\n| AWS | Spot Instances | Up to 90% off |\n| GCP | Preemptible / Spot VMs | Up to 91% off |\n| Azure | Spot VMs | Up to 90% off |\n\n```bash\n# AWS: Request a spot instance\naws ec2 run-instances \\\n  --instance-type c5.xlarge \\\n  --instance-market-options 'MarketType=spot,SpotOptions={MaxPrice=0.08}'\n```\n\n**Best for:** Batch processing, CI/CD, ML training, fault-tolerant workloads.\n\n**Not suitable for:** Databases, user-facing servers, anything that can't handle interruption.\n\n## Cost Optimization Strategies\n\n| Strategy | Savings | Effort |\n|----------|---------|--------|\n| Right-size instances | 20-40% | Low |\n| Spot for batch jobs | 60-90% | Medium |\n| Reserved for baseline | 30-72% | Low |\n| Schedule dev instances off at night | 65% | Low |\n| Use ARM instances (Graviton/Tau) | 20-40% | Low |\n\n## The Hybrid Approach\n\n```\nProduction baseline:  Reserved Instances (predictable cost)\nPeak traffic:         On-Demand Auto Scaling (handles spikes)\nBatch processing:     Spot Instances (massive savings)\nDev/Test:             Spot + scheduled stop (minimal waste)\n```\n\nThis combination typically reduces compute costs by 50-70% compared to pure on-demand.",
+      "xp_reward": 15,
+      "coins_reward": 5,
+      "is_mandatory": true
+    },
+    {
+      "order": 4,
+      "title": "Hands-On: SSH into a Cloud Server",
+      "content_md": "# Hands-On: SSH into a Cloud Server\n\nLet's connect to a remote cloud server — the most fundamental skill in cloud operations.\n\n## Step 1: Generate an SSH Key Pair\n\nSSH keys replace passwords with cryptographic authentication. You get a **private key** (keep secret) and a **public key** (upload to the cloud).\n\n```bash\n# Generate an Ed25519 key pair (modern, secure)\nssh-keygen -t ed25519 -C \"your_email@example.com\"\n\n# You'll get two files:\n# ~/.ssh/id_ed25519       ← Private key (NEVER share)\n# ~/.ssh/id_ed25519.pub   ← Public key (upload to cloud)\n```\n\n## Step 2: Upload Your Public Key\n\n```bash\n# AWS: Import key pair\naws ec2 import-key-pair \\\n  --key-name my-key \\\n  --public-key-material fileb://~/.ssh/id_ed25519.pub\n\n# GCP: Add to project metadata\ngcloud compute project-info add-metadata \\\n  --metadata-from-file ssh-keys=~/.ssh/id_ed25519.pub\n```\n\n## Step 3: Connect via SSH\n\n```bash\n# Basic SSH connection\nssh -i ~/.ssh/id_ed25519 ubuntu@<PUBLIC_IP>\n\n# GCP shortcut (handles keys automatically)\ngcloud compute ssh my-instance --zone=us-central1-a\n\n# AWS Systems Manager (no SSH key needed)\naws ssm start-session --target i-abc123\n```\n\n## Step 4: Secure Your Connection\n\n### SSH Config File (~/.ssh/config)\n\nAvoid typing long commands every time:\n\n```\nHost my-server\n  HostName 54.123.45.67\n  User ubuntu\n  IdentityFile ~/.ssh/id_ed25519\n  Port 22\n  ServerAliveInterval 60\n```\n\nNow just type: `ssh my-server`\n\n## Common Operations Once Connected\n\n```bash\n# Check system resources\nfree -h              # Memory\ndf -h                # Disk space\nnproc                # CPU cores\nuname -a             # Kernel info\n\n# Install software\nsudo apt update && sudo apt install -y nginx\n\n# Check running services\nsystemctl status nginx\n\n# View logs\nsudo journalctl -u nginx -f\n\n# Transfer files (from your local machine)\nscp -i ~/.ssh/id_ed25519 ./app.tar.gz ubuntu@54.123.45.67:~/\n```\n\n## Security Best Practices\n\n| Practice | Why |\n|----------|-----|\n| Disable password auth | Prevents brute-force attacks |\n| Use key-based auth only | Cryptographically secure |\n| Change default SSH port | Reduces automated scanning |\n| Use a bastion/jump host | Single entry point to private network |\n| Enable fail2ban | Auto-blocks repeated failed logins |\n| Keep OS updated | Patches known vulnerabilities |\n\n```bash\n# Disable password auth in sshd_config\nsudo sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config\nsudo systemctl restart sshd\n```\n\n## Windows: RDP Access\n\nFor Windows VMs, use Remote Desktop Protocol (RDP) on port 3389 instead of SSH. The cloud console provides a password or RDP file for connection.",
       "xp_reward": 20,
       "coins_reward": 10,
-      "is_mandatory": true,
-      "illustration_url": "https://images.unsplash.com/photo-1618044733300-9472054094ee?w=800"
+      "is_mandatory": false
     }
   ]
 }
