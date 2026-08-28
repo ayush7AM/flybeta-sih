@@ -1,5 +1,6 @@
 from datetime import date, timedelta
 import re
+import traceback
 
 # pyrefly: ignore [missing-import]
 from django.contrib.auth.models import User
@@ -48,7 +49,7 @@ class DomainViewSet(ReadOnlyModelViewSet):
     Read-only API for learning domains (tracks).
     Lists all domains with nested levels and lessons.
     """
-    queryset = Domain.objects.prefetch_related('levels__lessons').all()
+    queryset = Domain.objects.filter(is_published=True).prefetch_related('levels__lessons').all()
     serializer_class = DomainSerializer
     lookup_field = 'name'  # Allow lookup by slug: /api/v1/domains/cloud/
 
@@ -194,8 +195,8 @@ class BlueprintView(APIView):
     POST /api/v1/ai/architect/
 
     Accepts a project prompt and returns a step-by-step blueprint.
-    Currently uses a mock service; will be swapped for Gemini API later.
     """
+    authentication_classes = []
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -214,7 +215,7 @@ class BlueprintView(APIView):
                 'steps': steps,
             }, status=status.HTTP_200_OK)
         except Exception as e:
-            print(f"Blueprint API Error: {e}")
+            traceback.print_exc()
             return Response(
                 {'error': 'The Architect is meditating. Please try again.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -226,8 +227,8 @@ class CodeReviewView(APIView):
     POST /api/v1/ai/reviewer/
 
     Accepts a code snippet and returns structured review findings.
-    Currently uses a mock service; will be swapped for Gemini API later.
     """
+    authentication_classes = []
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -248,7 +249,7 @@ class CodeReviewView(APIView):
                 'findings': findings,
             }, status=status.HTTP_200_OK)
         except Exception as e:
-            print(f"Code Review API Error: {e}")
+            traceback.print_exc()
             return Response(
                 {'error': 'The Reviewer is meditating. Please try again.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -259,6 +260,7 @@ class SynapseExtractView(APIView):
     POST /api/v1/ai/synapse/
     Accepts video_url, extracts video_id, calls Gemini for quiz generation.
     """
+    authentication_classes = []
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -297,6 +299,7 @@ class SynapseExtractView(APIView):
         except ValueError as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            traceback.print_exc()
             return Response({'error': 'An unexpected error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -305,6 +308,7 @@ class OracleChatView(APIView):
     POST /api/v1/ai/oracle/
     Accepts message and history, calls ask_oracle, returns reply.
     """
+    authentication_classes = []
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -321,7 +325,7 @@ class OracleChatView(APIView):
             reply = ask_oracle(message, history)
             return Response({'reply': reply}, status=status.HTTP_200_OK)
         except Exception as e:
-            print(f"Oracle API View Error: {e}")
+            traceback.print_exc()
             return Response(
                 {'error': 'The Oracle is meditating. Please try again.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR

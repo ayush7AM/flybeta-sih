@@ -15,9 +15,12 @@ class Domain(models.Model):
     title = models.CharField(max_length=128, help_text='Display title, e.g. "Data Science"')
     icon = models.CharField(max_length=64, blank=True, help_text='Icon identifier (Material Symbol name or emoji)')
     color = models.CharField(max_length=7, blank=True, help_text='Track accent hex, e.g. "#059669"')
+    track_code = models.CharField(max_length=10, blank=True, default='', help_text='Short code, e.g. "TS-01", "AI-01"')
+    character_image = models.CharField(max_length=500, blank=True, default='', help_text='Path or URL to theme character image')
+    is_published = models.BooleanField(default=True, help_text='Toggle track visibility from admin')
 
     class Meta:
-        ordering = ['title']
+        ordering = ['track_code', 'title']
 
     def __str__(self):
         return self.title
@@ -46,6 +49,13 @@ class Lesson(models.Model):
     An individual lesson inside a Level.
     Completing all mandatory lessons unlocks the next level.
     """
+    LESSON_TYPE_CHOICES = [
+        ('theory', 'Theory'),
+        ('lab', 'Lab'),
+        ('quiz', 'Quiz'),
+        ('boss', 'Boss Quiz'),
+    ]
+
     level = models.ForeignKey(Level, on_delete=models.CASCADE, related_name='lessons')
     order = models.PositiveSmallIntegerField(help_text='Display order within the level')
     title = models.CharField(max_length=256)
@@ -54,6 +64,7 @@ class Lesson(models.Model):
     coins_reward = models.PositiveIntegerField(default=5)
     is_mandatory = models.BooleanField(default=True, help_text='Must complete to unlock next level')
     illustration_url = models.URLField(blank=True, null=True, help_text='Optional illustration image URL for visual lesson headers')
+    lesson_type = models.CharField(max_length=20, choices=LESSON_TYPE_CHOICES, default='theory', help_text='Category: theory, lab, quiz, or boss')
 
     class Meta:
         ordering = ['level', 'order']

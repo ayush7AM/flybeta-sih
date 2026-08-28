@@ -5,11 +5,11 @@
 const MOCK_VIDEOS = [
   // ── Cloud Computing ───────────────────────────────────────────────────
   {
-    id: 'dH0yz-Osy54',
-    title: 'Cloud Computing Full Course — Learn in 4 Hours',
-    channelName: 'Edureka',
-    thumbnail: 'https://i.ytimg.com/vi/dH0yz-Osy54/hqdefault.jpg',
-    duration: '4:02:33',
+    id: 'M988_VALWT8',
+    title: 'Cloud Computing Explained — Full Tutorial for Beginners',
+    channelName: 'freeCodeCamp',
+    thumbnail: 'https://i.ytimg.com/vi/M988_VALWT8/hqdefault.jpg',
+    duration: '3:48:20',
     track: 'Cloud Computing',
     trackSlug: 'cloud',
   },
@@ -81,11 +81,11 @@ const MOCK_VIDEOS = [
 
   // ── Data Science ──────────────────────────────────────────────────────
   {
-    id: 'ua-CiDNNj30',
-    title: 'Data Science Full Course — 12 Hours',
-    channelName: 'Edureka',
-    thumbnail: 'https://i.ytimg.com/vi/ua-CiDNNj30/hqdefault.jpg',
-    duration: '11:51:34',
+    id: 'KkLfNlEF2mI',
+    title: 'Data Science Full Course for Beginners',
+    channelName: 'Alex The Analyst',
+    thumbnail: 'https://i.ytimg.com/vi/KkLfNlEF2mI/hqdefault.jpg',
+    duration: '3:12:45',
     track: 'Data Science',
     trackSlug: 'data',
   },

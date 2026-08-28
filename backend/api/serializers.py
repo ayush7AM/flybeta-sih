@@ -30,7 +30,7 @@ class LessonSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'level', 'order', 'title',
             'content_md', 'xp_reward', 'coins_reward', 'is_mandatory',
-            'illustration_url',
+            'illustration_url', 'lesson_type',
         ]
 
 
@@ -47,7 +47,7 @@ class DomainSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Domain
-        fields = ['id', 'name', 'title', 'icon', 'color', 'levels']
+        fields = ['id', 'name', 'title', 'icon', 'color', 'track_code', 'character_image', 'is_published', 'levels']
 
 
 class CapstoneSubmissionSerializer(serializers.ModelSerializer):
