@@ -23,24 +23,24 @@ const TRACK_CODES = {
 // ── Per-theme domain → character image mappings ──────────────────────────
 const THEME_IMAGES = {
   'doraemon-blue': {
-    'cloud': '/doremon-theme/doremon.png',
-    'ai':    '/doremon-theme/sizuka.png',
-    'data':  '/doremon-theme/nobita.png',
+    'cloud': '/doremon-theme/doremon.webp',
+    'ai':    '/doremon-theme/sizuka.webp',
+    'data':  '/doremon-theme/nobita.webp',
   },
   'shinchan': {
-    'cloud': '/shinchan-theme/shinchan.png',
-    'ai':    '/shinchan-theme/bo chain.png',
-    'data':  '/shinchan-theme/meni.png',
+    'cloud': '/shinchan-theme/shinchan.webp',
+    'ai':    '/shinchan-theme/bo chain.webp',
+    'data':  '/shinchan-theme/meni.webp',
   },
   'princess': {
-    'cloud': '/disney-princess-thene/rapunzel_new.png',
-    'ai':    '/disney-princess-thene/Mulan.png',
-    'data':  '/disney-princess-thene/belle.png',
+    'cloud': '/disney-princess-thene/rapunzel_new.webp',
+    'ai':    '/disney-princess-thene/Mulan.webp',
+    'data':  '/disney-princess-thene/belle.webp',
   },
   'anime': {
-    'cloud': '/anime-theme/zoro.png',
-    'ai':    '/anime-theme/luffy.png',
-    'data':  '/anime-theme/nami.png',
+    'cloud': '/anime-theme/zoro.webp',
+    'ai':    '/anime-theme/luffy.webp',
+    'data':  '/anime-theme/nami.webp',
   },
 };
 

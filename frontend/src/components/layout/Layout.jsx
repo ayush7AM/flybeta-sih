@@ -5,10 +5,10 @@ import { useTheme } from '../../context/ThemeContext';
 
 // ── Per-theme background images ──────────────────────────────────────────
 const THEME_BACKGROUNDS = {
-  'doraemon-blue': '/doremon-theme/doremon_flybeta.png',
-  'shinchan':      '/shinchan-theme/shinchan-theme-bg.png',
-  'princess':      '/disney-princess-thene/bg-theme.jpeg',
-  'anime':         '/anime-theme/anime-theme.jpeg',
+  'doraemon-blue': '/doremon-theme/doremon_flybeta.webp',
+  'shinchan':      '/shinchan-theme/shinchan-theme-bg.webp',
+  'princess':      '/disney-princess-thene/bg-theme.webp',
+  'anime':         '/anime-theme/anime-theme.webp',
 };
 
 export default function Layout() {
