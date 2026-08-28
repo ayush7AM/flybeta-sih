@@ -51,6 +51,13 @@ class Command(BaseCommand):
         'into Domain, Level, and Lesson models (uses update_or_create).'
     )
 
+    # Map domain slugs → track_code and is_published
+    DOMAIN_META = {
+        'ai': {'track_code': 'TS-01', 'is_published': True},
+        'cloud': {'track_code': 'TS-02', 'is_published': True},
+        'data': {'track_code': 'TS-03', 'is_published': True},
+    }
+
     def add_arguments(self, parser):
         parser.add_argument(
             '--domain',
@@ -74,6 +81,9 @@ class Command(BaseCommand):
 
         if dry_run:
             self.stdout.write(self.style.WARNING('DRY RUN — no database writes.'))
+        else:
+            self.stdout.write(self.style.WARNING('WIPING existing Domain, Level, and Lesson data...'))
+            Domain.objects.all().delete()
 
         # Counters
         stats = {
@@ -154,12 +164,18 @@ class Command(BaseCommand):
             return
 
         # --- Domain ---
+        domain_slug = domain_data['name']
+        meta = self.DOMAIN_META.get(domain_slug, {})
+
         domain, created = Domain.objects.update_or_create(
-            name=domain_data['name'],
+            name=domain_slug,
             defaults={
-                'title': domain_data.get('title', domain_data['name'].replace('-', ' ').title()),
+                'title': domain_data.get('title', domain_slug.replace('-', ' ').title()),
                 'icon': domain_data.get('icon', ''),
                 'color': domain_data.get('color', ''),
+                'track_code': meta.get('track_code', ''),
+                'is_published': meta.get('is_published', True),
+                'character_image': domain_data.get('character_image', ''),
             },
         )
         if created:
@@ -188,16 +204,20 @@ class Command(BaseCommand):
 
         # --- Lessons ---
         for lesson_data in lessons_data:
+            # Support both 'content_md' and 'content' keys from JSON
+            content = lesson_data.get('content_md', lesson_data.get('content', ''))
+
             lesson, created = Lesson.objects.update_or_create(
                 level=level,
                 order=lesson_data['order'],
                 defaults={
                     'title': lesson_data.get('title', f'Lesson {lesson_data["order"]}'),
-                    'content_md': lesson_data.get('content_md', ''),
+                    'content_md': content,
                     'xp_reward': lesson_data.get('xp_reward', 10),
                     'coins_reward': lesson_data.get('coins_reward', 5),
                     'is_mandatory': lesson_data.get('is_mandatory', True),
                     'illustration_url': lesson_data.get('illustration_url', ''),
+                    'lesson_type': lesson_data.get('lesson_type', 'theory'),
                 },
             )
             if created:
