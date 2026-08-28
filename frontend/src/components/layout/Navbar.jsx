@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Moon, Sun } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 import { useTheme } from '../../context/ThemeContext';
 import Logo from '../ui/Logo';
@@ -13,7 +14,7 @@ const NAV_LINKS = [
 export default function Navbar() {
   const location = useLocation();
   const { user } = useUser();
-  const { themeKey, themes, themeKeys, setTheme } = useTheme();
+  const { themeKey, themes, themeKeys, setTheme, isDarkMode, toggleDarkMode } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -70,6 +71,15 @@ export default function Navbar() {
           <span>⚡</span>
           <span>{user.xp} XP</span>
         </div>
+
+        {/* Dark Mode Toggle */}
+        <button
+          onClick={toggleDarkMode}
+          className="brutalist-badge bg-canvas text-ink cursor-pointer hover:bg-border-light transition-colors p-2"
+          title="Toggle Dark Mode"
+        >
+          {isDarkMode ? <Moon size={18} /> : <Sun size={18} />}
+        </button>
 
         {/* Theme Switcher Dropdown */}
         <div className="relative" ref={dropdownRef}>

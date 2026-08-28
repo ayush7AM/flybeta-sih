@@ -12,7 +12,7 @@ const THEME_BACKGROUNDS = {
 };
 
 export default function Layout() {
-  const { themeKey } = useTheme();
+  const { themeKey, isDarkMode } = useTheme();
   const bgImage = THEME_BACKGROUNDS[themeKey];
   const hasThemedBg = !!bgImage;
 
@@ -30,11 +30,15 @@ export default function Layout() {
           : undefined
       }
     >
-      {/* Cream readability overlay — only rendered for themed backgrounds */}
+      {/* Readability overlay — only rendered for themed backgrounds */}
       {hasThemedBg && (
         <div
-          className="fixed inset-0"
-          style={{ background: '#F9F8F6', opacity: 0.8, zIndex: 0 }}
+          className="fixed inset-0 transition-colors"
+          style={{ 
+            background: isDarkMode ? '#111111' : '#F9F8F6', 
+            opacity: isDarkMode ? 0.85 : 0.8, 
+            zIndex: 0 
+          }}
         />
       )}
 
