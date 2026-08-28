@@ -33,3 +33,8 @@
 - **Buttons:** Look like satisfying physical arcade switches or industrial E-STOP buttons.
 - **Gamification Header:** Stats look like physical die-cut stickers or stamped labels resting on a thick top bar.
 - **Content:** Images/Icons should be tactile 3D renders (e.g., mechanical keyboards, servers, industrial machinery) placed within heavy-bordered boxes.
+
+## 5. ASSET OPTIMIZATION & PERFORMANCE
+- **Grid Backgrounds:** Use pure CSS (`linear-gradient`) rather than repeating raster images for the blueprint grids.
+- **Theme Assets:** All heavy raster characters and backgrounds are compressed to `.webp` format at ~80% quality. (e.g., 56MB of PNGs compressed to 4.9MB of WebP).
+- **EXIF Orientation:** When converting user or stock JPEGs to WebP, ensure EXIF orientation data is baked into the pixel array (e.g., using Pillow's `ImageOps.exif_transpose`), as WebP may strip this metadata, causing sideways rendering.

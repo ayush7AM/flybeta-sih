@@ -768,3 +768,60 @@ Grid changed from `lg:grid-cols-4` → `lg:grid-cols-3` per spec.
 
 *Last updated: 2026-08-24 — Phase 6 (Real AI API Integration) complete.*
 
+---
+
+## Phase 7: Production DB & Curriculum Recovery ✅
+
+**Goal:** Migrate to a live production database and recover lost rich curriculum content from Git history.
+
+| Component | Changes |
+|-----------|---------|
+| Database Migration | Updated `.env` and `settings.py` to point to a live Supabase PostgreSQL database in Mumbai (port 443) to bypass strict ISP firewalls. |
+| Curriculum Recovery | Identified that rich lesson content was overwritten by placeholder stubs in recent commits. Recovered full AI, Cloud, and Data Science JSON files by checking out from commit `ef902a2`. |
+| Ingestion Pipeline | Updated `load_level_content.py` to correctly parse `ai/`, `cloud/`, and `data/` directories and to safely wipe existing data before seeding. |
+
+### Phase 7 Verification
+| Check | Result |
+|-------|--------|
+| Seed execution | ✅ Database fully seeded without errors. |
+| DB Counts | ✅ Verified 3 Domains, 30 Levels, and 98 Lessons fully loaded. |
+
+---
+
+## Phase 8: AI Services Restoration ✅
+
+**Goal:** Restore broken AI endpoints and upgrade to the latest Gemini models.
+
+| Component | Changes |
+|-----------|---------|
+| DRF Authentication | Fixed `403 Forbidden` errors on AI endpoints (`OracleView`, `CodeReviewView`, `ArchitectView`) by explicitly adding `@authentication_classes([])` to bypass CSRF enforcement on public API calls. |
+| Model Upgrade | Upgraded AI services to use `gemini-3.6-flash`. Re-verified connectivity with a standalone Python key test. |
+| Error Handling | Added detailed traceback logging inside the `except` blocks of AI views so errors are surfaced rather than swallowed silently. |
+
+### Phase 8 Verification
+| Check | Result |
+|-------|--------|
+| Oracle API | ✅ Returns 200 OK and valid JSON instead of 403. |
+| Code Review API | ✅ Successfully calls `gemini-3.6-flash` and returns properly structured Pydantic schemas. |
+
+---
+
+## Phase 9: WebP Asset Optimization ✅
+
+**Goal:** Optimize frontend performance by compressing heavy raster theme assets (56MB) without altering the layout.
+
+| Component | Changes |
+|-----------|---------|
+| WebP Conversion | Built a batch Python script using `Pillow` to convert 24 theme PNG/JPEG files to `.webp` format at 80% quality. |
+| EXIF Correction | The Anime theme background lost its original EXIF orientation metadata during initial conversion, causing it to render sideways. Fixed by using `ImageOps.exif_transpose()` to bake the rotation into the pixel data before saving. |
+| Component Updates | Updated paths in `Layout.jsx` and `TrackCard.jsx` to reference `.webp`. Removed all old `.png`/`.jpeg` files. |
+
+### Phase 9 Verification
+| Check | Result |
+|-------|--------|
+| Asset Weight | ✅ Total theme assets reduced from 56.5 MB to 4.9 MB (91% reduction). |
+| Visual Fidelity | ✅ Theme switching across all 5 themes renders instantly with perfect layout and correct orientation. |
+
+---
+
+*Last updated: 2026-08-29 — Phase 9 (Asset Optimization) complete.*

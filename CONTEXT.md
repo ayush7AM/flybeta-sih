@@ -5,7 +5,7 @@ FlyBeta is a gamified, level-based learning platform for Data Science, AI, and C
 Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v4).
 
 ## Current Phase
-**Phase 9 — Planned**: Next feature development TBD.
+**Phase 10 — Planned**: Next feature development TBD.
 
 ### What's Done
 - Django project scaffold (`flybeta` config) in `/backend`
@@ -49,8 +49,22 @@ Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v
   - Developed `<CapstoneEvaluator/>` Neo-Brutalist frontend component with rich Markdown rendering and success/fail states.
   - Conditionally injected Capstone UI into `LessonRunnerPage` for Level 10.
 
+- **Phase 7 (Completed)**: Production DB & Curriculum Expansion
+  - Migrated to Supabase PostgreSQL (Mumbai) on port 443.
+  - Recovered rich lesson content JSONs from git history (commit `ef902a2`).
+  - Updated `load_level_content.py` to wipe data before seeding.
+  - Successfully seeded 3 Domains, 30 Levels, and 98 Lessons.
+- **Phase 8 (Completed)**: AI Services Restoration
+  - Fixed `403 Forbidden` errors on AI endpoints with `@authentication_classes([])`.
+  - Upgraded Oracle, Architect, and Code Review services to `gemini-3.6-flash`.
+  - Added traceback logging for resilient error handling.
+- **Phase 9 (Completed)**: WebP Asset Optimization
+  - Converted 24 heavy PNG/JPEG theme assets (56.5MB) to WebP (4.9MB) via Pillow batch script (91% savings).
+  - Fixed EXIF orientation issues in the Anime theme background via `exif_transpose`.
+  - Updated `Layout.jsx` and `TrackCard.jsx` to reference `.webp`.
+
 ### What's Next
-- **Phase 9**: TBD
+- **Phase 10**: TBD
 
 
 ## Curriculum
@@ -66,10 +80,10 @@ Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v
 | Theme | Key | Primary | Borders/Shadows | Character Images | Background |
 |-------|-----|---------|-----------------|------------------|------------|
 | 🏗️ Neo-Brutalism | `neo-brutalism` | Crimson `#E52E2E` | Black `#111111` | Lucide icons | Grid pattern |
-| 🤖 Doraemon Blue | `doraemon-blue` | Blue `#3182ce` | Blue `#2b6cb0` | Doraemon, Shizuka, Nobita | `doremon_flybeta.png` |
-| 🖍️ Shinchan | `shinchan` | Yellow `#FDE047` | Red `#DC2626` | Shinchan, Bo-chan, Meni | `shinchan-theme-bg.png` |
-| 👑 Princess | `princess` | Magenta `#A21CAF` | Purple `#A21CAF` | Rapunzel, Mulan, Belle | `bg-theme.jpeg` |
-| ⚔️ Anime | `anime` | Orange `#F97316` | Ink Black `#0F172A` | Zoro, Luffy, Nami | `anime-theme.jpeg` |
+| 🤖 Doraemon Blue | `doraemon-blue` | Blue `#3182ce` | Blue `#2b6cb0` | Doraemon, Shizuka, Nobita | `doremon_flybeta.webp` |
+| 🖍️ Shinchan | `shinchan` | Yellow `#FDE047` | Red `#DC2626` | Shinchan, Bo-chan, Meni | `shinchan-theme-bg.webp` |
+| 👑 Princess | `princess` | Magenta `#A21CAF` | Purple `#A21CAF` | Rapunzel, Mulan, Belle | `bg-theme.webp` |
+| ⚔️ Anime | `anime` | Orange `#F97316` | Ink Black `#0F172A` | Zoro, Luffy, Nami | `anime-theme.webp` |
 
 **Architecture:**
 - `THEME_IMAGES` map in `TrackCard.jsx` — per-theme domain→character mapping
@@ -113,9 +127,9 @@ Both must run simultaneously. Vite proxies `/api` → Django backend.
 ## Key Asset Directories
 ```
 frontend/public/
-├── doremon-theme/        # Doraemon character PNGs + background
-├── shinchan-theme/       # Shinchan character PNGs + background
-├── disney-princess-thene/ # Princess character PNGs + background
-└── anime-theme/          # Anime character PNGs + background
+├── doremon-theme/        # Doraemon character WebPs + background
+├── shinchan-theme/       # Shinchan character WebPs + background
+├── disney-princess-thene/ # Princess character WebPs + background
+└── anime-theme/          # Anime character WebPs + background
 ```
 
