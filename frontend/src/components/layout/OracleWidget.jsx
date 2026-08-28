@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Sparkles, X, Send, Bot } from 'lucide-react';
 import { askOracle } from "../../services/api";
+import { useTheme } from "../../context/ThemeContext";
 
 const ORACLE_WELCOME = {
   role: 'ai',
@@ -8,6 +9,7 @@ const ORACLE_WELCOME = {
 };
 
 export default function OracleWidget() {
+  const { themeKey } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([ORACLE_WELCOME]);
   const [input, setInput] = useState('');
@@ -72,12 +74,12 @@ export default function OracleWidget() {
         className={`oracle-panel ${isOpen ? 'oracle-panel-open' : ''}`}
       >
         {/* Panel Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b-2 border-ink bg-violet"
+        <div className="flex items-center justify-between px-5 py-4 border-b-2 border-ink bg-primary"
              style={{ boxShadow: 'inset 0 -2px 0 0 var(--color-ink)' }}>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 border-2 border-ink bg-white flex items-center justify-center"
                  style={{ boxShadow: '2px 2px 0px 0px var(--color-ink)' }}>
-              <Bot size={18} className="text-violet" />
+              <Bot size={18} className="text-primary" />
             </div>
             <div>
               <h3 className="label-mono text-white tracking-wider" style={{ fontSize: '14px' }}>
@@ -109,6 +111,9 @@ export default function OracleWidget() {
                 className={`oracle-msg ${
                   msg.role === 'user' ? 'oracle-msg-user' : 'oracle-msg-ai'
                 }`}
+                style={{
+                  color: msg.role === 'user' && themeKey === 'shinchan' ? 'var(--color-ink)' : undefined
+                }}
               >
                 {msg.role === 'ai' && (
                   <span className="oracle-msg-icon">🔮</span>
@@ -157,6 +162,9 @@ export default function OracleWidget() {
               disabled={!input.trim() || isTyping}
               className="oracle-send-btn"
               title="Send message"
+              style={{
+                color: themeKey === 'shinchan' ? 'var(--color-ink)' : 'white'
+              }}
             >
               <Send size={18} />
             </button>
@@ -170,6 +178,9 @@ export default function OracleWidget() {
           onClick={() => setIsOpen(true)}
           className="oracle-fab"
           title="Ask The Oracle"
+          style={{
+            color: themeKey === 'shinchan' ? 'var(--color-ink)' : 'white'
+          }}
         >
           <Sparkles size={26} />
         </button>
