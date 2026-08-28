@@ -57,7 +57,7 @@ export default function TrackSelectionPage() {
           style={{ background: 'var(--color-primary)' }}
         />
 
-        <div className="relative z-10 bg-white border-2 border-ink p-8 inline-block"
+        <div className="relative z-10 bg-surface border-2 border-ink p-8 inline-block"
              style={{ boxShadow: 'var(--shadow-brutal-lg)' }}>
           <h1 className="heading-xl m-0 leading-none">
             <span className="relative z-10">CHOOSE YOUR</span>
@@ -71,7 +71,7 @@ export default function TrackSelectionPage() {
           </h1>
         </div>
 
-        <p className="mt-8 max-w-2xl border-l-4 border-primary pl-4 bg-white p-4 border-y-2 border-r-2 border-ink text-muted"
+        <p className="mt-8 max-w-2xl border-l-4 border-primary pl-4 bg-surface p-4 border-y-2 border-r-2 border-ink text-muted"
            style={{ boxShadow: 'var(--shadow-brutal-sm)' }}>
           Select your specialized discipline. Your path dictates your curriculum,
           terminal access rights, and ultimate rank. Choose wisely.

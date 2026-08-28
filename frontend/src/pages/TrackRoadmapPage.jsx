@@ -64,7 +64,7 @@ export default function TrackRoadmapPage() {
 
       {/* Hero */}
       <header className="mb-12">
-        <div className="bg-white border-2 border-ink p-8 inline-block"
+        <div className="bg-surface border-2 border-ink p-8 inline-block"
              style={{ boxShadow: 'var(--shadow-brutal-lg)' }}>
           <div className="flex items-center gap-4 mb-2">
             <div

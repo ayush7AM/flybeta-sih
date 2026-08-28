@@ -26,7 +26,7 @@ export default function LevelNode({ level, domainName, isActive, isLocked }) {
       {/* Level Card */}
       <div
         className={`flex-1 border-2 border-ink p-4 mb-4 transition-all relative ${
-          isActive ? 'bg-white' : 'bg-canvas'
+          isActive ? 'bg-surface' : 'bg-canvas'
         } ${isLocked ? 'grayscale opacity-60 pointer-events-none select-none' : ''}`}
         style={{
           boxShadow: isActive && !isLocked ? 'var(--shadow-brutal-sm)' : 'none',

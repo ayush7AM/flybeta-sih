@@ -64,7 +64,7 @@ export default function SynapseEngine({ videoUrl }) {
     <div className="h-full flex flex-col">
       {/* ── 1. Initial State (The Trigger) ─────────────────────────────── */}
       {phase === 'idle' && (
-        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-white border-2 border-ink" style={{ boxShadow: 'var(--shadow-brutal)' }}>
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-surface border-2 border-ink" style={{ boxShadow: 'var(--shadow-brutal)' }}>
           <span style={{ fontSize: '48px', marginBottom: '16px' }}>⚡</span>
           <h2 className="heading-md mb-6">SYNAPSE ENGINE</h2>
           <p className="text-muted mb-8 max-w-xs leading-relaxed">
@@ -111,7 +111,7 @@ export default function SynapseEngine({ videoUrl }) {
 
       {/* ── 2. Loading State (The Stepper) ─────────────────────────────── */}
       {phase === 'loading' && (
-        <div className="flex-1 flex flex-col items-center justify-center p-8 bg-white border-2 border-ink" style={{ boxShadow: 'var(--shadow-brutal)' }}>
+        <div className="flex-1 flex flex-col items-center justify-center p-8 bg-surface border-2 border-ink" style={{ boxShadow: 'var(--shadow-brutal)' }}>
           <h3 className="heading-md mb-8">AI PROCESSING</h3>
           <div className="flex flex-col gap-6 w-full max-w-[280px]">
             {STEPS.map((step, i) => {
@@ -171,7 +171,7 @@ export default function SynapseEngine({ videoUrl }) {
 
       {/* ── 3. Results State (Mock Quiz UI) ────────────────────────────── */}
       {phase === 'results' && (
-        <div className="flex-1 flex flex-col h-full bg-white border-2 border-ink overflow-hidden" style={{ boxShadow: 'var(--shadow-brutal)' }}>
+        <div className="flex-1 flex flex-col h-full bg-surface border-2 border-ink overflow-hidden" style={{ boxShadow: 'var(--shadow-brutal)' }}>
           {/* Header */}
           <div className="flex items-center gap-3 p-6 border-b-2 border-ink bg-canvas">
             <div
@@ -203,7 +203,7 @@ export default function SynapseEngine({ videoUrl }) {
                 return (
                   <div
                     key={questionId}
-                    className="border-2 border-ink p-5 bg-white"
+                    className="border-2 border-ink p-5 bg-surface"
                     style={{
                       boxShadow: '2px 2px 0px 0px var(--color-ink)',
                     }}

@@ -307,12 +307,12 @@ export default function LessonRunnerPage() {
             {prevLesson ? (
               <button
                 onClick={() => navigate(`/track/${name}/level/${levelNum}/lesson/${prevLesson.order}`)}
-                className="brutalist-btn bg-white text-ink"
+                className="brutalist-btn bg-surface text-ink"
               >
                 ← Previous
               </button>
             ) : (
-              <Link to={`/track/${name}`} className="brutalist-btn bg-white text-ink no-underline">
+              <Link to={`/track/${name}`} className="brutalist-btn bg-surface text-ink no-underline">
                 ← Roadmap
               </Link>
             )}

@@ -45,21 +45,21 @@ export default function LevelBossQuiz({ quizData, levelId, onUnlock }) {
     const passed = percentage >= 60;
     
     return (
-      <div className="border-4 border-ink p-8 text-center bg-white relative overflow-hidden" style={{ boxShadow: 'var(--shadow-brutal-md)' }}>
+      <div className="border-4 border-ink p-8 text-center bg-surface relative overflow-hidden" style={{ boxShadow: 'var(--shadow-brutal-md)' }}>
         {passed && <Confetti width={width} height={height} className="absolute inset-0" style={{ pointerEvents: 'none' }} />}
         {passed ? (
           <div className="bg-green-400 border-4 border-ink p-8 relative z-10" style={{ boxShadow: 'var(--shadow-brutal-sm)' }}>
             <h2 className="text-4xl md:text-5xl font-black text-white uppercase mb-4" style={{ textShadow: '4px 4px 0 var(--color-ink)' }}>LEVEL CLEARED</h2>
             <p className="text-2xl font-bold text-ink mb-2">You scored {percentage}%!</p>
             {submitting ? (
-              <p className="font-mono text-ink mt-4 bg-white border-2 border-ink inline-block px-4 py-2">Unlocking next level...</p>
+              <p className="font-mono text-ink mt-4 bg-surface border-2 border-ink inline-block px-4 py-2">Unlocking next level...</p>
             ) : (
               <div className="flex flex-col items-center gap-4 mt-4">
                 <p className="font-mono text-ink bg-gold-light border-2 border-ink inline-block px-4 py-2 font-bold">+50 XP Awarded! Next level unlocked.</p>
                 {onUnlock && (
                   <button 
                     onClick={onUnlock}
-                    className="border-2 border-ink bg-white px-8 py-3 text-xl font-bold hover:bg-gray-100 transition-colors shadow-[4px_4px_0_0_#111] hover:translate-y-1 hover:translate-x-1 hover:shadow-[0px_0px_0_0_#111]"
+                    className="border-2 border-ink bg-surface px-8 py-3 text-xl font-bold hover:bg-gray-100 transition-colors shadow-[4px_4px_0_0_#111] hover:translate-y-1 hover:translate-x-1 hover:shadow-[0px_0px_0_0_#111]"
                   >
                     Return to Roadmap →
                   </button>
@@ -72,7 +72,7 @@ export default function LevelBossQuiz({ quizData, levelId, onUnlock }) {
             <h2 className="text-4xl md:text-5xl font-black text-white uppercase mb-4" style={{ textShadow: '4px 4px 0 var(--color-ink)' }}>TRY AGAIN</h2>
             <p className="text-2xl font-bold text-white mb-6">You scored {percentage}%. You need 60% to pass.</p>
             <button 
-              className="border-2 border-ink bg-white px-8 py-3 text-xl font-bold hover:bg-gray-100 transition-colors shadow-[4px_4px_0_0_#111] hover:translate-y-1 hover:translate-x-1 hover:shadow-[0px_0px_0_0_#111]"
+              className="border-2 border-ink bg-surface px-8 py-3 text-xl font-bold hover:bg-gray-100 transition-colors shadow-[4px_4px_0_0_#111] hover:translate-y-1 hover:translate-x-1 hover:shadow-[0px_0px_0_0_#111]"
               onClick={() => {
                 setCurrentIndex(0);
                 setScore(0);
@@ -88,7 +88,7 @@ export default function LevelBossQuiz({ quizData, levelId, onUnlock }) {
   }
 
   return (
-    <div className="border-4 border-ink p-6 bg-white" style={{ boxShadow: 'var(--shadow-brutal-md)' }}>
+    <div className="border-4 border-ink p-6 bg-surface" style={{ boxShadow: 'var(--shadow-brutal-md)' }}>
       <div className="flex justify-between items-center mb-6 pb-4 border-b-2 border-ink">
         <h3 className="font-bold text-2xl m-0 uppercase tracking-tight text-primary">Level Boss Quiz</h3>
         <span className="font-mono text-lg font-bold bg-gold-light text-ink border-2 border-ink px-3 py-1 shadow-[2px_2px_0_0_#111]">

@@ -77,7 +77,7 @@ export default function OracleWidget() {
         <div className="flex items-center justify-between px-5 py-4 border-b-2 border-ink bg-primary"
              style={{ boxShadow: 'inset 0 -2px 0 0 var(--color-ink)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 border-2 border-ink bg-white flex items-center justify-center"
+            <div className="w-8 h-8 border-2 border-ink bg-surface flex items-center justify-center"
                  style={{ boxShadow: '2px 2px 0px 0px var(--color-ink)' }}>
               <Bot size={18} className="text-primary" />
             </div>
@@ -92,7 +92,7 @@ export default function OracleWidget() {
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="w-8 h-8 border-2 border-ink bg-white flex items-center justify-center cursor-pointer hover:bg-canvas transition-colors"
+            className="w-8 h-8 border-2 border-ink bg-surface flex items-center justify-center cursor-pointer hover:bg-canvas transition-colors"
             style={{ boxShadow: '2px 2px 0px 0px var(--color-ink)' }}
           >
             <X size={16} className="text-ink" />

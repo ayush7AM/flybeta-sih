@@ -51,7 +51,7 @@ export default function CapstoneEvaluator({ preselectedDomain = '' }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 md:p-10 bg-white border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-xl font-sans my-8">
+    <div className="max-w-4xl mx-auto p-6 md:p-10 bg-surface border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-xl font-sans my-8">
       <h2 className="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter">AI Capstone Evaluator</h2>
       
       <form onSubmit={handleSubmit} className="space-y-8">
@@ -109,7 +109,7 @@ export default function CapstoneEvaluator({ preselectedDomain = '' }) {
       )}
 
       {result && (
-        <div className="mt-12 border-4 border-black bg-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] overflow-hidden relative">
+        <div className="mt-12 border-4 border-black bg-surface shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] overflow-hidden relative">
           {result.passed && <Confetti width={width} height={height} recycle={false} numberOfPieces={600} gravity={0.2} />}
           
           <div className={`p-8 border-b-4 border-black flex flex-col md:flex-row items-center justify-between gap-6 ${result.passed ? 'bg-[#4ade80]' : 'bg-[#E52E2E] text-white'}`}>
@@ -121,7 +121,7 @@ export default function CapstoneEvaluator({ preselectedDomain = '' }) {
             </div>
             <div className="flex flex-col items-center justify-center">
               <span className="text-sm font-black uppercase mb-1 tracking-widest">Score</span>
-              <div className="text-5xl md:text-6xl font-black bg-white text-black px-6 py-2 border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] leading-none transform -rotate-3">
+              <div className="text-5xl md:text-6xl font-black bg-surface text-black px-6 py-2 border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] leading-none transform -rotate-3">
                 {result.score}
               </div>
             </div>
