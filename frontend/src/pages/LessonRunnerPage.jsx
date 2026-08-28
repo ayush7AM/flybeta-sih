@@ -30,11 +30,12 @@ export default function LessonRunnerPage() {
   const lessonOrder = parseInt(order);
 
   useEffect(() => {
-    if (cached) return;
-    setLoading(true);
+    // SWR pattern: fetch silently to revalidate
     getDomain(name)
       .then((data) => setDomain(data))
-      .catch((err) => setError(err.message))
+      .catch((err) => {
+        if (!cached) setError(err.message);
+      })
       .finally(() => setLoading(false));
   }, [name, cached]);
 

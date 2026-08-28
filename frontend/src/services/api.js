@@ -11,26 +11,61 @@ const api = axios.create({
 export const domainCache = {};
 const domainPromises = {};
 
+// Helpers to safely read/write localStorage
+const readLocal = (key) => {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+  } catch (e) {
+    return null;
+  }
+};
+const writeLocal = (key, value) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {}
+};
+
+export const getCachedDomainsList = () => {
+  return readLocal('flybeta_tracks_list');
+};
+
 export const getCachedDomain = (name) => {
-  return domainCache[name] || null;
+  if (domainCache[name]) return domainCache[name];
+  const local = readLocal(`flybeta_track_${name}`);
+  if (local) {
+    domainCache[name] = local;
+    return local;
+  }
+  return null;
 };
 
 export const getDomains = async () => {
   const { data } = await api.get('domains/');
+  const results = data.results || data;
+  const finalResults = Array.isArray(results) ? results : [];
+  writeLocal('flybeta_tracks_list', finalResults);
   return data;
 };
 
 export const getDomain = (name) => {
-  if (domainCache[name]) return Promise.resolve(domainCache[name]);
+  // Return the active promise if a fetch is already in flight
+  if (domainPromises[name]) return domainPromises[name];
   
-  if (!domainPromises[name]) {
-    domainPromises[name] = api.get(`domains/${name}/`).then(({ data }) => {
-      domainCache[name] = data;
-      return data;
-    });
-  }
+  // Otherwise, trigger a new network fetch (Stale-While-Revalidate)
+  const fetchPromise = api.get(`domains/${name}/`).then(({ data }) => {
+    domainCache[name] = data;
+    writeLocal(`flybeta_track_${name}`, data);
+    // Clear promise so subsequent calls will re-fetch if needed
+    delete domainPromises[name];
+    return data;
+  }).catch((err) => {
+    delete domainPromises[name];
+    throw err;
+  });
   
-  return domainPromises[name];
+  domainPromises[name] = fetchPromise;
+  return fetchPromise;
 };
 
 export const prefetchDomain = (name) => {

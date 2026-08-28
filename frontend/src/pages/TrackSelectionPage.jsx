@@ -1,28 +1,25 @@
 import { useState, useEffect } from 'react';
-import { getDomains } from '../services/api';
+import { getDomains, getCachedDomainsList } from '../services/api';
 import TrackCard from '../components/ui/TrackCard';
 
-let cachedDomains = null;
-
 export default function TrackSelectionPage() {
-  const [domains, setDomains] = useState(cachedDomains || []);
-  const [loading, setLoading] = useState(!cachedDomains);
+  const cached = getCachedDomainsList();
+  const [domains, setDomains] = useState(cached || []);
+  const [loading, setLoading] = useState(!cached);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (cachedDomains) {
-      return; // Skip fetch if cached
-    }
-    
+    // SWR pattern: fetch silently in the background even if we have cached data
     getDomains()
       .then((data) => {
         // Handle paginated or direct array responses
         const results = data.results || data;
         const finalResults = Array.isArray(results) ? results : [];
-        cachedDomains = finalResults;
         setDomains(finalResults);
       })
-      .catch((err) => setError(err.message))
+      .catch((err) => {
+        if (!cached) setError(err.message); // Only show error if we have no fallback data
+      })
       .finally(() => setLoading(false));
   }, []);
 
