@@ -1,9 +1,17 @@
 import { Link } from 'react-router-dom';
 import { Lock } from 'lucide-react';
 
-export default function LevelNode({ level, domainName, isActive, isLocked }) {
+export default function LevelNode({ level, domainName, isActive, isLocked, isAuthGated, onAuthGate }) {
   const lessonCount = level.lessons?.length || 0;
   const mandatoryCount = level.lessons?.filter(l => l.is_mandatory).length || 0;
+
+  // Handle lesson link clicks — intercept if auth-gated
+  const handleLessonClick = (e) => {
+    if (isAuthGated) {
+      e.preventDefault();
+      onAuthGate?.();
+    }
+  };
 
   return (
     <div className="relative flex items-start gap-6">
@@ -37,6 +45,19 @@ export default function LevelNode({ level, domainName, isActive, isLocked }) {
             <Lock className="w-20 h-20 text-ink" strokeWidth={3} />
           </div>
         )}
+
+        {/* Auth-gated badge for unauthenticated users on Level 2+ */}
+        {isAuthGated && (
+          <div className="absolute top-2 right-2 z-20">
+            <button
+              onClick={onAuthGate}
+              className="brutalist-badge bg-blue-100 text-blue-700 cursor-pointer hover:bg-blue-200 transition-colors border border-blue-300 text-xs flex items-center gap-1"
+            >
+              🔒 Sign up to unlock
+            </button>
+          </div>
+        )}
+
         <div className={`relative z-10`}>
           <div className="flex items-center justify-between mb-2">
           <h3 className="heading-md text-lg m-0">{level.title}</h3>
@@ -57,7 +78,10 @@ export default function LevelNode({ level, domainName, isActive, isLocked }) {
                 <li key={lesson.id} className="flex items-center justify-between py-1.5 border-b border-border-light last:border-b-0">
                   <Link
                     to={`/track/${domainName}/level/${level.number}/lesson/${lesson.order}`}
-                    className="no-underline text-ink hover:text-primary transition-colors flex items-center gap-2 text-sm"
+                    onClick={handleLessonClick}
+                    className={`no-underline hover:text-primary transition-colors flex items-center gap-2 text-sm ${
+                      isAuthGated ? 'text-muted' : 'text-ink'
+                    }`}
                   >
                     <span className="w-5 h-5 flex items-center justify-center border border-ink text-xs">
                       {lesson.order}

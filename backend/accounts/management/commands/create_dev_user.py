@@ -1,7 +1,7 @@
 """
 Management command: create_dev_user
 
-Creates a development superuser with a UserProfile for local API testing.
+Creates a development superuser with a StudentProfile for local API testing.
 Safe to re-run — skips if user already exists.
 
 Usage:
@@ -9,13 +9,15 @@ Usage:
 """
 
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
-from accounts.models import UserProfile
+from accounts.models import StudentProfile
+
+User = get_user_model()
 
 
 class Command(BaseCommand):
-    help = 'Create a development superuser (dev/flybeta123) with a UserProfile.'
+    help = 'Create a development superuser (dev/flybeta123) with a StudentProfile.'
 
     DEV_USERNAME = 'dev'
     DEV_PASSWORD = 'flybeta123'
@@ -26,6 +28,7 @@ class Command(BaseCommand):
             username=self.DEV_USERNAME,
             defaults={
                 'email': self.DEV_EMAIL,
+                'name': 'Dev User',
                 'is_staff': True,
                 'is_superuser': True,
             },
@@ -40,13 +43,13 @@ class Command(BaseCommand):
         else:
             self.stdout.write(f'~ User "{self.DEV_USERNAME}" already exists, skipping.')
 
-        # Ensure UserProfile exists (signal should create it, but be safe)
-        profile, p_created = UserProfile.objects.get_or_create(user=user)
+        # Ensure StudentProfile exists (signal should create it, but be safe)
+        profile, p_created = StudentProfile.objects.get_or_create(user=user)
         if p_created:
-            self.stdout.write(self.style.SUCCESS('✓ Created UserProfile'))
+            self.stdout.write(self.style.SUCCESS('✓ Created StudentProfile'))
         else:
             self.stdout.write(
-                f'~ UserProfile exists — XP: {profile.xp}, '
+                f'~ StudentProfile exists — XP: {profile.total_xp}, '
                 f'Coins: {profile.coins}, Streak: {profile.streak}'
             )
 

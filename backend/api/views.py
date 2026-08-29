@@ -3,7 +3,7 @@ import re
 import traceback
 
 # pyrefly: ignore [missing-import]
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 # pyrefly: ignore [missing-import]
 from django.db import transaction
 from rest_framework.views import APIView
@@ -14,7 +14,7 @@ from rest_framework.decorators import action
 from rest_framework import status
 
 from learn.models import Domain, Level, Lesson, LevelProgress, DomainProgress, CapstoneSubmission
-from accounts.models import UserProfile
+from accounts.models import StudentProfile
 from api.serializers import (
     DomainSerializer, LevelSerializer, LessonSerializer, UserStatsSerializer,
     CapstoneSubmissionSerializer
@@ -27,6 +27,7 @@ from rest_framework import viewsets
 
 def get_dev_user():
     """Get the dev user for mock auth. In production, use request.user instead."""
+    User = get_user_model()
     return User.objects.get(username='dev')
 
 
@@ -34,13 +35,12 @@ class UserMeView(APIView):
     """
     GET /api/v1/users/me/
     Returns the current user's gamification stats.
-    Uses mock auth (dev user) for local development.
     """
-    permission_classes = [AllowAny]
+    from rest_framework.permissions import IsAuthenticated
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = get_dev_user()
-        serializer = UserStatsSerializer(user.profile)
+        serializer = UserStatsSerializer(request.user.profile)
         return Response(serializer.data)
 
 

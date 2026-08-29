@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Moon, Sun } from 'lucide-react';
-import { useUser } from '../../context/UserContext';
+import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import Logo from '../ui/Logo';
 
@@ -13,7 +13,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const location = useLocation();
-  const { user } = useUser();
+  const { user, logout } = useAuth();
   const { themeKey, themes, themeKeys, setTheme, isDarkMode, toggleDarkMode } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -59,18 +59,22 @@ export default function Navbar() {
 
       {/* Right: Gamification Stats + Theme Switcher */}
       <div className="flex items-center gap-3">
-        <div className="brutalist-badge bg-flame-light text-flame" title="Daily Streak">
-          <span>🔥</span>
-          <span>{user.streak}</span>
-        </div>
-        <div className="brutalist-badge bg-gold-light text-gold" title="Coins">
-          <span>💰</span>
-          <span>{user.coins}</span>
-        </div>
-        <div className="brutalist-badge bg-cobalt-light text-cobalt" title="Experience Points">
-          <span>⚡</span>
-          <span>{user.xp} XP</span>
-        </div>
+        {user && (
+          <>
+            <div className="brutalist-badge bg-flame-light text-flame hidden md:flex" title="Daily Streak">
+              <span>🔥</span>
+              <span>{user.streak || 0}</span>
+            </div>
+            <div className="brutalist-badge bg-gold-light text-gold hidden md:flex" title="Coins">
+              <span>💰</span>
+              <span>{user.coins || 0}</span>
+            </div>
+            <div className="brutalist-badge bg-cobalt-light text-cobalt" title="Experience Points">
+              <span>⚡</span>
+              <span>{user.xp || user.total_xp || 0} XP</span>
+            </div>
+          </>
+        )}
 
         {/* Dark Mode Toggle */}
         <button
@@ -109,6 +113,15 @@ export default function Navbar() {
                   <span>{themes[key].label}</span>
                 </button>
               ))}
+              {user && (
+                <button
+                  onClick={logout}
+                  className="w-full text-left px-4 py-3 label-mono flex items-center gap-2 border-t-2 border-ink bg-red-100 text-red-700 hover:bg-red-200 transition-colors cursor-pointer"
+                >
+                  <span>🚪</span>
+                  <span>Logout</span>
+                </button>
+              )}
             </div>
           )}
         </div>

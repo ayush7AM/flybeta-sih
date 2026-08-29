@@ -1,21 +1,29 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
 
-from accounts.models import UserProfile
+from accounts.models import CustomUser, StudentProfile
 
 
-class UserProfileInline(admin.StackedInline):
-    model = UserProfile
+class StudentProfileInline(admin.StackedInline):
+    model = StudentProfile
     can_delete = False
-    verbose_name_plural = 'Profile'
-    fields = ('xp', 'coins', 'streak', 'last_active_date')
+    verbose_name_plural = 'Student Profile'
+    fields = ('xp', 'coins', 'streak', 'last_active_date', 'total_xp', 'current_rank', 'theme_preference')
 
 
-class UserAdmin(BaseUserAdmin):
-    inlines = (UserProfileInline,)
+class CustomUserAdmin(BaseUserAdmin):
+    inlines = (StudentProfileInline,)
+    list_display = ('username', 'name', 'email', 'is_staff', 'is_active')
+    list_filter = ('is_staff', 'is_active', 'is_superuser')
+    search_fields = ('username', 'name', 'email')
+
+    # Extend fieldsets to include our custom 'name' field
+    fieldsets = BaseUserAdmin.fieldsets + (
+        ('Profile', {'fields': ('name',)}),
+    )
+    add_fieldsets = BaseUserAdmin.add_fieldsets + (
+        ('Profile', {'fields': ('name', 'email')}),
+    )
 
 
-# Re-register the User admin with our inline
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)

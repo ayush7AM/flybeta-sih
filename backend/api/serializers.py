@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from learn.models import Domain, Level, Lesson, DomainProgress, CapstoneSubmission
-from accounts.models import UserProfile
+from accounts.models import StudentProfile
 
 class DomainProgressSerializer(serializers.ModelSerializer):
     domain_name = serializers.CharField(source='domain.name', read_only=True)
@@ -16,8 +16,8 @@ class UserStatsSerializer(serializers.ModelSerializer):
     domain_progress = serializers.SerializerMethodField()
 
     class Meta:
-        model = UserProfile
-        fields = ['username', 'xp', 'coins', 'streak', 'last_active_date', 'domain_progress']
+        model = StudentProfile
+        fields = ['username', 'xp', 'coins', 'streak', 'last_active_date', 'total_xp', 'current_rank', 'domain_progress']
 
     def get_domain_progress(self, obj):
         progress = obj.user.domain_progress.all()

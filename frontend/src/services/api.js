@@ -7,6 +7,56 @@ const api = axios.create({
   },
 });
 
+// ── Auth Interceptors ───────────────────────────────────────────────────
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('flybeta_access');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => Promise.reject(error));
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    
+    // If error is 401 and we haven't retried yet
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const refreshToken = localStorage.getItem('flybeta_refresh');
+      
+      if (refreshToken) {
+        try {
+          // Attempt to refresh token
+          const { data } = await axios.post('/api/v1/auth/refresh/', {
+            refresh: refreshToken
+          });
+          
+          localStorage.setItem('flybeta_access', data.access);
+          // Don't update refresh token unless backend returns a new one
+          if (data.refresh) {
+            localStorage.setItem('flybeta_refresh', data.refresh);
+          }
+          
+          // Retry original request with new token
+          originalRequest.headers.Authorization = `Bearer ${data.access}`;
+          return api(originalRequest);
+        } catch (refreshError) {
+          // Refresh failed, clear tokens
+          localStorage.removeItem('flybeta_access');
+          localStorage.removeItem('flybeta_refresh');
+          // Dispatch a custom event so AuthContext can log user out
+          window.dispatchEvent(new Event('flybeta:logout'));
+          return Promise.reject(refreshError);
+        }
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 // ── Domain endpoints ────────────────────────────────────────────────────
 export const domainCache = {};
 const domainPromises = {};
@@ -97,6 +147,27 @@ export const getLesson = async (id) => {
   const { data } = await api.get(`lessons/${id}/`);
   return data;
 };
+// ── Auth endpoints ────────────────────────────────────────────────────────
+export const loginUser = async (username, password) => {
+  const { data } = await api.post('auth/login/', { username, password });
+  return data;
+};
+
+export const registerUser = async (userData) => {
+  const { data } = await api.post('auth/register/', userData);
+  return data;
+};
+
+export const requestPasswordReset = async (email) => {
+  const { data } = await api.post('auth/password-reset/', { email });
+  return data;
+};
+
+export const resetPassword = async (uid, token, new_password) => {
+  const { data } = await api.post('auth/password-reset-confirm/', { uid, token, new_password });
+  return data;
+};
+
 // ── User endpoints ──────────────────────────────────────────────────────
 export const getUserStats = async () => {
   const { data } = await api.get('users/me/');

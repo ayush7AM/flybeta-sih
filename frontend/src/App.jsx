@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { UserProvider } from './context/UserContext';
+import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Layout from './components/layout/Layout';
 import LandingPage from './pages/LandingPage';
@@ -10,15 +10,19 @@ import ProjectArchitectPage from './pages/ProjectArchitectPage';
 import CodeReviewerPage from './pages/CodeReviewerPage';
 import VisionPage from './pages/VisionPage';
 import VideoDetailPage from './pages/VideoDetailPage';
+import ResetPasswordConfirmPage from './pages/ResetPasswordConfirmPage';
 
 export default function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <UserProvider>
+        <AuthProvider>
           <Routes>
             {/* Landing page — standalone, no app shell */}
             <Route path="/" element={<LandingPage />} />
+
+            {/* Password reset confirmation — standalone */}
+            <Route path="/reset-password/:uid/:token" element={<ResetPasswordConfirmPage />} />
 
             {/* App routes — inside Layout with Navbar */}
             <Route element={<Layout />}>
@@ -32,7 +36,7 @@ export default function App() {
               <Route path="/vision/video/:id" element={<VideoDetailPage />} />
             </Route>
           </Routes>
-        </UserProvider>
+        </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>
   );

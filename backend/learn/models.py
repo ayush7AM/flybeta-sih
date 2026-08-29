@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 # ---------------------------------------------------------------------------
@@ -83,7 +83,7 @@ class DomainProgress(models.Model):
     Tracks a user's overall progress within a Domain (track).
     All domains are unlocked from day one (is_unlocked defaults True).
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='domain_progress')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='domain_progress')
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE, related_name='user_progress')
     is_unlocked = models.BooleanField(default=True)
     current_level = models.PositiveSmallIntegerField(default=1)
@@ -102,7 +102,7 @@ class LevelProgress(models.Model):
     """
     Tracks which lessons a user has completed within a specific Level.
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='level_progress')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='level_progress')
     level = models.ForeignKey(Level, on_delete=models.CASCADE, related_name='user_progress')
     is_completed = models.BooleanField(default=False)
     lessons_completed = models.ManyToManyField(Lesson, blank=True, related_name='completed_by')
@@ -127,7 +127,7 @@ class CapstoneSubmission(models.Model):
         ('failed', 'Failed'),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='capstone_submissions')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='capstone_submissions')
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE, related_name='capstone_submissions')
     github_url = models.URLField(help_text="URL to the user's GitHub repository")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')

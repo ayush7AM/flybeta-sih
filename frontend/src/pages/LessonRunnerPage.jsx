@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getDomain, getCachedDomain, completeLesson } from '../services/api';
-import { useUser } from '../context/UserContext';
+import { useAuth } from '../context/AuthContext';
 import MarkdownRenderer from '../components/ui/MarkdownRenderer';
 import LevelBossQuiz from '../components/interactive/LevelBossQuiz';
 import CapstoneEvaluator from '../components/interactive/CapstoneEvaluator';
+import AuthModal from '../components/auth/AuthModal';
+import { Lock } from 'lucide-react';
 
 const TRACK_META = {
   'data-science': { accent: '#059669' },
@@ -17,7 +19,7 @@ const DEFAULT_META = { accent: '#E52E2E' };
 export default function LessonRunnerPage() {
   const { name, num, order } = useParams();
   const navigate = useNavigate();
-  const { updateUser } = useUser();
+  const { user, updateUser } = useAuth();
   const cached = getCachedDomain(name);
   const [domain, setDomain] = useState(cached);
   const [loading, setLoading] = useState(!cached);
@@ -25,9 +27,15 @@ export default function LessonRunnerPage() {
   const [completing, setCompleting] = useState(false);
   const [reward, setReward] = useState(null); // { xp, coins } flash
 
+  // Auth gate state
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
   const meta = TRACK_META[name] || DEFAULT_META;
   const levelNum = parseInt(num);
   const lessonOrder = parseInt(order);
+
+  // Freemium gate: unauthenticated users on Level 2+
+  const isGatedByAuth = !user && levelNum > 1;
 
   useEffect(() => {
     // SWR pattern: fetch silently to revalidate
@@ -86,6 +94,39 @@ export default function LessonRunnerPage() {
     );
   }
 
+  // ── Auth Gate: Show locked state for Level 2+ when unauthenticated ──
+  if (isGatedByAuth) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="brutalist-card p-12 text-center max-w-lg">
+          <Lock className="w-16 h-16 mx-auto mb-4 text-muted" strokeWidth={2.5} />
+          <h2 className="heading-lg m-0 mb-2">Level {levelNum} is Locked</h2>
+          <p className="text-muted mb-6">
+            Create a free FlyBeta account to unlock Level 2+ lessons and save your progress!
+          </p>
+          <button
+            onClick={() => setShowAuthModal(true)}
+            className="brutalist-btn brutalist-btn-primary text-lg"
+          >
+            Sign up to unlock →
+          </button>
+          <div className="mt-4">
+            <Link to={`/track/${name}`} className="text-sm text-muted hover:text-ink no-underline">
+              ← Back to Roadmap
+            </Link>
+          </div>
+
+          <AuthModal
+            isOpen={showAuthModal}
+            onClose={() => setShowAuthModal(false)}
+            initialView="register"
+            customMessage={`Sign up to unlock Level ${levelNum}: "${currentLevel.title}" and save your XP!`}
+          />
+        </div>
+      </div>
+    );
+  }
+
   // Navigation helpers
   const currentIndex = allLessons.findIndex(l => l.order === lessonOrder);
   const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
@@ -93,11 +134,15 @@ export default function LessonRunnerPage() {
 
   // Handle lesson completion
   const handleComplete = async () => {
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
     setCompleting(true);
     try {
       const result = await completeLesson(currentLesson.id);
 
-      // Update UserContext with new stats (instant Navbar update)
+      // Update AuthContext with new stats (instant Navbar update)
       updateUser(result.user);
 
       // Always show the success overlay
@@ -329,6 +374,14 @@ export default function LessonRunnerPage() {
           </div>
         </div>
       </div>
+
+      {/* Auth modal for completion gating on Level 1 (guest clicking complete) */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialView="register"
+        customMessage="Create a free account to save your progress and earn XP!"
+      />
     </div>
   );
 }

@@ -2,17 +2,21 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getDomain, getCachedDomain } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
-import { useUser } from '../context/UserContext';
+import { useAuth } from '../context/AuthContext';
 import LevelNode from '../components/ui/LevelNode';
+import AuthModal from '../components/auth/AuthModal';
 
 export default function TrackRoadmapPage() {
   const { name } = useParams();
   const { themeKey } = useTheme();
-  const { user } = useUser();
+  const { user } = useAuth();
   const cached = getCachedDomain(name);
   const [domain, setDomain] = useState(cached);
   const [loading, setLoading] = useState(!cached);
   const [error, setError] = useState(null);
+
+  // Auth gate modal state
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
     // SWR pattern: fetch silently to revalidate
@@ -88,15 +92,22 @@ export default function TrackRoadmapPage() {
         {levels.length > 0 ? (
           levels
             .sort((a, b) => a.number - b.number)
-            .map((level) => (
-              <LevelNode
-                key={level.id}
-                level={level}
-                domainName={name}
-                isActive={level.number === 1}
-                isLocked={level.number > highestUnlockedLevel}
-              />
-            ))
+            .map((level) => {
+              // Freemium gate: Level 2+ requires auth
+              const isAuthGated = !user && level.number > 1;
+
+              return (
+                <LevelNode
+                  key={level.id}
+                  level={level}
+                  domainName={name}
+                  isActive={level.number === 1}
+                  isLocked={user ? level.number > highestUnlockedLevel : false}
+                  isAuthGated={isAuthGated}
+                  onAuthGate={() => setShowAuthModal(true)}
+                />
+              );
+            })
         ) : (
           <div className="brutalist-card p-12 text-center">
             <p className="heading-md text-muted mb-2">No levels yet</p>
@@ -128,6 +139,14 @@ export default function TrackRoadmapPage() {
           </div>
         )}
       </div>
+
+      {/* Auth Gate Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialView="register"
+        customMessage="Create a free account to unlock Level 2+ and save your XP!"
+      />
     </div>
   );
 }
