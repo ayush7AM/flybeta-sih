@@ -8,16 +8,17 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
 
 from learn.models import Domain, Level, Lesson, LevelProgress, DomainProgress, CapstoneSubmission
 from accounts.models import StudentProfile
 from api.serializers import (
     DomainSerializer, LevelSerializer, LessonSerializer, UserStatsSerializer,
-    CapstoneSubmissionSerializer
+    CapstoneSubmissionSerializer, UserProfileSerializer
 )
 from api.ai_services import generate_project_blueprint, generate_code_review, generate_video_quiz, ask_oracle
 from learn.services.github_service import fetch_github_repo_content
@@ -41,6 +42,75 @@ class UserMeView(APIView):
 
     def get(self, request):
         serializer = UserStatsSerializer(request.user.profile)
+        return Response(serializer.data)
+
+
+class UserProfileView(APIView):
+    """
+    GET  /api/v1/users/profile/  — full dashboard payload (rank, XP, theme, progress)
+    PATCH /api/v1/users/profile/ — update name, bio, avatar, theme_preference
+    """
+    from rest_framework.permissions import IsAuthenticated
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get(self, request):
+        profile = request.user.profile
+        # Auto-sync rank from XP on every read
+        computed = profile.compute_rank()
+        if profile.current_rank != computed:
+            profile.current_rank = computed
+            profile.save(update_fields=['current_rank'])
+        serializer = UserProfileSerializer(profile)
+        return Response(serializer.data)
+
+    def patch(self, request):
+        profile = request.user.profile
+        user = request.user
+        updated_fields = []
+        updated_user_fields = []
+
+        # ── Name (on CustomUser) ─────────────────────────────────────
+        name = request.data.get('name')
+        if name is not None:
+            user.name = name.strip()
+            updated_user_fields.append('name')
+
+        # ── Bio (on StudentProfile) ──────────────────────────────────
+        bio = request.data.get('bio')
+        if bio is not None:
+            if len(bio) > 160:
+                return Response(
+                    {'error': 'Bio must be 160 characters or fewer.'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            profile.bio = bio.strip()
+            updated_fields.append('bio')
+
+        # ── Avatar (file upload) ─────────────────────────────────────
+        avatar = request.FILES.get('avatar')
+        if avatar is not None:
+            profile.avatar = avatar
+            updated_fields.append('avatar')
+
+        # ── Theme preference ─────────────────────────────────────────
+        theme = request.data.get('theme_preference')
+        if theme is not None:
+            if theme not in StudentProfile.VALID_THEMES:
+                return Response(
+                    {'error': f'Invalid theme. Choose from: {sorted(StudentProfile.VALID_THEMES)}'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            profile.theme_preference = theme
+            updated_fields.append('theme_preference')
+
+        # ── Persist ──────────────────────────────────────────────────
+        if updated_user_fields:
+            user.save(update_fields=updated_user_fields)
+        if updated_fields:
+            profile.save(update_fields=updated_fields)
+
+        serializer = UserProfileSerializer(profile)
         return Response(serializer.data)
 
 
@@ -69,10 +139,10 @@ class LevelViewSet(ReadOnlyModelViewSet):
             qs = qs.filter(domain__name=domain_name)
         return qs
 
-    @action(detail=True, methods=['post'], permission_classes=[AllowAny])
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def pass_quiz(self, request, pk=None):
         level = self.get_object()
-        user = get_dev_user()
+        user = request.user
         
         with transaction.atomic():
             domain_progress, _ = DomainProgress.objects.get_or_create(
@@ -86,11 +156,13 @@ class LevelViewSet(ReadOnlyModelViewSet):
                 
                 profile = user.profile
                 profile.xp += 50
+                profile.total_xp += 50
+                profile.current_rank = profile.compute_rank()
                 profile.save()
                 
         return Response({
             'status': 'success',
-            'user': UserStatsSerializer(user.profile).data
+            'user': UserProfileSerializer(user.profile).data
         }, status=status.HTTP_200_OK)
 
 
@@ -110,7 +182,7 @@ class LessonViewSet(ReadOnlyModelViewSet):
             qs = qs.filter(level_id=level_id)
         return qs
 
-    @action(detail=True, methods=['post'], permission_classes=[AllowAny])
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def complete(self, request, pk=None):
         """
         POST /api/v1/lessons/{id}/complete/
@@ -124,7 +196,7 @@ class LessonViewSet(ReadOnlyModelViewSet):
         6. Return updated user stats
         """
         lesson = self.get_object()
-        user = get_dev_user()
+        user = request.user
         profile = user.profile
         today = date.today()
 
@@ -144,6 +216,7 @@ class LessonViewSet(ReadOnlyModelViewSet):
 
                 # 3. Award XP and coins
                 profile.xp += lesson.xp_reward
+                profile.total_xp += lesson.xp_reward
                 profile.coins += lesson.coins_reward
 
                 # 4. Streak logic
@@ -161,6 +234,7 @@ class LessonViewSet(ReadOnlyModelViewSet):
                     profile.streak = 1
 
                 profile.last_active_date = today
+                profile.current_rank = profile.compute_rank()
                 profile.save()
 
             # 5. Check level completion (all mandatory lessons done?)
@@ -176,7 +250,7 @@ class LessonViewSet(ReadOnlyModelViewSet):
                 level_progress.is_completed = True
                 level_progress.save()
 
-        # 6. Return updated stats
+        # 6. Return updated stats (full profile payload)
         return Response({
             'status': 'already_completed' if already_completed else 'completed',
             'lesson': {
@@ -185,7 +259,7 @@ class LessonViewSet(ReadOnlyModelViewSet):
                 'xp_reward': lesson.xp_reward,
                 'coins_reward': lesson.coins_reward,
             },
-            'user': UserStatsSerializer(profile).data,
+            'user': UserProfileSerializer(profile).data,
             'level_completed': level_completed,
         }, status=status.HTTP_200_OK)
 
@@ -339,10 +413,10 @@ class CapstoneSubmissionViewSet(viewsets.ModelViewSet):
     """
     queryset = CapstoneSubmission.objects.all()
     serializer_class = CapstoneSubmissionSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        user = get_dev_user()
+        user = request.user
         domain_id = request.data.get('domain')
         github_url = request.data.get('github_url')
         

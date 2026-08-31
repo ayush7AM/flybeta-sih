@@ -174,6 +174,23 @@ export const getUserStats = async () => {
   return data;
 };
 
+export const getUserProfile = async () => {
+  const { data } = await api.get('users/profile/');
+  return data;
+};
+
+export const updateActiveTheme = async (themeName) => {
+  const { data } = await api.patch('users/profile/', { theme_preference: themeName });
+  return data;
+};
+
+export const updateProfileData = async (formData) => {
+  const { data } = await api.patch('users/profile/', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data;
+};
+
 export const completeLesson = async (lessonId) => {
   const { data } = await api.post(`lessons/${lessonId}/complete/`);
   return data;

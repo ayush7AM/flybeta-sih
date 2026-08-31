@@ -11,6 +11,7 @@ import CodeReviewerPage from './pages/CodeReviewerPage';
 import VisionPage from './pages/VisionPage';
 import VideoDetailPage from './pages/VideoDetailPage';
 import ResetPasswordConfirmPage from './pages/ResetPasswordConfirmPage';
+import DashboardPage from './pages/DashboardPage';
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
               <Route path="/labs/reviewer" element={<CodeReviewerPage />} />
               <Route path="/vision" element={<VisionPage />} />
               <Route path="/vision/video/:id" element={<VideoDetailPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
             </Route>
           </Routes>
         </AuthProvider>

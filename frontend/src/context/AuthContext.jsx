@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { getUserStats, loginUser, registerUser } from '../services/api';
+import { getUserProfile, loginUser, registerUser } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
     }
 
     try {
-      const data = await getUserStats();
+      const data = await getUserProfile();
       setUser(data);
     } catch (err) {
       console.warn('Could not fetch user profile:', err.message);

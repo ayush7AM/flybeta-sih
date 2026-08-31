@@ -258,7 +258,7 @@ export default function LessonRunnerPage() {
 
       {/* Breadcrumb */}
       <div className="mb-6 flex items-center gap-2 label-mono text-muted flex-wrap">
-        <Link to="/" className="no-underline text-muted hover:text-ink">Tracks</Link>
+        <Link to="/tracks" className="no-underline text-muted hover:text-ink">Tracks</Link>
         <span>/</span>
         <Link to={`/track/${name}`} className="no-underline text-muted hover:text-ink">
           {domain.title}
@@ -286,9 +286,10 @@ export default function LessonRunnerPage() {
                       to={`/track/${name}/level/${levelNum}/lesson/${lesson.order}`}
                       className={`flex items-center gap-2 py-2 px-2 no-underline text-sm border-b border-border-light transition-all ${
                         isActive
-                          ? 'bg-ink text-white font-bold'
+                          ? 'font-bold'
                           : 'text-ink hover:bg-canvas'
                       }`}
+                      style={isActive ? { backgroundColor: '#111111', color: '#FFFFFF' } : undefined}
                     >
                       <span
                         className="w-5 h-5 flex items-center justify-center border text-xs shrink-0"

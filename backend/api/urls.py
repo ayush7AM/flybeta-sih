@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from api.views import DomainViewSet, LevelViewSet, LessonViewSet, UserMeView, BlueprintView, CodeReviewView, SynapseExtractView, OracleChatView, CapstoneSubmissionViewSet
+from api.views import DomainViewSet, LevelViewSet, LessonViewSet, UserMeView, UserProfileView, BlueprintView, CodeReviewView, SynapseExtractView, OracleChatView, CapstoneSubmissionViewSet
 
 router = DefaultRouter()
 router.register(r'domains', DomainViewSet)
@@ -13,6 +13,7 @@ app_name = 'api'
 
 urlpatterns = [
     path('users/me/', UserMeView.as_view(), name='user-me'),
+    path('users/profile/', UserProfileView.as_view(), name='user-profile'),
     path('ai/architect/', BlueprintView.as_view(), name='ai-architect'),
     path('ai/reviewer/', CodeReviewView.as_view(), name='ai-reviewer'),
     path('ai/synapse/', SynapseExtractView.as_view(), name='ai-synapse'),

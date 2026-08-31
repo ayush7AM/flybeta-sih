@@ -11,14 +11,19 @@ Built with a striking Neo-Brutalist design system, FlyBeta makes learning progra
 - **AI-Powered Evaluation**: Get instant, intelligent feedback on your code and architecture using Google's Gemini AI.
 - **Gamification**: Earn XP, collect coins, and maintain your daily streak as you level up your skills.
 - **Neo-Brutalist Design**: A bold, high-contrast, energetic interface that stands out.
+- **JWT-Based Authentication**: Full register / login / logout with access + refresh token rotation.
+- **Asynchronous SMTP Email Delivery**: Password reset emails sent via Gmail SMTP in a background thread — zero UI blocking.
+- **Freemium Access Control**: Level 1 is freely explorable by guests; Level 2+ and the AI Capstone evaluator are gated behind a sign-up prompt.
 
 ## Tech Stack
 
 - **Frontend**: React, Vite, Tailwind CSS (v4)
 - **Backend**: Django, Django REST Framework (DRF)
-- **Database**: SQLite (Development)
-- **AI Integration**: Google Generative AI (Gemini 1.5)
-- **Gamification State**: React Context API
+- **Database**: PostgreSQL via Supabase (Production), SQLite (Development)
+- **Authentication**: JWT (djangorestframework-simplejwt) — `CustomUser` + `StudentProfile`
+- **AI Integration**: Google Generative AI (Gemini 2.5 Flash)
+- **Email Delivery**: Django SMTP backend via Gmail App Passwords (async threaded dispatch)
+- **Gamification State**: React Context API (`AuthContext`, `ThemeContext`)
 
 ## Local Setup
 
@@ -32,7 +37,17 @@ pip install -r requirements.txt
 
 # Set up your environment variables
 cp .env.example .env
-# Edit .env with your GEMINI_API_KEY and GITHUB_TOKEN
+# Edit .env with your credentials:
+#
+# Core
+# GEMINI_API_KEY=your_key_here
+# GITHUB_TOKEN=your_token_here
+# DATABASE_URL=your_postgres_connection_string
+#
+# SMTP Email Configuration (Required for password resets)
+# EMAIL_HOST_USER=your_email@gmail.com
+# EMAIL_HOST_PASSWORD=your_16_char_app_password
+# (Generate an App Password at https://myaccount.google.com/apppasswords)
 
 # Run migrations and start the server
 python manage.py migrate

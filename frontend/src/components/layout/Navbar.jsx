@@ -11,6 +11,10 @@ const NAV_LINKS = [
   { label: 'Vision', path: '/vision' },
 ];
 
+const AUTH_NAV_LINKS = [
+  { label: 'Dashboard', path: '/dashboard' },
+];
+
 export default function Navbar() {
   const location = useLocation();
   const { user, logout } = useAuth();
@@ -36,7 +40,7 @@ export default function Navbar() {
       <div className="flex items-center gap-8">
         <Logo to="/tracks" />
         <div className="hidden md:flex gap-2">
-          {NAV_LINKS.map(({ label, path }) => {
+          {[...NAV_LINKS, ...(user ? AUTH_NAV_LINKS : [])].map(({ label, path }) => {
             const isActive = path === '/tracks'
               ? location.pathname === '/tracks' || location.pathname.startsWith('/track')
               : location.pathname.startsWith(path);
@@ -71,7 +75,7 @@ export default function Navbar() {
             </div>
             <div className="brutalist-badge bg-cobalt-light text-cobalt" title="Experience Points">
               <span>⚡</span>
-              <span>{user.xp || user.total_xp || 0} XP</span>
+              <span>{user.total_xp?.toLocaleString() || 0} XP</span>
             </div>
           </>
         )}

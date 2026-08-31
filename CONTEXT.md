@@ -5,7 +5,7 @@ FlyBeta is a gamified, level-based learning platform for Data Science, AI, and C
 Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v4).
 
 ## Current Phase
-**Phase 10 — Planned**: Next feature development TBD.
+**Phase 11 — Complete**: User Dashboard (Profile API, Rank Progression, Theme Persistence).
 
 ### What's Done
 - Django project scaffold (`flybeta` config) in `/backend`
@@ -62,9 +62,36 @@ Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v
   - Converted 24 heavy PNG/JPEG theme assets (56.5MB) to WebP (4.9MB) via Pillow batch script (91% savings).
   - Fixed EXIF orientation issues in the Anime theme background via `exif_transpose`.
   - Updated `Layout.jsx` and `TrackCard.jsx` to reference `.webp`.
+- **Phase 10 (Completed)**: JWT Authentication, Email Delivery & Freemium Gating
+  - Custom `CustomUser` model (replaces default User) with `name`, `username` (unique), `email` (unique).
+  - `StudentProfile` (1:1 with `CustomUser`) merges gamification fields: `xp`, `coins`, `streak`, `last_active_date`, `total_xp`, `current_rank`, `theme_preference`.
+  - `post_save` signal auto-creates `StudentProfile` on every new user registration.
+  - JWT via `djangorestframework-simplejwt`: Register, Login (token pair), Refresh, Logout (blacklist), `/users/me/`.
+  - Password Reset flow: request (async SMTP thread) + confirm (UID/token validation).
+  - SMTP configured via environment variables; email dispatched in a `threading.Thread(daemon=True)` for zero-latency API responses.
+  - Frontend `AuthContext` replaces old `UserContext` — manages access/refresh JWTs in `localStorage`, decodes user state, and emits `flybeta:logout` on refresh failure.
+  - `api.js` Axios interceptors: inject `Bearer` token on every request; auto-refresh on `401` and retry the original request.
+  - `AuthModal.jsx`: Register / Login / Forgot Password in a single modal with `customMessage` and `initialView` props for programmatic triggers.
+  - `ResetPasswordConfirmPage.jsx`: Standalone route at `/reset-password/:uid/:token` for password confirmation.
+  - Freemium gating: Level 1 free for guests; Level 2+ and Capstone evaluator intercept unauthenticated access and pop the `AuthModal`.
+  - Both Navbars (`Navbar`, `LandingNavbar`) are auth-aware, rendering real user stats when logged in.
+- **Phase 11 (Completed)**: User Dashboard + Profile Editing
+  - `RANK_LADDER` constant on `StudentProfile` — 8-tier XP-based ranking (Novice 0 → Legend 40,000).
+  - `compute_rank()`, `next_rank`, `xp_to_next_rank`, `rank_progress_pct` model helpers.
+  - `VALID_THEMES` set on `StudentProfile` — server-side theme validation.
+  - `avatar` (ImageField) and `bio` (TextField, 160 char) fields on `StudentProfile`.
+  - `UserProfileSerializer` — full dashboard payload with identity, gamification, rank progress, avatar, bio, and theme.
+  - `UserProfileView` (GET + PATCH) at `/api/v1/users/profile/` — supports multipart file uploads for avatar; accepts name, bio, avatar, theme_preference (all optional).
+  - `DashboardPage.jsx` — Hero identity card (with avatar), XP/rank progress bar, track progress bars, theme selector grid, and bio display.
+  - `EditProfileModal.jsx` — Neo-Brutalist modal for editing name, bio, and uploading avatar with image preview.
+  - Auth-only "Dashboard" nav link in `Navbar.jsx`.
+  - Theme selector syncs `ThemeContext` (instant) + backend persistence (async PATCH).
+  - Username and display name casing fix — inline `textTransform: 'none'` overrides on `heading-lg` and `label-mono`.
+  - `MEDIA_URL` / `MEDIA_ROOT` configured in `settings.py`; `/media` served in development; Vite proxies `/media` to Django.
+  - **Phase 11c**: XP State Sync — squashed `get_dev_user` in DRF views, enforced `IsAuthenticated`, fixed `total_xp` math, unified `AuthContext` to fetch from `/users/profile/` (rich payload), and removed redundant local state in `DashboardPage.jsx` so Navbar and Dashboard sync instantly.
 
 ### What's Next
-- **Phase 10**: TBD
+- **Phase 12**: TBD
 
 
 ## Curriculum
@@ -103,10 +130,12 @@ See `DESIGN.md` for full design tokens (colors, typography, elevation, micro-int
 ## Tech Stack
 | Layer | Technology |
 |-------|-----------|
-| Backend | Django 5.2 + DRF 3.18 + SQLite (dev) |
+| Backend | Django 5.2 + DRF 3.18 + PostgreSQL (Supabase) |
+| Auth | `djangorestframework-simplejwt` — `CustomUser` + `StudentProfile` |
+| Email | Django SMTP backend (Gmail App Passwords) + `threading.Thread` async dispatch |
 | Frontend | React (Vite) + Tailwind CSS v4 |
-| Communication | JSON over REST API (proxied in dev) |
-| Auth | Session/Basic (Phase 1), JWT (planned) |
+| Communication | JSON over REST API (proxied in dev via Vite) |
+| State | `AuthContext` (JWT + user identity), `ThemeContext` (CSS var swapping) |
 
 ## How to Run
 

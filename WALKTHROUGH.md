@@ -825,3 +825,344 @@ Grid changed from `lg:grid-cols-4` → `lg:grid-cols-3` per spec.
 ---
 
 *Last updated: 2026-08-29 — Phase 9 (Asset Optimization) complete.*
+
+---
+
+## Phase 10: JWT Authentication, Async Email & Freemium Gating ✅
+
+**Goal:** Implement a production-ready JWT auth system, real SMTP email delivery, and a freemium access control strategy on both the backend and frontend.
+
+---
+
+### Subtask 10a: Custom User Model & StudentProfile ✅
+
+| Component | Changes |
+|-----------|---------|
+| `accounts/models.py` | Created `CustomUser` extending `AbstractUser`. Required fields: `name`, `username` (unique), `email` (unique). Set as `AUTH_USER_MODEL` in `settings.py`. |
+| `accounts/models.py` | Created `StudentProfile` (1:1 with `CustomUser`). Fields: `xp`, `coins`, `streak`, `last_active_date` (legacy) + `total_xp` (default 0), `current_rank` (default 'Novice'), `theme_preference` (default 'doremon'). |
+| `accounts/signals.py` | `post_save` signal auto-creates a `StudentProfile` for every new `CustomUser`. |
+| Database | Wiped and re-migrated. Re-seeded with `load_level_content`. |
+
+---
+
+### Subtask 10b: JWT Auth Endpoints ✅
+
+All endpoints live under `/api/v1/auth/`.
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/register/` | POST | Create account (name, username, email, password). Returns token pair. |
+| `/login/` | POST | Obtain JWT access + refresh tokens. |
+| `/refresh/` | POST | Rotate access token using refresh token. |
+| `/logout/` | POST | Blacklist the refresh token (server-side invalidation). |
+| `/password-reset/` | POST | Dispatch password reset email asynchronously via SMTP thread. |
+| `/password-reset-confirm/` | POST | Validate UID + token and set new password. |
+| `/api/v1/users/me/` | GET | Return authenticated user's profile (requires `Bearer` token). |
+
+| File | Changes |
+|------|---------|
+| [`accounts/serializers.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/accounts/serializers.py) | `RegisterSerializer`, `PasswordResetRequestSerializer` (with async SMTP thread), `PasswordResetConfirmSerializer`. |
+| [`accounts/views.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/accounts/views.py) | `RegisterView`, `PasswordResetRequestView`, `PasswordResetConfirmView`. |
+| [`accounts/urls.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/accounts/urls.py) | All auth routes wired with `simplejwt` token views. |
+| [`api/views.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/views.py) | Updated `UserMeView` to enforce `IsAuthenticated` and return real profile from `request.user.profile`. |
+
+---
+
+### Subtask 10c: Async SMTP Email Delivery ✅
+
+| Component | Changes |
+|-----------|---------|
+| `settings.py` | Switched from `console.EmailBackend` → `smtp.EmailBackend`. Env-driven: `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USE_TLS`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`. |
+| `backend/.env` | Added Gmail SMTP credentials. `EMAIL_HOST_USER=fightayush@gmail.com`. |
+| `accounts/serializers.py` | Wrapped `send_mail()` in a `threading.Thread(daemon=True)`. API returns `200 OK` instantly; email is dispatched in the background. SMTP failures are caught and logged without crashing the request. |
+| `accounts/serializers.py` | Fixed `from_email` to use `settings.DEFAULT_FROM_EMAIL` (resolves Gmail sender authentication rejection). |
+
+---
+
+### Subtask 10d: Frontend Auth Architecture ✅
+
+| File | Changes |
+|------|---------|
+| [`AuthContext.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/context/AuthContext.jsx) | **New** — Replaces `UserContext`. Manages `user` state, `loading`, `login`, `register`, `logout`. Stores access/refresh JWTs in `localStorage`. Listens for `flybeta:logout` event to purge state on refresh failure. |
+| [`api.js`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/services/api.js) | Added request interceptor (injects `Authorization: Bearer <token>`) and response interceptor (catches 401, silently refreshes token, retries original request). Added `requestPasswordReset()` and `resetPassword()` helpers. |
+| [`AuthModal.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/auth/AuthModal.jsx) | **New** — Single modal component for Register / Login / Forgot Password. Accepts `customMessage` (blue banner) and `initialView` props for programmatic triggering. Syncs view on `isOpen` change. |
+| [`Navbar.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/layout/Navbar.jsx) | Integrated `useAuth`. Shows real user XP/coins/name when authenticated; shows "Sign In" button when guest. |
+| [`LandingNavbar.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/landing/LandingNavbar.jsx) | Same auth-aware integration as above. |
+
+---
+
+### Subtask 10e: Freemium Access Control ✅
+
+**Strategy:** Level 1 is free for all guests. Level 2+ and the AI Capstone require a registered account.
+
+| File | Changes |
+|------|---------|
+| [`LevelNode.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/ui/LevelNode.jsx) | Added `isAuthGated` and `onAuthGate` props. Intercepts lesson link clicks via `e.preventDefault()` when gated; shows a "🔒 Sign up to unlock" badge. |
+| [`TrackRoadmapPage.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/TrackRoadmapPage.jsx) | Passes `isAuthGated=true` to all `LevelNode` components where `level.number > 1` and `!user`. Clicking any gated lesson opens `AuthModal` (Register view, contextual message). |
+| [`LessonRunnerPage.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/LessonRunnerPage.jsx) | Direct URL access to `/track/:name/level/:num/lesson/:order` for Level 2+ by guests renders a full locked-state UI (Lock icon + sign-up CTA) instead of lesson content. |
+| [`CapstoneEvaluator.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/interactive/CapstoneEvaluator.jsx) | GitHub input and submit button hidden for guests; replaced with Lock icon + "Sign in to submit your Capstone" button that opens `AuthModal`. |
+
+---
+
+### Subtask 10f: Password Reset Confirmation Page ✅
+
+| File | Changes |
+|------|---------|
+| [`ResetPasswordConfirmPage.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/ResetPasswordConfirmPage.jsx) | **New** — Standalone page (no Layout shell). Extracts `uid` and `token` from URL via `useParams`. Validates password match + length. Calls `resetPassword()`. Shows success state with "Go to Home & Log In" CTA. |
+| [`App.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/App.jsx) | Added route: `<Route path="/reset-password/:uid/:token" element={<ResetPasswordConfirmPage />} />`. |
+
+---
+
+### Phase 10 Verification
+
+| Check | Result |
+|-------|--------|
+| Register new user | ✅ Returns access + refresh tokens; `StudentProfile` auto-created. |
+| Login | ✅ Returns token pair; Navbar updates to show user stats. |
+| Token refresh | ✅ Axios interceptor silently refreshes on 401 and retries request. |
+| Logout | ✅ Refresh token blacklisted server-side; client state cleared. |
+| Password reset email | ✅ Delivered to inbox via Gmail SMTP in ~3s (non-blocking API response). |
+| Password reset confirm | ✅ New password accepted; user can log in immediately. |
+| Guest → Level 2 click | ✅ `AuthModal` opens with contextual "Create a free account" message. |
+| Guest → Level 2 direct URL | ✅ Locked state rendered; no lesson content exposed. |
+| Guest → Capstone submit | ✅ GitHub input hidden; "Sign in" CTA shown. |
+| Authenticated → Level 2 | ✅ Full lesson content accessible. |
+
+---
+
+*Last updated: 2026-08-29 — Phase 10 (JWT Auth, Async Email, Freemium Gating) complete.*
+
+---
+
+## Phase 11: User Dashboard ✅
+
+**Goal:** Build a full-stack User Dashboard where authenticated students can view their XP, track their rank progression, see per-track progress, and switch terminal themes with backend persistence.
+
+---
+
+### Subtask 11a: Rank Progression System (Backend Model) ✅
+
+Added a rank ladder and helper methods to `StudentProfile` for XP-based ranking.
+
+| Rank | XP Threshold |
+|------|-------------|
+| Novice | 0 |
+| Apprentice | 1,000 |
+| Craftsman | 3,000 |
+| Specialist | 6,000 |
+| Expert | 10,000 |
+| Master | 15,000 |
+| Grandmaster | 25,000 |
+| Legend | 40,000 |
+
+| File | Changes |
+|------|---------|
+| [`models.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/accounts/models.py) | Added `RANK_LADDER` constant (8 tiers), `VALID_THEMES` set, `compute_rank()` method, and `next_rank`, `xp_to_next_rank`, `rank_progress_pct` properties. Changed `theme_preference` default from `'doraemon'` to `'neo-brutalism'`. |
+
+**Design Decisions:**
+- Steep XP curve (10x multiplier) ensures Legend status is a significant achievement.
+- `compute_rank()` is called on every GET to auto-sync rank from XP — no manual rank updates needed.
+- No migration required — reuses existing `current_rank` and `theme_preference` fields.
+
+---
+
+### Subtask 11b: Profile API Endpoint ✅
+
+| File | Changes |
+|------|---------|
+| [`api/serializers.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/serializers.py) | Added `UserProfileSerializer` with identity (username, name, email), gamification (xp, total_xp, coins, streak), rank progress (current_rank, next_rank, xp_to_next_rank, rank_progress_pct), theme_preference, and domain_progress fields. |
+| [`api/views.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/views.py) | Added `UserProfileView` — `GET` returns full profile with auto-synced rank; `PATCH` validates `theme_preference` against `VALID_THEMES` set and persists. |
+| [`api/urls.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/urls.py) | Wired at `users/profile/`. |
+
+**API Endpoints:**
+
+| Endpoint | Method | Auth | Description |
+|----------|--------|------|-------------|
+| `/api/v1/users/profile/` | GET | Bearer JWT | Full dashboard payload with rank progress |
+| `/api/v1/users/profile/` | PATCH | Bearer JWT | Update `theme_preference` (validated) |
+
+---
+
+### Subtask 11c: Frontend API Service ✅
+
+| File | Changes |
+|------|---------|
+| [`api.js`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/services/api.js) | Added `getUserProfile()` (GET) and `updateActiveTheme(themeName)` (PATCH). |
+
+---
+
+### Subtask 11d: Dashboard Page UI ✅
+
+| File | Changes |
+|------|---------|
+| [`DashboardPage.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/DashboardPage.jsx) | **New** — Full dashboard page with 4 sections (see below). |
+
+**Dashboard Sections:**
+
+1. **Hero Identity Card** — Large rank icon badge, display name, @username, stat badges (XP, coins, streak, rank).
+2. **Rank Progression** — Current rank label (color-coded), animated progress bar toward next rank with percentage, XP remaining counter. Shows "MAX RANK ACHIEVED" at Legend.
+3. **Track Progress** — Per-track progress bars (Cloud/AI/Data Science) showing highest unlocked level out of 10 with track-colored fills matching DESIGN.md accent tokens.
+4. **Theme Selector** — 5 theme cards in a responsive grid. Each shows theme icon, primary color swatch, and label. Active theme has elevated border + shadow + checkmark badge. Click → instant ThemeContext switch + async backend PATCH.
+
+**UI Details:**
+- Auth guard redirects guests to `/tracks`.
+- Loading skeleton shown while profile fetches.
+- All styling uses existing brutalist design system classes and CSS variables.
+- Rank badges use per-rank color coding (8 unique color schemes).
+- Progress bar uses `var(--color-primary)` gradient with smooth 700ms transition.
+
+---
+
+### Subtask 11e: Routing & Navigation ✅
+
+| File | Changes |
+|------|---------|
+| [`App.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/App.jsx) | Added `/dashboard` route inside the Layout group. |
+| [`Navbar.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/layout/Navbar.jsx) | Added `AUTH_NAV_LINKS` array with Dashboard. Conditionally renders it after public nav links only when `user` is truthy. |
+
+---
+
+### Phase 11 Verification
+
+| Check | Result |
+|-------|--------|
+| `python manage.py check` | ✅ 0 issues |
+| `npm run build` | ✅ 0 errors, 2239 modules, 496ms |
+| Dashboard nav link | ✅ Appears only when authenticated |
+| Guest redirect | ✅ Navigating to `/dashboard` redirects to `/tracks` |
+| Profile GET | ✅ Returns full payload with rank progress fields |
+| Theme PATCH | ✅ Validates against VALID_THEMES, persists, and returns updated profile |
+| Theme sync | ✅ Clicking theme card changes global CSS instantly + backend persistence |
+| Rank progress bar | ✅ Correctly calculates percentage within current rank bracket |
+
+---
+
+*Last updated: 2026-08-31 — Phase 11 (User Dashboard) complete.*
+
+---
+
+## Phase 11b: Profile Editing, Avatar Upload & Username Casing Fix ✅
+
+**Goal:** Allow users to edit their name, bio, and upload a profile picture from the dashboard. Fix the forced-uppercase rendering of usernames and display names.
+
+---
+
+### Subtask 11b-1: Username Casing Fix ✅
+
+| File | Changes |
+|------|---------|
+| [`DashboardPage.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/DashboardPage.jsx) | Added `style={{ textTransform: 'none' }}` to the display name `<h2>` (class `heading-lg`) and the `@username` `<p>` (class `label-mono`). These inline overrides defeat the global `text-transform: uppercase` without modifying the design system. |
+
+**Root Cause:** The `heading-lg` and `label-mono` CSS classes both include `text-transform: uppercase`, which forced "Ayush" → "AYUSH" and "@ayush" → "@AYUSH".
+
+---
+
+### Subtask 11b-2: Backend Model & Media Serving ✅
+
+| File | Changes |
+|------|---------|
+| [`models.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/accounts/models.py) | Added `avatar = ImageField(upload_to='avatars/', null=True, blank=True)` and `bio = TextField(max_length=160, blank=True, default='')`. |
+| [`requirements.txt`](file:///Users/ayush/Desktop/code/flybeta-project/backend/requirements.txt) | Added `Pillow>=10.0.0` (required by `ImageField`). |
+| [`settings.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/flybeta/settings.py) | Added `MEDIA_URL = '/media/'` and `MEDIA_ROOT = BASE_DIR / 'media'`. |
+| [`urls.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/flybeta/urls.py) | Added `static(settings.MEDIA_URL, ...)` for serving uploads in DEBUG mode. |
+| Migration | `accounts.0002_studentprofile_avatar_studentprofile_bio_and_more` — applied successfully. |
+
+---
+
+### Subtask 11b-3: Backend API Updates ✅
+
+| File | Changes |
+|------|---------|
+| [`api/serializers.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/serializers.py) | Added `avatar` and `bio` to `UserProfileSerializer` fields. `avatar` is read-only in the serializer (handled explicitly in the view). |
+| [`api/views.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/views.py) | Added `MultiPartParser` + `FormParser` to `UserProfileView`. Expanded `PATCH` to handle `name` (on CustomUser), `bio`, `avatar` (from `request.FILES`), and `theme_preference` — all optional on each request. |
+
+**PATCH `/api/v1/users/profile/` now accepts:**
+
+| Field | Source | Type |
+|-------|--------|------|
+| `name` | `CustomUser.name` | text |
+| `bio` | `StudentProfile.bio` | text (≤160 chars) |
+| `avatar` | `StudentProfile.avatar` | file (multipart) |
+| `theme_preference` | `StudentProfile.theme_preference` | text (validated) |
+
+---
+
+### Subtask 11b-4: Frontend API & Vite Proxy ✅
+
+| File | Changes |
+|------|---------|
+| [`api.js`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/services/api.js) | Added `updateProfileData(formData)` — sends PATCH with `FormData`, letting the browser set the `multipart/form-data` boundary. |
+| [`vite.config.js`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/vite.config.js) | Added `/media` proxy to `http://localhost:8000` so avatar images served by Django are accessible in dev. |
+
+---
+
+### Subtask 11b-5: Edit Profile Modal & Dashboard UI ✅
+
+| File | Changes |
+|------|---------|
+| [`EditProfileModal.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/EditProfileModal.jsx) | **New** — Neo-Brutalist modal with Name input, Bio textarea (160 char counter), Avatar file picker (image preview, 5MB limit, type validation). Sends `FormData` via `updateProfileData()`. |
+| [`DashboardPage.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/DashboardPage.jsx) | Replaced rank emoji with user's avatar image (falls back to emoji). Added bio display under username. Added "✏️ Edit" button next to display name. Integrated `EditProfileModal` with state management and profile refresh on save. |
+
+---
+
+### Phase 11b Verification
+
+| Check | Result |
+|-------|--------|
+| `python manage.py check` | ✅ 0 issues |
+| `npm run build` | ✅ 0 errors, 2240 modules, 417ms |
+| Migration | ✅ `0002_studentprofile_avatar_studentprofile_bio_and_more` applied |
+| Username casing | ✅ `@ayush` renders in original case, not `@AYUSH` |
+| Display name casing | ✅ "Ayush" stays "Ayush", not "AYUSH" |
+| Avatar upload | ✅ File saved to `/media/avatars/`, served via Vite proxy |
+| Bio update | ✅ 160-char limit enforced server-side and client-side |
+| Edit modal | ✅ Opens, saves, refreshes profile state, closes |
+| Theme selector | ✅ Still works alongside new multipart PATCH |
+
+---
+
+*Last updated: 2026-08-31 — Phase 11b (Profile Editing, Avatar, Casing Fix) complete.*
+
+---
+
+## Phase 11c: XP State Sync & Progress Persistence Fix ✅
+
+**Goal:** Fix the state mismatch where the Navbar showed XP but the Dashboard showed 0 XP. Fix the underlying backend bug where XP was incorrectly awarded to a hardcoded `dev` user instead of the authenticated user.
+
+---
+
+### Subtask 11c-1: Backend Security & XP Math Fix ✅
+
+| File | Changes |
+|------|---------|
+| [`api/views.py`](file:///Users/ayush/Desktop/code/flybeta-project/backend/api/views.py) | **1.** Replaced all instances of `user = get_dev_user()` with `user = request.user` across `LessonViewSet.complete`, `DomainViewSet.pass_quiz`, and `CapstoneSubmissionViewSet.create`.<br>**2.** Changed permission classes from `AllowAny` to `IsAuthenticated` to secure these endpoints.<br>**3.** Fixed XP math to increment `profile.total_xp` (used by the ranking system) alongside `profile.xp`.<br>**4.** Added `profile.compute_rank()` calls to immediately recalculate rank progression when XP is awarded.<br>**5.** Changed `complete` and `pass_quiz` to return `UserProfileSerializer` (rich payload) instead of `UserStatsSerializer`. |
+
+**Root Cause Resolved:** The `LessonRunnerPage` was calling the backend to complete a lesson. The backend awarded XP to the `dev` user. The frontend updated its local state with the `dev` user's total XP, which the Navbar displayed. Meanwhile, the Dashboard fetched its data directly from `/users/profile/` for the real logged-in user, which remained at 0 XP. 
+
+---
+
+### Subtask 11c-2: Frontend State Unification ✅
+
+| File | Changes |
+|------|---------|
+| [`AuthContext.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/context/AuthContext.jsx) | Changed `fetchUser()` to call `getUserProfile()` instead of `getUserStats()`. Now, `AuthContext.user` holds the full profile payload (including rank progress, avatar, bio, and total XP). |
+| [`Navbar.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/components/layout/Navbar.jsx) | Updated the XP badge to explicitly read `user.total_xp`. |
+| [`DashboardPage.jsx`](file:///Users/ayush/Desktop/code/flybeta-project/frontend/src/pages/DashboardPage.jsx) | Ripped out the isolated local `profile` state. The Dashboard now reads directly from `AuthContext.user` as the single source of truth. Changed `handleProfileSave` and `handleThemeChange` to call `refetchUser()` instead of mutating local state. |
+
+**Impact:** The Navbar and Dashboard now share the exact same data source. When a lesson is completed, `updateUser(result.user)` is called with the rich `UserProfileSerializer` payload, instantly syncing both the Navbar and the Dashboard.
+
+---
+
+### Phase 11c Verification
+
+| Check | Result |
+|-------|--------|
+| `python manage.py check` | ✅ 0 issues |
+| `npm run build` | ✅ 0 errors, 2240 modules |
+| Lesson Completion | ✅ XP awarded to authenticated user |
+| State Sync | ✅ Navbar XP and Dashboard XP match instantly |
+| Persistence | ✅ XP persists after hard refresh |
+
+---
+
+*Last updated: 2026-08-31 — Phase 11c (XP State Sync) complete.*

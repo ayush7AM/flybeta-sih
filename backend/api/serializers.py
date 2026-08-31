@@ -63,3 +63,39 @@ class CapstoneSubmissionSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['status', 'ai_feedback', 'score', 'passed', 'user']
 
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    """
+    Full profile payload for the Dashboard page.
+    Includes identity, gamification stats, rank progress, and theme preference.
+    """
+    username = serializers.CharField(source='user.username', read_only=True)
+    name = serializers.CharField(source='user.name', read_only=True)
+    email = serializers.EmailField(source='user.email', read_only=True)
+    domain_progress = serializers.SerializerMethodField()
+
+    # Computed rank fields (from model properties)
+    next_rank = serializers.CharField(read_only=True)
+    xp_to_next_rank = serializers.IntegerField(read_only=True)
+    rank_progress_pct = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = StudentProfile
+        fields = [
+            'username', 'name', 'email',
+            'xp', 'total_xp', 'coins', 'streak', 'last_active_date',
+            'current_rank', 'next_rank', 'xp_to_next_rank', 'rank_progress_pct',
+            'theme_preference',
+            'avatar', 'bio',
+            'domain_progress',
+        ]
+        read_only_fields = [
+            'username', 'name', 'email',
+            'xp', 'total_xp', 'coins', 'streak', 'last_active_date',
+            'current_rank', 'next_rank', 'xp_to_next_rank', 'rank_progress_pct',
+            'avatar',
+        ]
+
+    def get_domain_progress(self, obj):
+        progress = obj.user.domain_progress.all()
+        return DomainProgressSerializer(progress, many=True).data

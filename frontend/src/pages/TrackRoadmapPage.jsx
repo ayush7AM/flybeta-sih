@@ -61,7 +61,7 @@ export default function TrackRoadmapPage() {
     <div>
       {/* Breadcrumb */}
       <div className="mb-6 flex items-center gap-2 label-mono text-muted">
-        <Link to="/" className="no-underline text-muted hover:text-ink">Tracks</Link>
+        <Link to="/tracks" className="no-underline text-muted hover:text-ink">Tracks</Link>
         <span>/</span>
         <span style={{ color: 'var(--color-primary)' }}>{domain?.title || name}</span>
       </div>

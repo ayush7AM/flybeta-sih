@@ -322,15 +322,16 @@ body {
 .markdown-content code {
   font-family: var(--font-mono);
   background: var(--color-canvas);
+  color: var(--color-ink);
   border: 1px solid var(--color-border-light);
   padding: 2px 6px;
   font-size: 14px;
 }
 
 .markdown-content pre {
-  background: var(--color-ink);
+  background: #1E1E2E;
   color: #f0f0f0;
-  border: 2px solid var(--color-ink);
+  border: 2px solid #1E1E2E;
   padding: 16px;
   overflow-x: auto;
   margin: 0 0 16px 0;
