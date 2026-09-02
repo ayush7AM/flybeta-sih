@@ -57,6 +57,18 @@ export default function TrackRoadmapPage() {
   const domainProgress = user?.domain_progress?.find(p => p.domain_name === name);
   const highestUnlockedLevel = domainProgress?.highest_unlocked_level || 1;
 
+  // Auto-scroll to the active level after the roadmap loads
+  useEffect(() => {
+    if (!loading && highestUnlockedLevel) {
+      setTimeout(() => {
+        const element = document.getElementById(`level-${highestUnlockedLevel}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 150);
+    }
+  }, [loading, highestUnlockedLevel]);
+
   return (
     <div>
       {/* Breadcrumb */}
@@ -99,6 +111,7 @@ export default function TrackRoadmapPage() {
               return (
                 <LevelNode
                   key={level.id}
+                  id={`level-${level.number}`}
                   level={level}
                   domainName={name}
                   isActive={level.number === highestUnlockedLevel}

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Lock, Check } from 'lucide-react';
 
-export default function LevelNode({ level, domainName, isActive, isCompleted, isLocked, isAuthGated, onAuthGate }) {
+export default function LevelNode({ id, level, domainName, isActive, isCompleted, isLocked, isAuthGated, onAuthGate }) {
   const lessonCount = level.lessons?.length || 0;
   const mandatoryCount = level.lessons?.filter(l => l.is_mandatory).length || 0;
 
@@ -14,7 +14,7 @@ export default function LevelNode({ level, domainName, isActive, isCompleted, is
   };
 
   return (
-    <div className="relative flex items-start gap-3 md:gap-6">
+    <div id={id} className="relative flex items-start gap-3 md:gap-6">
       {/* Connector Line (vertical) */}
       <div className="flex flex-col items-center">
         <div
