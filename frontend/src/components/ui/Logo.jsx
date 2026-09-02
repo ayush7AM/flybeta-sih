@@ -19,7 +19,7 @@ export default function Logo({ to = '/', className = '' }) {
           mixBlendMode: isDarkMode ? 'screen' : 'multiply'
         }}
       />
-      <span className="font-black text-2xl tracking-tighter uppercase text-ink transition-colors">
+      <span className="font-black text-2xl tracking-tighter uppercase text-ink transition-colors hidden sm:inline">
         FLYBETA
       </span>
     </Link>

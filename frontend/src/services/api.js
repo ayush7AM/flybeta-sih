@@ -196,6 +196,11 @@ export const completeLesson = async (lessonId) => {
   return data;
 };
 
+export const passQuiz = async (levelId) => {
+  const { data } = await api.post(`levels/${levelId}/pass_quiz/`);
+  return data;
+};
+
 // ── AI endpoints ────────────────────────────────────────────────────────
 export const generateBlueprint = async (prompt) => {
   const { data } = await api.post('ai/architect/', { prompt });

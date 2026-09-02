@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, Menu, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import Logo from '../ui/Logo';
@@ -20,13 +20,18 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const { themeKey, themes, themeKeys, setTheme, isDarkMode, toggleDarkMode } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
   // Close dropdown on click outside
   useEffect(() => {
     const handleClick = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target) && !e.target.closest('.mobile-menu-btn')) {
+        setMobileMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClick);
@@ -36,9 +41,19 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 md:px-12 h-20 bg-surface border-b-2 border-ink"
          style={{ boxShadow: 'var(--shadow-brutal)' }}>
-      {/* Left: Logo + Nav Links */}
-      <div className="flex items-center gap-8">
+      {/* Left: Hamburger (Mobile) + Logo + Nav Links (Desktop) */}
+      <div className="flex items-center gap-4 md:gap-8">
+        <button
+          className="md:!hidden brutalist-badge bg-canvas text-ink cursor-pointer hover:bg-border-light transition-colors p-2 mobile-menu-btn"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          title="Menu"
+        >
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+
         <Logo to="/tracks" />
+
+        {/* Desktop Nav Links */}
         <div className="hidden md:flex gap-2">
           {[...NAV_LINKS, ...(user ? AUTH_NAV_LINKS : [])].map(({ label, path }) => {
             const isActive = path === '/tracks'
@@ -62,7 +77,7 @@ export default function Navbar() {
       </div>
 
       {/* Right: Gamification Stats + Theme Switcher */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 md:gap-3">
         {user && (
           <>
             <div className="brutalist-badge bg-flame-light text-flame hidden md:flex" title="Daily Streak">
@@ -73,9 +88,9 @@ export default function Navbar() {
               <span>💰</span>
               <span>{user.coins || 0}</span>
             </div>
-            <div className="brutalist-badge bg-cobalt-light text-cobalt" title="Experience Points">
+            <div className="brutalist-badge bg-cobalt-light text-cobalt flex items-center gap-1" title="Experience Points">
               <span>⚡</span>
-              <span>{user.total_xp?.toLocaleString() || 0} XP</span>
+              <span>{user.total_xp?.toLocaleString() || 0} <span className="hidden sm:inline">XP</span></span>
             </div>
           </>
         )}
@@ -97,7 +112,7 @@ export default function Navbar() {
             title="Switch Theme"
           >
             <span>{themes[themeKey].icon}</span>
-            <span className="hidden md:inline">{themes[themeKey].label}</span>
+            <span className="hidden lg:inline">{themes[themeKey].label}</span>
           </button>
 
           {dropdownOpen && (
@@ -130,6 +145,34 @@ export default function Navbar() {
           )}
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div 
+          ref={mobileMenuRef}
+          className="md:hidden absolute top-20 left-0 w-full bg-surface border-b-2 border-ink shadow-[var(--shadow-brutal)] flex flex-col z-40"
+        >
+          {[...NAV_LINKS, ...(user ? AUTH_NAV_LINKS : [])].map(({ label, path }) => {
+            const isActive = path === '/tracks'
+              ? location.pathname === '/tracks' || location.pathname.startsWith('/track')
+              : location.pathname.startsWith(path);
+            return (
+              <Link
+                key={path}
+                to={path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`label-mono px-6 py-4 border-b border-border-light last:border-b-0 no-underline transition-all ${
+                  isActive
+                    ? 'bg-primary text-white'
+                    : 'text-ink hover:bg-canvas'
+                }`}
+              >
+                {label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </nav>
   );
 }

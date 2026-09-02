@@ -61,7 +61,7 @@ export default function TrackCard({ domain }) {
     >
       {/* Track Image Header */}
       <div
-        className="h-52 border-b-2 relative overflow-hidden flex items-center justify-center"
+        className="h-36 md:h-52 border-b-2 relative overflow-hidden flex items-center justify-center"
         style={{
           borderColor: 'var(--color-border)',
           background: 'var(--color-canvas)',
@@ -69,7 +69,7 @@ export default function TrackCard({ domain }) {
       >
         {/* Track Code Badge — always above images */}
         <div
-          className="absolute top-4 left-4 z-20 label-mono px-2 py-1 border"
+          className="absolute top-2 left-2 md:top-4 md:left-4 z-20 label-mono px-2 py-1 border text-xs md:text-sm"
           style={{
             background: 'var(--color-primary)',
             color: themeKey === 'shinchan' ? 'var(--color-ink)' : 'var(--color-canvas)',
@@ -96,7 +96,7 @@ export default function TrackCard({ domain }) {
       </div>
 
       {/* Card Body */}
-      <div className="p-6 flex-grow flex flex-col">
+      <div className="p-4 md:p-6 flex-grow flex flex-col">
         <div className="mb-4">
           <span
             className="brutalist-badge mb-2"

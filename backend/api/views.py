@@ -2,6 +2,7 @@ from datetime import date, timedelta
 import re
 import traceback
 
+from accounts.models import StudentProfile
 # pyrefly: ignore [missing-import]
 from django.contrib.auth import get_user_model
 # pyrefly: ignore [missing-import]
@@ -159,10 +160,13 @@ class LevelViewSet(ReadOnlyModelViewSet):
                 profile.total_xp += 50
                 profile.current_rank = profile.compute_rank()
                 profile.save()
+
+        # Re-fetch profile to ensure serializer sees updated domain_progress
+        profile = StudentProfile.objects.select_related('user').get(user=user)
                 
         return Response({
             'status': 'success',
-            'user': UserProfileSerializer(user.profile).data
+            'user': UserProfileSerializer(profile).data
         }, status=status.HTTP_200_OK)
 
 
@@ -246,9 +250,23 @@ class LessonViewSet(ReadOnlyModelViewSet):
             )
             level_completed = mandatory_lessons.issubset(completed_lessons)
 
-            if level_completed and not level_progress.is_completed:
-                level_progress.is_completed = True
-                level_progress.save()
+            if level_completed:
+                if not level_progress.is_completed:
+                    level_progress.is_completed = True
+                    level_progress.save()
+
+                # Auto-unlock next level if this level has no boss quiz
+                if not lesson.level.quiz_data:
+                    domain_progress, _ = DomainProgress.objects.get_or_create(
+                        user=user,
+                        domain=lesson.level.domain
+                    )
+                    if domain_progress.highest_unlocked_level == lesson.level.number:
+                        domain_progress.highest_unlocked_level += 1
+                        domain_progress.save()
+
+        # Re-fetch profile so serializer sees updated domain_progress
+        profile = StudentProfile.objects.select_related('user').get(user=user)
 
         # 6. Return updated stats (full profile payload)
         return Response({

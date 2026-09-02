@@ -1,11 +1,58 @@
 # FLYBETA — Project Context
 
-## Overview
-FlyBeta is a gamified, level-based learning platform for Data Science, AI, and Cloud Computing.
-Decoupled architecture: Django DRF backend + React/Vite frontend (Tailwind CSS v4).
+---
 
-## Current Phase
-**Phase 11 — Complete**: User Dashboard (Profile API, Rank Progression, Theme Persistence).
+## 🦅 The Vision: Gen Beta Takes Flight
+
+FlyBeta is a gamified, hands-on tech academy engineered to accelerate the upcoming generation (Gen Beta) into rapid technical mastery (Fly). The core philosophy is strictly **anti-tutorial hell**: no boring videos, just pure code. The platform is designed to teach users how to ship end-to-end applications by building real-world projects rather than toy examples, enforcing a standard of **actual capability over passive watching**.
+
+---
+
+## Current State of the Project
+
+### 1. Core Architecture & Curriculum
+The platform is built on a React frontend powered by Tailwind CSS. The curriculum is currently divided into three primary terminal tracks:
+- **TS-01**: Data Science
+- **TS-02**: AI & Machine Learning
+- **TS-03**: Cloud Computing
+
+### 2. The Gamified Learning Engine
+FlyBeta operates on a structured loop to keep users engaged and accountable:
+- **Interactive Labs**: Hands-on coding environments utilizing flip cards and real-world analogies.
+- **Boss Quizzes**: Hard-stop evaluations at the end of every level that users must pass to unlock the next stage of the curriculum.
+- **AI Evaluator**: A final capstone grading system powered by Google Gemini to analyze user-submitted GitHub repositories and provide real, actionable feedback.
+
+### 3. UI/UX & Branding
+The design language fuses high-energy **Neo-Brutalism** with clean, premium branding:
+- **Aesthetic**: Grid-paper backgrounds, thick black borders, asymmetrical tilted cards, aggressive drop shadows, and kinetic elements like the scrolling marquee.
+- **Logo & Identity**: A bespoke, high-resolution halftone white bird in flight against a stark background, paired with heavy, uppercase, tracking-tight typography.
+- **Navigation Split**: A clean, conversion-focused header for the landing page featuring a single "Get Started" call-to-action, structurally separated from the internal dashboard navbar which tracks user XP, Streaks 🔥, Coins, and houses the theme toggler.
+
+### 4. Development Workflow
+The project is being rapidly prototyped and built utilizing agentic AI coding workflows (via Antigravity IDE), leveraging a strict Context → Goal → Constraints prompt structure to generate precise, production-ready components.
+
+---
+
+## 🗺️ The Roadmap: What Remains to be Built
+
+### Phase 12: Infrastructure & Deployment
+A final decision is required on the hosting architecture. This means choosing between containerizing the application with Docker for maximum control on a custom server, or utilizing streamlined, cloud-native PaaS solutions (like Vercel and Render) for rapid, automated deployments.
+
+### Backend & State Wiring
+The frontend components need to be connected to a live database to handle authentication and persist user data. This includes wiring up the internal player stats so that XP, daily streaks, and module progression are saved across sessions.
+
+### The Gemini Evaluator Engine
+The core differentiator of the platform—the AI Capstone Evaluator—needs to be integrated. This requires writing the backend logic to securely ping the Gemini API, parse the user's submitted code, evaluate it against a rubric, and return the graded feedback to the frontend dashboard.
+
+### Curriculum Content Population
+The structural shells for the tracks are built, but the actual educational content must be written. This involves populating the JSON or database structures with the interactive lessons, the specific Boss Quiz questions, and the parameters for the capstone projects.
+
+---
+
+## Build Log
+
+### Phase 11 — Complete
+User Dashboard (Profile API, Rank Progression, Theme Persistence).
 
 ### What's Done
 - Django project scaffold (`flybeta` config) in `/backend`

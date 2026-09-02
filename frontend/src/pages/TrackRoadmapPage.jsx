@@ -101,7 +101,8 @@ export default function TrackRoadmapPage() {
                   key={level.id}
                   level={level}
                   domainName={name}
-                  isActive={level.number === 1}
+                  isActive={level.number === highestUnlockedLevel}
+                  isCompleted={level.number < highestUnlockedLevel}
                   isLocked={user ? level.number > highestUnlockedLevel : false}
                   isAuthGated={isAuthGated}
                   onAuthGate={() => setShowAuthModal(true)}

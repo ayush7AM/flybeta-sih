@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Lock } from 'lucide-react';
+import { Lock, Check } from 'lucide-react';
 
-export default function LevelNode({ level, domainName, isActive, isLocked, isAuthGated, onAuthGate }) {
+export default function LevelNode({ level, domainName, isActive, isCompleted, isLocked, isAuthGated, onAuthGate }) {
   const lessonCount = level.lessons?.length || 0;
   const mandatoryCount = level.lessons?.filter(l => l.is_mandatory).length || 0;
 
@@ -14,18 +14,18 @@ export default function LevelNode({ level, domainName, isActive, isLocked, isAut
   };
 
   return (
-    <div className="relative flex items-start gap-6">
+    <div className="relative flex items-start gap-3 md:gap-6">
       {/* Connector Line (vertical) */}
       <div className="flex flex-col items-center">
         <div
-          className="w-12 h-12 flex items-center justify-center border-2 border-ink font-bold text-lg z-10"
+          className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border-2 border-ink font-bold text-base md:text-lg z-10"
           style={{
-            background: isActive ? 'var(--color-primary)' : 'var(--color-surface)',
-            color: isActive ? 'var(--color-canvas)' : 'var(--color-ink)',
+            background: isCompleted ? '#059669' : isActive ? 'var(--color-primary)' : 'var(--color-surface)',
+            color: isCompleted || isActive ? 'var(--color-canvas)' : 'var(--color-ink)',
             boxShadow: isActive ? 'var(--shadow-brutal-sm)' : 'none',
           }}
         >
-          {level.number}
+          {isCompleted ? <Check size={20} strokeWidth={3} /> : level.number}
         </div>
         {/* Vertical line */}
         <div className="w-0.5 h-8 bg-ink" />
@@ -38,6 +38,8 @@ export default function LevelNode({ level, domainName, isActive, isLocked, isAut
         } ${isLocked ? 'grayscale opacity-60 pointer-events-none select-none' : ''}`}
         style={{
           boxShadow: isActive && !isLocked ? 'var(--shadow-brutal-sm)' : 'none',
+          borderLeftWidth: isCompleted ? '5px' : undefined,
+          borderLeftColor: isCompleted ? '#059669' : undefined,
         }}
       >
         {isLocked && (
@@ -46,8 +48,17 @@ export default function LevelNode({ level, domainName, isActive, isLocked, isAut
           </div>
         )}
 
+        {/* Completed badge */}
+        {isCompleted && (
+          <div className="absolute top-2 right-2 z-20">
+            <span className="brutalist-badge bg-emerald-light text-emerald border border-emerald text-xs flex items-center gap-1">
+              ✅ COMPLETED
+            </span>
+          </div>
+        )}
+
         {/* Auth-gated badge for unauthenticated users on Level 2+ */}
-        {isAuthGated && (
+        {isAuthGated && !isCompleted && (
           <div className="absolute top-2 right-2 z-20">
             <button
               onClick={onAuthGate}

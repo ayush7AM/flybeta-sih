@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
+import { passQuiz } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 
 export default function LevelBossQuiz({ quizData, levelId, onUnlock }) {
   const { width, height } = useWindowSize();
+  const { updateUser } = useAuth();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
@@ -28,12 +31,13 @@ export default function LevelBossQuiz({ quizData, levelId, onUnlock }) {
       if (percentage >= 60) {
         setSubmitting(true);
         try {
-          await fetch(`/api/v1/levels/${levelId}/pass_quiz/`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-          });
+          const result = await passQuiz(levelId);
+          // Update AuthContext so Navbar XP/stats refresh instantly
+          if (result.user) {
+            updateUser(result.user);
+          }
         } catch (e) {
-          console.error(e);
+          console.error('Failed to pass quiz:', e);
         }
         setSubmitting(false);
       }

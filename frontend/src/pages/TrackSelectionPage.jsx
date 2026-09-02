@@ -50,16 +50,16 @@ export default function TrackSelectionPage() {
   return (
     <div>
       {/* Hero Header */}
-      <header className="relative mb-16">
+      <header className="relative mb-8 md:mb-16">
         {/* Decorative tilted block */}
         <div
-          className="absolute -top-4 -left-4 w-32 h-32 border-2 border-ink -rotate-6 z-0"
+          className="hidden md:block absolute -top-4 -left-4 w-32 h-32 border-2 border-ink -rotate-6 z-0"
           style={{ background: 'var(--color-primary)' }}
         />
 
-        <div className="relative z-10 bg-surface border-2 border-ink p-8 inline-block"
+        <div className="relative z-10 bg-surface border-2 border-ink p-5 md:p-8 inline-block"
              style={{ boxShadow: 'var(--shadow-brutal-lg)' }}>
-          <h1 className="heading-xl m-0 leading-none">
+          <h1 className="heading-xl m-0 leading-none text-4xl md:text-6xl">
             <span className="relative z-10">CHOOSE YOUR</span>
             <br />
             <span
@@ -71,7 +71,7 @@ export default function TrackSelectionPage() {
           </h1>
         </div>
 
-        <p className="mt-8 max-w-2xl border-l-4 border-primary pl-4 bg-surface p-4 border-y-2 border-r-2 border-ink text-muted"
+        <p className="mt-6 md:mt-8 max-w-2xl border-l-4 border-primary pl-4 bg-surface p-4 border-y-2 border-r-2 border-ink text-muted text-sm md:text-base"
            style={{ boxShadow: 'var(--shadow-brutal-sm)' }}>
           Select your specialized discipline. Your path dictates your curriculum,
           terminal access rights, and ultimate rank. Choose wisely.
