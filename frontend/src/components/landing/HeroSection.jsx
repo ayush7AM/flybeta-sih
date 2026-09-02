@@ -1,9 +1,21 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LandingNavbar from './LandingNavbar';
 import AuthModal from '../auth/AuthModal';
+import { useAuth } from '../../context/AuthContext';
 
 export default function HeroSection() {
   const [showAuth, setShowAuth] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleCTA = () => {
+    if (user) {
+      navigate('/tracks');
+    } else {
+      setShowAuth(true);
+    }
+  };
 
   return (
     <section id="home" className="relative min-h-screen flex flex-col overflow-hidden">
@@ -71,9 +83,9 @@ export default function HeroSection() {
           gamified levels, boss quizzes, and an AI-powered capstone evaluator.
         </p>
 
-        {/* CTA — opens Auth Modal (register view) */}
+        {/* CTA — redirects to /tracks if logged in, else opens AuthModal */}
         <button
-          onClick={() => setShowAuth(true)}
+          onClick={handleCTA}
           className="mt-12 inline-block px-12 py-5 bg-[#059669] text-white font-black text-xl uppercase tracking-wider no-underline border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[8px] active:translate-y-[8px] active:shadow-none transition-all cursor-pointer"
         >
           🎮 START YOUR ADVENTURE!

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Moon, Sun, Menu, X, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import Logo from '../ui/Logo';
@@ -84,14 +84,7 @@ export default function Navbar() {
               <span>🔥</span>
               <span>{user.streak || 0}</span>
             </div>
-            <div className="brutalist-badge bg-gold-light text-gold hidden md:flex" title="Coins">
-              <span>💰</span>
-              <span>{user.coins || 0}</span>
-            </div>
-            <div className="brutalist-badge bg-cobalt-light text-cobalt flex items-center gap-1" title="Experience Points">
-              <span>⚡</span>
-              <span>{user.total_xp?.toLocaleString() || 0} <span className="hidden sm:inline">XP</span></span>
-            </div>
+
           </>
         )}
 
@@ -132,18 +125,20 @@ export default function Navbar() {
                   <span>{themes[key].label}</span>
                 </button>
               ))}
-              {user && (
-                <button
-                  onClick={logout}
-                  className="w-full text-left px-4 py-3 label-mono flex items-center gap-2 border-t-2 border-ink bg-red-100 text-red-700 hover:bg-red-200 transition-colors cursor-pointer"
-                >
-                  <span>🚪</span>
-                  <span>Logout</span>
-                </button>
-              )}
             </div>
           )}
         </div>
+
+        {/* Logout Button */}
+        {user && (
+          <button
+            onClick={logout}
+            className="brutalist-badge bg-red-100 text-red-700 cursor-pointer hover:bg-red-200 transition-colors p-2 hidden md:flex"
+            title="Logout"
+          >
+            <LogOut size={18} />
+          </button>
+        )}
       </div>
 
       {/* Mobile Menu Dropdown */}
