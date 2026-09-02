@@ -1,7 +1,10 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import LandingNavbar from './LandingNavbar';
+import AuthModal from '../auth/AuthModal';
 
 export default function HeroSection() {
+  const [showAuth, setShowAuth] = useState(false);
+
   return (
     <section id="home" className="relative min-h-screen flex flex-col overflow-hidden">
       {/* ── Decorative Stickers (Organized Chaos) ────────────────────── */}
@@ -68,13 +71,13 @@ export default function HeroSection() {
           gamified levels, boss quizzes, and an AI-powered capstone evaluator.
         </p>
 
-        {/* CTA */}
-        <Link
-          to="/tracks"
-          className="mt-12 inline-block px-12 py-5 bg-[#059669] text-white font-black text-xl uppercase tracking-wider no-underline border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[8px] active:translate-y-[8px] active:shadow-none transition-all"
+        {/* CTA — opens Auth Modal (register view) */}
+        <button
+          onClick={() => setShowAuth(true)}
+          className="mt-12 inline-block px-12 py-5 bg-[#059669] text-white font-black text-xl uppercase tracking-wider no-underline border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[8px] active:translate-y-[8px] active:shadow-none transition-all cursor-pointer"
         >
           🎮 START YOUR ADVENTURE!
-        </Link>
+        </button>
       </div>
 
       {/* ── Scroll Indicator ─────────────────────────────────────────── */}
@@ -83,6 +86,14 @@ export default function HeroSection() {
           ↓
         </div>
       </div>
+
+      {/* ── Auth Modal ────────────────────────────────────────────────── */}
+      <AuthModal
+        isOpen={showAuth}
+        onClose={() => setShowAuth(false)}
+        initialView="register"
+        customMessage="Create your account to start your adventure!"
+      />
     </section>
   );
 }
