@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { CompetencyProvider } from './context/CompetencyContext';
 import Layout from './components/layout/Layout';
 import LandingPage from './pages/LandingPage';
 import TrackSelectionPage from './pages/TrackSelectionPage';
@@ -12,32 +13,36 @@ import VisionPage from './pages/VisionPage';
 import VideoDetailPage from './pages/VideoDetailPage';
 import ResetPasswordConfirmPage from './pages/ResetPasswordConfirmPage';
 import DashboardPage from './pages/DashboardPage';
+import DiagnosticPage from './pages/DiagnosticPage';
 
 export default function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
         <AuthProvider>
-          <Routes>
-            {/* Landing page — standalone, no app shell */}
-            <Route path="/" element={<LandingPage />} />
+          <CompetencyProvider>
+            <Routes>
+              {/* Landing page — standalone, no app shell */}
+              <Route path="/" element={<LandingPage />} />
 
-            {/* Password reset confirmation — standalone */}
-            <Route path="/reset-password/:uid/:token" element={<ResetPasswordConfirmPage />} />
+              {/* Password reset confirmation — standalone */}
+              <Route path="/reset-password/:uid/:token" element={<ResetPasswordConfirmPage />} />
 
-            {/* App routes — inside Layout with Navbar */}
-            <Route element={<Layout />}>
-              <Route path="/tracks" element={<TrackSelectionPage />} />
-              <Route path="/track/:name" element={<TrackRoadmapPage />} />
-              <Route path="/track/:name/level/:num/lesson/:order" element={<LessonRunnerPage />} />
-              <Route path="/labs" element={<Navigate to="/labs/architect" replace />} />
-              <Route path="/labs/architect" element={<ProjectArchitectPage />} />
-              <Route path="/labs/reviewer" element={<CodeReviewerPage />} />
-              <Route path="/vision" element={<VisionPage />} />
-              <Route path="/vision/video/:id" element={<VideoDetailPage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
-            </Route>
-          </Routes>
+              {/* App routes — inside Layout with Navbar */}
+              <Route element={<Layout />}>
+                <Route path="/tracks" element={<TrackSelectionPage />} />
+                <Route path="/track/:name" element={<TrackRoadmapPage />} />
+                <Route path="/track/:name/level/:num/lesson/:order" element={<LessonRunnerPage />} />
+                <Route path="/labs" element={<Navigate to="/labs/architect" replace />} />
+                <Route path="/labs/architect" element={<ProjectArchitectPage />} />
+                <Route path="/labs/reviewer" element={<CodeReviewerPage />} />
+                <Route path="/vision" element={<VisionPage />} />
+                <Route path="/vision/video/:id" element={<VideoDetailPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/diagnostic" element={<DiagnosticPage />} />
+              </Route>
+            </Routes>
+          </CompetencyProvider>
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>

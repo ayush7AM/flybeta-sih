@@ -13,6 +13,7 @@ const NAV_LINKS = [
 
 const AUTH_NAV_LINKS = [
   { label: 'Dashboard', path: '/dashboard' },
+  { label: 'Diagnostic', path: '/diagnostic' },
 ];
 
 export default function Navbar() {
