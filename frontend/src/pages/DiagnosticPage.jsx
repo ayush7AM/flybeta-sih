@@ -1,19 +1,22 @@
+import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Navigate, useNavigate } from 'react-router-dom';
 import DiagnosticAssessment from '../components/diagnostic/DiagnosticAssessment';
+import ProfileIntake from '../components/diagnostic/ProfileIntake';
 import { useCompetency } from '../context/CompetencyContext';
 
 /**
  * DiagnosticPage
  * 
  * Auth-gated page wrapper for the FRAC competency diagnostic.
- * Redirects unauthenticated users to the landing page.
+ * Includes Profile Intake (Step 1) and Diagnostic Assessment (Step 2).
  */
 export default function DiagnosticPage() {
   const { user, loading } = useAuth();
-
   const { saveProfile } = useCompetency();
   const navigate = useNavigate();
+
+  const [intakeData, setIntakeData] = useState(null);
 
   if (loading) {
     return (
@@ -29,11 +32,19 @@ export default function DiagnosticPage() {
     return <Navigate to="/" replace />;
   }
 
-  const handleComplete = (competencyProfile) => {
-    console.log('FRAC Competency Profile:', competencyProfile);
-    saveProfile(competencyProfile);
+  const handleIntakeComplete = (data) => {
+    setIntakeData(data);
+  };
+
+  const handleDiagnosticComplete = (competencyScores) => {
+    // Merge intake data with scores
+    const fullProfile = {
+      ...intakeData,
+      ...competencyScores
+    };
+    console.log('FRAC Competency Profile Saved:', fullProfile);
+    saveProfile(fullProfile);
     navigate('/tracks');
-    // TODO Phase 2+: POST to /api/v1/diagnostic/submit/ and save DiagnosticResult
   };
 
   return (
@@ -41,8 +52,12 @@ export default function DiagnosticPage() {
       {/* Page Header */}
       <header className="mb-10">
         <div
-          className="bg-surface border-2 border-ink p-8 inline-block"
-          style={{ boxShadow: 'var(--shadow-brutal-lg)' }}
+          className="bg-surface p-8 inline-block"
+          style={{ 
+            border: 'var(--border-width) solid var(--color-border)',
+            borderRadius: 'var(--border-radius)',
+            boxShadow: 'var(--shadow-brutal-lg)' 
+          }}
         >
           <div className="flex items-center gap-4 mb-2">
             <div
@@ -59,15 +74,19 @@ export default function DiagnosticPage() {
             Skill Gap Analysis
           </h1>
           <p className="text-muted mt-2 mb-0" style={{ maxWidth: '600px' }}>
-            Answer 12 domain-specific questions to identify your competency gaps
-            across Big Data, AI/ML, GIS, and Cloud Infrastructure — aligned to
-            the MoSPI FRAC framework.
+            {intakeData 
+              ? "Answer 12 domain-specific questions to identify your competency gaps across Big Data, AI/ML, GIS, and Cloud Infrastructure."
+              : "Welcome to the MoSPI SmartSkills diagnostic. We'll start by building your officer profile."}
           </p>
         </div>
       </header>
 
-      {/* Assessment Component */}
-      <DiagnosticAssessment onComplete={handleComplete} />
+      {/* Assessment Flow Component */}
+      {!intakeData ? (
+        <ProfileIntake onComplete={handleIntakeComplete} />
+      ) : (
+        <DiagnosticAssessment onComplete={handleDiagnosticComplete} />
+      )}
     </div>
   );
 }

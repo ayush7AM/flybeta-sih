@@ -28,9 +28,18 @@ export function CompetencyProvider({ children }) {
   };
 
   const hasCompletedDiagnostic = !!profile;
+  const userDesignation = profile?.designation || null;
+  const userDivision = profile?.division || null;
 
   return (
-    <CompetencyContext.Provider value={{ profile, saveProfile, hasCompletedDiagnostic, isLoaded }}>
+    <CompetencyContext.Provider value={{ 
+      profile, 
+      saveProfile, 
+      hasCompletedDiagnostic, 
+      isLoaded,
+      userDesignation,
+      userDivision
+    }}>
       {children}
     </CompetencyContext.Provider>
   );

@@ -1,7 +1,7 @@
 """
 Real AI service for the Project Architect and Code Drishti features.
-Uses the official google-genai SDK with Structured Outputs (Pydantic)
-to ensure JSON schema compliance.
+Uses the official google-genai SDK routed through Route429 proxy
+for automatic API key rotation on rate limits.
 """
 import os
 import json
@@ -10,14 +10,31 @@ from google.genai import types
 from pydantic import BaseModel, Field
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
 
-# Ensure we have the API key from Django settings (via .env)
-# In a real Django app you'd import settings, but for this standalone file
-# we can just read it from os.environ (which was loaded by python-dotenv in settings.py)
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
+# ── Route429 Proxy Configuration ─────────────────────────────────────────
+# Route429 sits between us and Gemini, managing a pool of API keys.
+# It automatically rotates to the next key on HTTP 429 (rate limit).
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'route429-managed')
+ROUTE429_BASE_URL = os.environ.get(
+    'ROUTE429_BASE_URL',
+    'https://route429.parth-ie-kalash.workers.dev/p/flybeta-sih'
+)
+ROUTE429_PROXY_SECRET = os.environ.get('ROUTE429_PROXY_SECRET', '')
 
-# Initialize the Gemini client
-# It automatically picks up GEMINI_API_KEY from the environment if present.
-client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
+# Initialize the Gemini client through Route429 proxy
+# - api_key is a dummy value; Route429 injects the real key server-side
+# - http_options overrides the base URL to point at the proxy
+_http_options = {'base_url': ROUTE429_BASE_URL}
+if ROUTE429_PROXY_SECRET:
+    _http_options['headers'] = {'X-Proxy-Secret': ROUTE429_PROXY_SECRET}
+
+try:
+    client = genai.Client(
+        api_key=GEMINI_API_KEY,
+        http_options=_http_options,
+    )
+except Exception as e:
+    print(f"[Route429] Failed to initialize Gemini client: {e}")
+    client = None
 
 
 # ── Pydantic Schemas for Structured Output ───────────────────────────────
@@ -190,13 +207,11 @@ def ask_oracle(message: str, history: list = None) -> str:
     })
     
     system_instruction = (
-        "You are The Oracle, a friendly, encouraging AI study buddy for students learning tech. "
-        "Speak like a supportive friend. Be enthusiastic, use simple analogies, and keep the language "
-        "highly accessible for kids and teens. "
-        "Keep paragraphs very short (1-2 sentences). "
-        "DO NOT use markdown headers (#, ###) or horizontal rules (---). "
-        "Use relevant emojis frequently to make the text colorful and engaging (e.g., 🚀, 💡, 🎮, ✨). "
-        "Use emojis as bullet points if listing items."
+        "You are The Oracle, a friendly, encouraging AI study buddy. "
+        "Keep your response UNDER 40 WORDS. Be concise. "
+        "ONLY output plain simple text with emojis. ABSOLUTELY NO MARKDOWN formatting. "
+        "Do NOT use bold (**text**), italics, headers, or bullet points. "
+        "Use emojis frequently to make the text colorful and engaging."
     )
 
     try:

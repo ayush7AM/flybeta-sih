@@ -46,14 +46,16 @@ export default function DashboardPage() {
     setThemeUpdating(key);
     // Apply immediately on the frontend
     setTheme(key);
-    try {
-      await updateActiveTheme(key);
-      refetchUser();
-    } catch (err) {
-      console.error('Failed to save theme:', err);
-    } finally {
-      setThemeUpdating(null);
+    // Only persist to backend if user is authenticated
+    if (user) {
+      try {
+        await updateActiveTheme(key);
+        refetchUser();
+      } catch (err) {
+        console.error('Failed to save theme:', err);
+      }
     }
+    setThemeUpdating(null);
   };
 
   // ── Loading skeleton ──────────────────────────────────────────────────
