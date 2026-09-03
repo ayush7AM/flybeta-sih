@@ -6,6 +6,7 @@ import MarkdownRenderer from '../components/ui/MarkdownRenderer';
 import LevelBossQuiz from '../components/interactive/LevelBossQuiz';
 import CapstoneEvaluator from '../components/interactive/CapstoneEvaluator';
 import AuthModal from '../components/auth/AuthModal';
+import { recordActivity } from '../components/ActivityHeatmap';
 import { Lock } from 'lucide-react';
 
 const TRACK_META = {
@@ -25,7 +26,7 @@ export default function LessonRunnerPage() {
   const [loading, setLoading] = useState(!cached);
   const [error, setError] = useState(null);
   const [completing, setCompleting] = useState(false);
-  const [reward, setReward] = useState(null); // { xp, coins } flash
+  const [reward, setReward] = useState(null); // completion flash
 
   // Auth gate state
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -120,7 +121,7 @@ export default function LessonRunnerPage() {
             isOpen={showAuthModal}
             onClose={() => setShowAuthModal(false)}
             initialView="register"
-            customMessage={`Sign up to unlock Level ${levelNum}: "${currentLevel.title}" and save your XP!`}
+            customMessage={`Sign up to unlock Level ${levelNum}: "${currentLevel.title}" and save your progress!`}
           />
         </div>
       </div>
@@ -147,11 +148,14 @@ export default function LessonRunnerPage() {
 
       // Always show the success overlay
       setReward({
-        xp: currentLesson.xp_reward,
-        coins: currentLesson.coins_reward,
         levelCompleted: result.level_completed,
         alreadyDone: result.status === 'already_completed',
       });
+
+      // Record activity for the heatmap (skip if already done)
+      if (result.status !== 'already_completed') {
+        recordActivity(1);
+      }
 
       // Navigate after 1.5s so the user actually sees the celebration
       setTimeout(() => {
@@ -180,66 +184,44 @@ export default function LessonRunnerPage() {
           <div
             className="text-center px-10 py-8 mx-4 bg-surface"
             style={{
-              border: '4px solid var(--color-ink)',
-              boxShadow: '12px 12px 0px 0px var(--color-ink)',
+              border: 'var(--border-width) solid var(--color-border)',
+              borderRadius: 'var(--border-radius)',
+              boxShadow: 'var(--shadow-brutal-lg)',
               animation: 'overlayPunchIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
               maxWidth: '480px',
               width: '100%',
             }}
           >
+            {/* Icon */}
+            <div style={{ fontSize: '3rem', marginBottom: '8px' }}>
+              {reward.levelCompleted ? '🏆' : reward.alreadyDone ? '👍' : '✅'}
+            </div>
+
             {/* Title */}
             <p
               className="heading-xl m-0 mb-1"
               style={{
-                color: meta.accent,
-                fontSize: '2.25rem',
-                lineHeight: 1.1,
+                color: 'var(--color-primary)',
+                fontSize: '1.75rem',
+                lineHeight: 1.2,
                 letterSpacing: '-0.02em',
               }}
             >
               {reward.levelCompleted
-                ? '🏆 LEVEL COMPLETE!'
+                ? 'LEVEL COMPLETE!'
                 : reward.alreadyDone
-                  ? '✓ ALREADY DONE!'
-                  : '⚡ MISSION ACCOMPLISHED!'}
+                  ? 'ALREADY COMPLETED'
+                  : 'LESSON COMPLETE!'}
             </p>
 
             {/* Subtitle */}
-            <p className="label-mono text-muted m-0 mb-4" style={{ fontSize: '0.8rem' }}>
-              {reward.alreadyDone ? 'No double rewards — keep going!' : 'Rewards earned'}
+            <p className="label-mono text-muted m-0" style={{ fontSize: '0.8rem' }}>
+              {reward.alreadyDone
+                ? 'You\'ve already finished this one — keep going!'
+                : reward.levelCompleted
+                  ? 'Great work! Moving to the next level...'
+                  : 'Progress saved — loading next lesson...'}
             </p>
-
-            {/* Reward Badges */}
-            {!reward.alreadyDone && (
-              <div className="flex items-center justify-center gap-4 flex-wrap">
-                <span
-                  className="label-mono flex items-center gap-2 px-5 py-2"
-                  style={{
-                    border: '3px solid var(--color-ink)',
-                    boxShadow: '4px 4px 0px 0px var(--color-ink)',
-                    background: '#DBEAFE',
-                    color: '#2563EB',
-                    fontSize: '1.15rem',
-                    fontWeight: 700,
-                  }}
-                >
-                  ⚡ +{reward.xp} XP
-                </span>
-                <span
-                  className="label-mono flex items-center gap-2 px-5 py-2"
-                  style={{
-                    border: '3px solid var(--color-ink)',
-                    boxShadow: '4px 4px 0px 0px var(--color-ink)',
-                    background: '#FEF3C7',
-                    color: '#B45309',
-                    fontSize: '1.15rem',
-                    fontWeight: 700,
-                  }}
-                >
-                  💰 +{reward.coins} COINS
-                </span>
-              </div>
-            )}
           </div>
         </div>
       )}
@@ -319,10 +301,7 @@ export default function LessonRunnerPage() {
                 <span className="brutalist-badge bg-gold-light text-gold">Bonus</span>
               )}
               <span className="brutalist-badge" style={{ background: meta.accent + '20', color: meta.accent }}>
-                ⚡ {currentLesson.xp_reward} XP
-              </span>
-              <span className="brutalist-badge bg-gold-light text-gold">
-                💰 {currentLesson.coins_reward} Coins
+                Module {lessonOrder}
               </span>
             </div>
             <h1 className="heading-lg m-0">{currentLesson.title}</h1>
@@ -381,7 +360,7 @@ export default function LessonRunnerPage() {
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         initialView="register"
-        customMessage="Create a free account to save your progress and earn XP!"
+        customMessage="Create a free account to save your progress!"
       />
     </div>
   );

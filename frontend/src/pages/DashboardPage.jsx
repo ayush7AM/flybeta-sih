@@ -4,30 +4,11 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { updateActiveTheme } from '../services/api';
 import EditProfileModal from '../components/EditProfileModal';
+import { useCompetency } from '../context/CompetencyContext';
+import { Moon, Sun, LogOut } from 'lucide-react';
+import ActivityHeatmap from '../components/ActivityHeatmap';
 
-// ── Rank badge styling ──────────────────────────────────────────────────
 
-const RANK_COLORS = {
-  Novice:      { bg: '#E5E7EB', text: '#374151' },
-  Apprentice:  { bg: '#DBEAFE', text: '#1E40AF' },
-  Craftsman:   { bg: '#D1FAE5', text: '#065F46' },
-  Specialist:  { bg: '#FEF3C7', text: '#92400E' },
-  Expert:      { bg: '#FDE68A', text: '#78350F' },
-  Master:      { bg: '#E9D5FF', text: '#6B21A8' },
-  Grandmaster: { bg: '#FCA5A5', text: '#991B1B' },
-  Legend:      { bg: '#111111', text: '#EAB308' },
-};
-
-const RANK_ICONS = {
-  Novice:      '🌱',
-  Apprentice:  '📘',
-  Craftsman:   '🔧',
-  Specialist:  '🎯',
-  Expert:      '⚡',
-  Master:      '👑',
-  Grandmaster: '💎',
-  Legend:      '🏆',
-};
 
 // ── Track metadata (matches DESIGN.md accent tokens) ────────────────────
 
@@ -39,8 +20,9 @@ const TRACK_META = {
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const { user, refetchUser, loading } = useAuth();
-  const { themeKey, themes, themeKeys, setTheme } = useTheme();
+  const { user, refetchUser, loading, logout } = useAuth();
+  const { themeKey, themes, themeKeys, setTheme, isDarkMode, toggleDarkMode } = useTheme();
+  const { profile: compProfile, hasCompletedDiagnostic } = useCompetency();
 
   const [themeUpdating, setThemeUpdating] = useState(null); // key being updated
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -87,15 +69,8 @@ export default function DashboardPage() {
 
   const profile = user; // Alias for convenience below
 
-  const rank = profile?.current_rank || 'Novice';
-  const rankColor = RANK_COLORS[rank] || RANK_COLORS.Novice;
-  const rankIcon = RANK_ICONS[rank] || '🌱';
-  const progressPct = profile?.rank_progress_pct ?? 0;
-  const nextRank = profile?.next_rank;
-  const xpToNext = profile?.xp_to_next_rank ?? 0;
-
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-5xl mx-auto px-3 md:px-4 py-6 md:py-8 space-y-6 md:space-y-8">
 
       {/* ── Page Header ─────────────────────────────────────────────── */}
       <div>
@@ -103,17 +78,35 @@ export default function DashboardPage() {
         <p className="text-muted label-mono mt-1">YOUR PILOT DASHBOARD</p>
       </div>
 
+      {/* ── Mobile Quick Actions (visible only on mobile) ────────────── */}
+      <div className="flex md:hidden items-center gap-2">
+        <button
+          onClick={toggleDarkMode}
+          className="brutalist-badge bg-canvas text-ink cursor-pointer hover:bg-border-light transition-colors p-2 flex items-center gap-2"
+        >
+          {isDarkMode ? <Moon size={16} /> : <Sun size={16} />}
+          <span className="text-xs">{isDarkMode ? 'Dark' : 'Light'}</span>
+        </button>
+        <button
+          onClick={logout}
+          className="brutalist-badge bg-red-100 text-red-700 cursor-pointer hover:bg-red-200 transition-colors p-2 flex items-center gap-2"
+        >
+          <LogOut size={16} />
+          <span className="text-xs">Logout</span>
+        </button>
+      </div>
+
       {/* ── Hero Identity Card ──────────────────────────────────────── */}
       <div
-        className="brutalist-card p-6 md:p-8"
+        className="brutalist-card p-4 md:p-8"
         style={{ background: 'var(--color-surface)' }}
       >
         <div className="flex flex-col md:flex-row md:items-center gap-6">
-          {/* Avatar / Rank Badge */}
+          {/* Avatar */}
           <div
-            className="w-20 h-20 md:w-24 md:h-24 border-4 border-ink shrink-0 overflow-hidden"
+            className="w-16 h-16 md:w-24 md:h-24 border-3 md:border-4 border-ink shrink-0 overflow-hidden"
             style={{
-              backgroundColor: rankColor.bg,
+              backgroundColor: 'var(--color-surface)',
               boxShadow: 'var(--shadow-brutal-sm)',
             }}
           >
@@ -124,8 +117,8 @@ export default function DashboardPage() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center" style={{ fontSize: '2.5rem' }}>
-                {rankIcon}
+              <div className="w-full h-full flex items-center justify-center" style={{ fontSize: '1.8rem' }}>
+                👤
               </div>
             )}
           </div>
@@ -133,7 +126,7 @@ export default function DashboardPage() {
           {/* Identity */}
           <div className="flex-1 space-y-1">
             <div className="flex items-center gap-3 flex-wrap">
-              <h2 className="heading-lg" style={{ margin: 0, textTransform: 'none' }}>
+              <h2 className="heading-lg text-xl md:text-2xl" style={{ margin: 0, textTransform: 'none' }}>
                 {profile?.name || profile?.username}
               </h2>
               <button
@@ -153,92 +146,79 @@ export default function DashboardPage() {
               </p>
             )}
 
-            {/* Stat Badges */}
-            <div className="flex flex-wrap gap-3 mt-3">
-              <span className="brutalist-badge bg-cobalt-light text-cobalt">
-                ⚡ {profile?.total_xp?.toLocaleString() || 0} XP
+            {/* Professional Badges */}
+            <div className="flex flex-wrap gap-2 md:gap-3 mt-3">
+              <span className="brutalist-badge bg-primary text-white border-transparent">
+                MoSPI Official
               </span>
-              <span className="brutalist-badge bg-gold-light text-gold">
-                💰 {profile?.coins?.toLocaleString() || 0}
-              </span>
-              <span className="brutalist-badge bg-flame-light text-flame">
-                🔥 {profile?.streak || 0} day streak
-              </span>
-              <span
-                className="brutalist-badge"
-                style={{
-                  backgroundColor: rankColor.bg,
-                  color: rankColor.text,
-                  fontWeight: 700,
-                }}
-              >
-                {rankIcon} {rank}
-              </span>
+              {hasCompletedDiagnostic && (
+                <span className="brutalist-badge bg-emerald-100 text-emerald-800 border-emerald-800">
+                  FRAC Assessed
+                </span>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── XP & Rank Progress ──────────────────────────────────────── */}
-      <div className="brutalist-card p-6" style={{ background: 'var(--color-surface)' }}>
-        <h3 className="heading-md mb-4">RANK PROGRESSION</h3>
+      {/* ── Activity Heatmap ───────────────────────────────────────────── */}
+      <ActivityHeatmap />
 
-        <div className="flex items-center justify-between mb-2">
-          <span
-            className="label-mono font-bold px-3 py-1 border-2 border-ink"
-            style={{
-              backgroundColor: rankColor.bg,
-              color: rankColor.text,
-            }}
-          >
-            {rankIcon} {rank}
-          </span>
-          {nextRank ? (
-            <span className="label-mono text-muted">
-              {xpToNext.toLocaleString()} XP to {RANK_ICONS[nextRank]} {nextRank}
-            </span>
-          ) : (
-            <span className="label-mono text-gold font-bold">🏆 MAX RANK ACHIEVED</span>
-          )}
-        </div>
+      {/* ── FRAC Baseline Competency ────────────────────────────────── */}
+      <div className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
+        <h3 className="heading-md mb-4">FRAC BASELINE COMPETENCY</h3>
 
-        {/* Progress Bar */}
-        <div
-          className="w-full h-8 border-4 border-ink relative overflow-hidden"
-          style={{ backgroundColor: 'var(--color-canvas)', boxShadow: 'var(--shadow-brutal-sm)' }}
-        >
-          <div
-            className="h-full transition-all duration-700 ease-out"
-            style={{
-              width: `${progressPct}%`,
-              background: `linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-dark) 100%)`,
-            }}
-          />
-          <span
-            className="absolute inset-0 flex items-center justify-center label-mono font-bold text-sm"
-            style={{
-              color: progressPct > 50 ? 'white' : 'var(--color-ink)',
-              mixBlendMode: progressPct > 50 ? 'normal' : 'normal',
-            }}
-          >
-            {progressPct}%
-          </span>
-        </div>
-
-        <p className="label-mono text-muted mt-2 text-sm">
-          Total: {profile?.total_xp?.toLocaleString() || 0} XP earned across all tracks
-        </p>
+        {!hasCompletedDiagnostic ? (
+          <div className="bg-canvas border-2 border-ink p-4 flex justify-between items-center flex-wrap gap-4">
+            <span className="label-mono text-muted">Assessment pending...</span>
+            <button onClick={() => navigate('/diagnostic')} className="brutalist-btn brutalist-btn-primary">
+              Take Assessment
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {[
+              { key: 'comp_big_data_analytics', label: 'Big Data & Modern Statistics' },
+              { key: 'comp_ai_ml_statistics', label: 'AI & ML in Official Statistics' },
+              { key: 'comp_gis_spatial', label: 'GIS & Spatial Analytics' },
+              { key: 'comp_cloud_infrastructure', label: 'Cloud Infrastructure for Gov Data' }
+            ].map(domain => {
+              const score = compProfile?.[domain.key] ?? 0;
+              const isGap = score < 60;
+              return (
+                <div key={domain.key}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="label-mono font-bold">{domain.label}</span>
+                    <span className="label-mono text-sm" style={{ color: isGap ? '#DC2626' : 'var(--color-emerald)' }}>
+                      {score}%
+                    </span>
+                  </div>
+                  <div className="w-full h-4 border-2 border-ink bg-canvas overflow-hidden">
+                    <div
+                      className="h-full transition-all duration-700 ease-out"
+                      style={{
+                        width: `${score}%`,
+                        backgroundColor: isGap ? '#DC2626' : 'var(--color-primary)'
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* ── Track Progress ──────────────────────────────────────────── */}
-      <div className="brutalist-card p-6" style={{ background: 'var(--color-surface)' }}>
+      <div className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
         <h3 className="heading-md mb-4">TRACK PROGRESS</h3>
 
         <div className="space-y-4">
           {Object.entries(TRACK_META).map(([slug, meta]) => {
             const dp = profile?.domain_progress?.find((d) => d.domain_name === slug);
             const highest = dp?.highest_unlocked_level || 1;
-            const trackPct = Math.round((Math.max(highest - 1, 0) / 10) * 100);
+            const completed = Math.max(highest - 1, 0);
+            const trackPct = Math.round((completed / 10) * 100);
 
             return (
               <div key={slug}>
@@ -248,7 +228,7 @@ export default function DashboardPage() {
                     <span>{meta.label}</span>
                   </span>
                   <span className="label-mono text-muted text-sm">
-                    Level {highest} / 10
+                    {completed} / 10 Completed
                   </span>
                 </div>
                 <div
@@ -273,7 +253,7 @@ export default function DashboardPage() {
       </div>
 
       {/* ── Theme Selector ──────────────────────────────────────────── */}
-      <div className="brutalist-card p-6" style={{ background: 'var(--color-surface)' }}>
+      <div className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
         <h3 className="heading-md mb-2">TERMINAL THEME</h3>
         <p className="label-mono text-muted text-sm mb-4">
           SELECT YOUR VISUAL IDENTITY — CHANGES APPLY GLOBALLY

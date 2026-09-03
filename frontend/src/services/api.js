@@ -180,7 +180,9 @@ export const getUserProfile = async () => {
 };
 
 export const updateActiveTheme = async (themeName) => {
-  const { data } = await api.patch('users/profile/', { theme_preference: themeName });
+  const { data } = await api.patch('users/profile/', { theme_preference: themeName }, {
+    headers: { 'Content-Type': 'application/json' },
+  });
   return data;
 };
 

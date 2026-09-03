@@ -159,7 +159,7 @@ export default function TrackRoadmapPage() {
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         initialView="register"
-        customMessage="Create a free account to unlock Level 2+ and save your XP!"
+        customMessage="Create a free account to unlock Level 2+ and save your progress!"
       />
     </div>
   );

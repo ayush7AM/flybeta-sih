@@ -102,7 +102,6 @@ export default function LevelNode({ id, level, domainName, isActive, isCompleted
                       <span className="brutalist-badge text-xs bg-gold-light text-gold ml-1">Bonus</span>
                     )}
                   </Link>
-                  <span className="label-mono text-xs text-muted">{lesson.xp_reward} XP</span>
                 </li>
               ))}
             </ul>

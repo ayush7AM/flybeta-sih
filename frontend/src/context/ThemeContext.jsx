@@ -5,11 +5,46 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 // Only override the tokens that change; the rest stay as defined in index.css.
 
 const THEMES = {
+  'enterprise': {
+    label: 'Enterprise',
+    icon: '🏛️',
+    vars: {
+      '--color-ink': '#0F172A',
+      '--color-canvas': '#F8FAFC',
+      '--color-surface': '#FFFFFF',
+      '--color-primary': '#2563EB',
+      '--color-primary-dark': '#1D4ED8',
+      '--color-muted': '#64748B',
+      '--color-border': '#CBD5E1',
+      '--color-border-light': '#E2E8F0',
+      '--shadow-brutal': '0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)',
+      '--shadow-brutal-sm': '0 1px 2px rgba(0,0,0,0.05)',
+      '--shadow-brutal-lg': '0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06)',
+      '--font-heading': '"Inter", "Helvetica Neue", sans-serif',
+      '--border-radius': '8px',
+      '--border-width': '1px',
+    },
+    darkVars: {
+      '--color-ink': '#F1F5F9',
+      '--color-canvas': '#0F172A',
+      '--color-surface': '#1E293B',
+      '--color-primary': '#3B82F6',
+      '--color-primary-dark': '#2563EB',
+      '--color-muted': '#94A3B8',
+      '--color-border': '#334155',
+      '--color-border-light': '#1E293B',
+      '--shadow-brutal': '0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2)',
+      '--shadow-brutal-sm': '0 1px 2px rgba(0,0,0,0.2)',
+      '--shadow-brutal-lg': '0 4px 6px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.2)',
+      '--font-heading': '"Inter", "Helvetica Neue", sans-serif',
+      '--border-radius': '8px',
+      '--border-width': '1px',
+    }
+  },
   'neo-brutalism': {
     label: 'Neo-Brutalism',
     icon: '🏗️',
     vars: {
-      // Base theme — these match index.css defaults, listed for explicitness
       '--color-ink': '#111111',
       '--color-canvas': '#F9F8F6',
       '--color-surface': '#FFFFFF',
@@ -22,6 +57,8 @@ const THEMES = {
       '--shadow-brutal-sm': '4px 4px 0px 0px #111111',
       '--shadow-brutal-lg': '10px 10px 0px 0px #111111',
       '--font-heading': '"Anton", "Impact", sans-serif',
+      '--border-radius': '0px',
+      '--border-width': '2px',
     },
     darkVars: {
       '--color-ink': '#F9F8F6',
@@ -36,6 +73,8 @@ const THEMES = {
       '--shadow-brutal-sm': '4px 4px 0px 0px #F9F8F6',
       '--shadow-brutal-lg': '10px 10px 0px 0px #F9F8F6',
       '--font-heading': '"Anton", "Impact", sans-serif',
+      '--border-radius': '0px',
+      '--border-width': '2px',
     }
   },
   'doraemon': {
@@ -54,6 +93,8 @@ const THEMES = {
       '--shadow-brutal-sm': '3px 3px 0px 0px #2b6cb0',
       '--shadow-brutal-lg': '8px 8px 0px 0px #2b6cb0',
       '--font-heading': '"Anton", "Impact", sans-serif',
+      '--border-radius': '0px',
+      '--border-width': '2px',
     },
     darkVars: {
       '--color-ink': '#ebf8ff',
@@ -68,6 +109,8 @@ const THEMES = {
       '--shadow-brutal-sm': '3px 3px 0px 0px #ebf8ff',
       '--shadow-brutal-lg': '8px 8px 0px 0px #ebf8ff',
       '--font-heading': '"Anton", "Impact", sans-serif',
+      '--border-radius': '0px',
+      '--border-width': '2px',
     }
   },
   'shinchan': {
@@ -86,6 +129,8 @@ const THEMES = {
       '--shadow-brutal-sm': '4px 4px 0px 0px #DC2626',
       '--shadow-brutal-lg': '10px 10px 0px 0px #DC2626',
       '--font-heading': '"Anton", "Impact", sans-serif',
+      '--border-radius': '0px',
+      '--border-width': '2px',
     },
     darkVars: {
       '--color-ink': '#FFFBEB',
@@ -100,6 +145,8 @@ const THEMES = {
       '--shadow-brutal-sm': '4px 4px 0px 0px #DC2626',
       '--shadow-brutal-lg': '10px 10px 0px 0px #DC2626',
       '--font-heading': '"Anton", "Impact", sans-serif',
+      '--border-radius': '0px',
+      '--border-width': '2px',
     }
   },
   'princess': {
@@ -118,6 +165,8 @@ const THEMES = {
       '--shadow-brutal-sm': '4px 4px 0px 0px #A21CAF',
       '--shadow-brutal-lg': '10px 10px 0px 0px #A21CAF',
       '--font-heading': '"Anton", "Impact", sans-serif',
+      '--border-radius': '0px',
+      '--border-width': '2px',
     },
     darkVars: {
       '--color-ink': '#FDF4FF',
@@ -132,6 +181,8 @@ const THEMES = {
       '--shadow-brutal-sm': '4px 4px 0px 0px #FDF4FF',
       '--shadow-brutal-lg': '10px 10px 0px 0px #FDF4FF',
       '--font-heading': '"Anton", "Impact", sans-serif',
+      '--border-radius': '0px',
+      '--border-width': '2px',
     }
   },
   'anime': {
@@ -150,6 +201,8 @@ const THEMES = {
       '--shadow-brutal-sm': '4px 4px 0px 0px #0F172A',
       '--shadow-brutal-lg': '10px 10px 0px 0px #0F172A',
       '--font-heading': '"Anton", "Impact", sans-serif',
+      '--border-radius': '0px',
+      '--border-width': '2px',
     },
     darkVars: {
       '--color-ink': '#FFF7ED',
@@ -164,13 +217,15 @@ const THEMES = {
       '--shadow-brutal-sm': '4px 4px 0px 0px #F97316',
       '--shadow-brutal-lg': '10px 10px 0px 0px #F97316',
       '--font-heading': '"Anton", "Impact", sans-serif',
+      '--border-radius': '0px',
+      '--border-width': '2px',
     }
   },
 };
 
 const THEME_KEYS = Object.keys(THEMES);
 const STORAGE_KEY = 'flybeta-theme';
-const DEFAULT_THEME = 'neo-brutalism';
+const DEFAULT_THEME = 'enterprise';
 
 // ── Context ─────────────────────────────────────────────────────────────
 
