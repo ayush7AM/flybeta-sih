@@ -224,4 +224,15 @@ export const askOracle = async (message, history) => {
   return data.reply;
 };
 
+export const generateDocQuiz = async (file, numQuestions = 5, difficulty = 'intermediate') => {
+  const formData = new FormData();
+  formData.append('document', file);
+  formData.append('num_questions', numQuestions);
+  formData.append('difficulty', difficulty);
+  const { data } = await api.post('ai/doc-quiz/', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data;
+};
+
 export default api;

@@ -1,64 +1,66 @@
 export const MOSPI_TRACKS = [
   {
     id: "mospi-ts-01",
-    title: "Big Data & Modern Statistics",
-    tagline: "High-throughput data wrangling for National Sample Surveys & CPI indices.",
-    description: "Master modern statistical computing, moving beyond manual tabulations to distributed data processing for National Accounts, price indices, and large-scale demographic surveys.",
-    frac_competency_tag: "comp_big_data_analytics",
+    title: "Statistical Methods & Survey Design",
+    tagline: "Survey methodology, sampling techniques, and national accounts estimation.",
+    description: "Master official statistical methodologies including multi-stage sampling design, GDP estimation, CPI compilation, and SDG indicator frameworks aligned to MoSPI standards.",
+    frac_competency_tag: "comp_statistical",
     level: "Intermediate",
     duration: "18 Hours",
     modulesCount: 4,
     modules: [
-      { id: "mod-01-1", title: "Automated CPI & Index Calculation", duration: "4 Hours", description: "Batch data extraction and automated weighted index computation." },
-      { id: "mod-01-2", title: "NSS Large-Scale Sample Wrangling", duration: "5 Hours", description: "Cleaning, harmonizing, and structuring microdata from NSS rounds." },
-      { id: "mod-01-3", title: "Predictive Economic Indicators", duration: "5 Hours", description: "Time-series forecasting models applied to monthly macroeconomic metrics." },
-      { id: "mod-01-4", title: "Official Data Quality Assurance", duration: "4 Hours", description: "Statistical validation rules and automated error checking frameworks." }
+      { id: "mod-01-1", title: "Survey Design & Sampling Techniques", duration: "5 Hours", description: "Multi-stage stratified random sampling, design effect, and sample size estimation for NSS/PLFS." },
+      { id: "mod-01-2", title: "National Accounts & GDP Compilation", duration: "5 Hours", description: "Production approach, expenditure method, and base year revision workflows." },
+      { id: "mod-01-3", title: "Price & Labour Statistics", duration: "4 Hours", description: "CPI compilation methodology, PLFS quarterly estimates, and seasonal adjustment." },
+      { id: "mod-01-4", title: "SDG Indicator Frameworks", duration: "4 Hours", description: "Mapping official statistics to UN Sustainable Development Goal indicators." }
     ]
   },
   {
     id: "mospi-ts-02",
-    title: "AI & ML in Official Statistics",
-    tagline: "Anomaly detection, automated imputation, and LLMs for policy analysis.",
-    description: "Leverage machine learning workflows to identify anomalies in field surveys, auto-impute missing values, and extract structured metrics from raw government reports.",
-    frac_competency_tag: "comp_ai_ml_statistics",
+    title: "Technical Computing & AI/ML",
+    tagline: "Python, R, GIS, and machine learning for official statistical operations.",
+    description: "Build technical proficiency in statistical programming (Python, R, SQL), geospatial analysis (QGIS/ArcGIS), and AI/ML applications for survey data quality and automation.",
+    frac_competency_tag: "comp_technical",
     level: "Advanced",
     duration: "22 Hours",
     modulesCount: 4,
     modules: [
-      { id: "mod-02-1", title: "Survey Anomaly & Outlier Detection", duration: "6 Hours", description: "Unsupervised clustering and isolation forests to detect enumerator skew." },
-      { id: "mod-02-2", title: "Intelligent Missing-Value Imputation", duration: "5 Hours", description: "Machine learning algorithms for unbiased demographic data imputation." },
-      { id: "mod-02-3", title: "NLP for Policy Document Parsing", duration: "6 Hours", description: "Extracting key socioeconomic indicators from unstructured ministry reports." },
-      { id: "mod-02-4", title: "AI-Ready Data Standardization", duration: "5 Hours", description: "Harmonizing legacy state and national datasets into standardized schemas." }
+      { id: "mod-02-1", title: "Python & R for Statistical Computing", duration: "6 Hours", description: "Automated CPI processing, reproducible analysis pipelines, and data visualization." },
+      { id: "mod-02-2", title: "SQL, Stata & SPSS for Official Data", duration: "5 Hours", description: "Query optimization, survey analysis commands, and database management for microdata." },
+      { id: "mod-02-3", title: "GIS & Spatial Mapping", duration: "5 Hours", description: "Choropleth mapping, geo-tagging economic census, and remote sensing applications." },
+      { id: "mod-02-4", title: "AI/ML for Survey Quality Assurance", duration: "6 Hours", description: "Outlier detection, intelligent imputation, and NLP for policy document parsing." }
     ]
   },
   {
     id: "mospi-ts-03",
-    title: "GIS & Spatial Analytics",
-    tagline: "Geospatial mapping and boundary-level analysis for official data.",
-    description: "Integrate geographic information systems into official statistics to visualize spatial disparities, geo-tag economic census establishments, and analyze satellite data.",
-    frac_competency_tag: "comp_gis_spatial",
-    level: "Foundational",
-    duration: "14 Hours",
-    modulesCount: 3,
+    title: "Digital Governance & Cybersecurity",
+    tagline: "Data privacy, Gov-Cloud, DPI systems, and digital compliance.",
+    description: "Navigate the digital governance landscape for government statistical organizations — from DPDPA 2023 compliance and CERT-In cybersecurity to MeghRaj cloud architecture and DPI integration.",
+    frac_competency_tag: "comp_digital_governance",
+    level: "Intermediate",
+    duration: "16 Hours",
+    modulesCount: 4,
     modules: [
-      { id: "mod-03-1", title: "Geo-tagging & Economic Census Mapping", duration: "5 Hours", description: "Spatial referencing and verification of enterprise surveys." },
-      { id: "mod-03-2", title: "Remote Sensing & Agricultural Metrics", duration: "5 Hours", description: "Using satellite imagery for acreage and crop yield estimation." },
-      { id: "mod-03-3", title: "Thematic Choropleth Mapping", duration: "4 Hours", description: "Generating district-level indicator maps for policy dissemination." }
+      { id: "mod-03-1", title: "Cybersecurity Fundamentals for Government", duration: "4 Hours", description: "CERT-In guidelines, threat modeling, and incident response for statistical systems." },
+      { id: "mod-03-2", title: "Data Privacy & IT Act Compliance", duration: "4 Hours", description: "DPDPA 2023, consent management, data minimization, and purpose limitation." },
+      { id: "mod-03-3", title: "Gov-Cloud (MeghRaj) Architecture", duration: "4 Hours", description: "Secure cloud deployment, role-based access, and data residency compliance." },
+      { id: "mod-03-4", title: "DPI Systems Integration", duration: "4 Hours", description: "Aadhaar eKYC, DigiLocker verification, and UPI-based service delivery." }
     ]
   },
   {
     id: "mospi-ts-04",
-    title: "Cloud Infrastructure for Gov Data",
-    tagline: "Scalable pipelines, secure data lakes, and dissemination portals.",
-    description: "Architect secure, compliant cloud systems for storing, accessing, and disseminating massive public and restricted national data registries.",
-    frac_competency_tag: "comp_cloud_infrastructure",
-    level: "Intermediate",
-    duration: "16 Hours",
-    modulesCount: 3,
+    title: "Behavioural & Leadership Skills",
+    tagline: "Leadership, communication, ethics, and change management for officers.",
+    description: "Develop the behavioural competencies essential for leading statistical organizations — from stakeholder engagement and ethical reporting to project management and digital transformation leadership.",
+    frac_competency_tag: "comp_behavioural",
+    level: "Foundational",
+    duration: "14 Hours",
+    modulesCount: 4,
     modules: [
-      { id: "mod-04-1", title: "Secure Gov-Cloud & Data Lake Architecture", duration: "6 Hours", description: "Designing role-based, encrypted repositories for official microdata." },
-      { id: "mod-04-2", title: "High-Availability Dissemination APIs", duration: "5 Hours", description: "Building public APIs for real-time statistical indicator queries." },
-      { id: "mod-04-3", title: "Compliance, Privacy & Auditing", duration: "5 Hours", description: "Implementing data masking, anonymization, and audit logs." }
+      { id: "mod-04-1", title: "Leadership & Decision Making", duration: "4 Hours", description: "Strategic thinking, cross-divisional coordination, and evidence-based decision frameworks." },
+      { id: "mod-04-2", title: "Communication & Statistical Reporting", duration: "3 Hours", description: "Presenting findings to Parliament, press briefings, and infographic design." },
+      { id: "mod-04-3", title: "Project Management for Surveys", duration: "4 Hours", description: "Critical path analysis, field operations scheduling, and risk mitigation for large-scale surveys." },
+      { id: "mod-04-4", title: "Ethics, Integrity & Change Management", duration: "3 Hours", description: "Methodological transparency, stakeholder change adoption, and institutional transformation." }
     ]
   }
 ];

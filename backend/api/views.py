@@ -21,7 +21,7 @@ from api.serializers import (
     DomainSerializer, LevelSerializer, LessonSerializer, UserStatsSerializer,
     CapstoneSubmissionSerializer, UserProfileSerializer
 )
-from api.ai_services import generate_project_blueprint, generate_code_review, generate_video_quiz, ask_oracle
+from api.ai_services import generate_project_blueprint, generate_code_review, generate_video_quiz, ask_oracle, extract_text_from_file, generate_quiz_from_document
 from learn.services.github_service import fetch_github_repo_content
 from learn.services.ai_evaluator import evaluate_code
 from rest_framework import viewsets
@@ -478,3 +478,69 @@ class CapstoneSubmissionViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+class DocumentQuizView(APIView):
+    """
+    POST /api/v1/ai/doc-quiz/
+    Upload a PDF/PPTX → extract text → generate FRAC-tagged MCQs via Gemini.
+    """
+    authentication_classes = []
+    permission_classes = [AllowAny]
+    parser_classes = [MultiPartParser, FormParser]
+
+    MAX_FILE_SIZE = 5 * 1024 * 1024  # 5MB
+
+    def post(self, request):
+        document = request.FILES.get('document')
+        if not document:
+            return Response(
+                {'error': 'A "document" file (PDF or PPTX) is required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Validate file size
+        if document.size > self.MAX_FILE_SIZE:
+            return Response(
+                {'error': f'File too large. Maximum size is 5MB (got {document.size // 1024}KB).'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Validate file type
+        filename = document.name.lower()
+        if not (filename.endswith('.pdf') or filename.endswith('.pptx')):
+            return Response(
+                {'error': 'Only PDF (.pdf) and PowerPoint (.pptx) files are supported.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        num_questions = int(request.data.get('num_questions', 5))
+        difficulty = request.data.get('difficulty', 'intermediate').strip()
+
+        try:
+            # 1. Extract text from the uploaded file
+            text = extract_text_from_file(document, document.name)
+
+            if not text or len(text.strip()) < 100:
+                return Response(
+                    {'error': 'Could not extract enough text from the document. Please upload a text-based PDF or PPTX.'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # 2. Generate quiz from the extracted text
+            questions = generate_quiz_from_document(text, num_questions, difficulty)
+
+            return Response({
+                'filename': document.name,
+                'text_length': len(text),
+                'num_questions': len(questions),
+                'difficulty': difficulty,
+                'questions': questions,
+            }, status=status.HTTP_200_OK)
+
+        except ValueError as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            traceback.print_exc()
+            return Response(
+                {'error': 'An unexpected error occurred during quiz generation.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )

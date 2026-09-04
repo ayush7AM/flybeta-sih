@@ -229,3 +229,112 @@ def ask_oracle(message: str, history: list = None) -> str:
         raise ValueError(f"Oracle Generation failed: {str(e)}")
 
 
+# ── Document-to-Quiz Pydantic Schemas ─────────────────────────────────
+
+class DocQuizQuestion(BaseModel):
+    question_number: int
+    question_text: str
+    options: list[str] = Field(min_length=4, max_length=4, description="Exactly 4 answer options")
+    correct_answer: str = Field(description="The full text of the correct option")
+    explanation: str = Field(description="Why this is correct, citing the source text")
+    frac_quadrant: str = Field(description="One of: comp_statistical, comp_technical, comp_digital_governance, comp_behavioural")
+    difficulty: str = Field(description="easy, intermediate, or advanced")
+
+class DocQuizResponse(BaseModel):
+    questions: list[DocQuizQuestion]
+
+
+def extract_text_from_file(file_obj, filename):
+    """
+    Extract text content from a PDF or PPTX file.
+    Returns the extracted text string.
+    """
+    ext = filename.lower().rsplit('.', 1)[-1] if '.' in filename else ''
+
+    if ext == 'pdf':
+        import pdfplumber
+        text_parts = []
+        with pdfplumber.open(file_obj) as pdf:
+            for page in pdf.pages:
+                page_text = page.extract_text()
+                if page_text:
+                    text_parts.append(page_text)
+        return '\n\n'.join(text_parts)
+
+    elif ext == 'pptx':
+        from pptx import Presentation
+        prs = Presentation(file_obj)
+        text_parts = []
+        for slide in prs.slides:
+            for shape in slide.shapes:
+                if shape.has_text_frame:
+                    for paragraph in shape.text_frame.paragraphs:
+                        text = paragraph.text.strip()
+                        if text:
+                            text_parts.append(text)
+        return '\n\n'.join(text_parts)
+
+    else:
+        raise ValueError(f"Unsupported file type: .{ext}. Only PDF and PPTX are supported.")
+
+
+def generate_quiz_from_document(text, num_questions=5, difficulty='intermediate'):
+    """
+    Generate FRAC-tagged MCQs from extracted document text using Gemini.
+    
+    Args:
+        text: The raw text extracted from the document.
+        num_questions: Number of questions to generate (3-10).
+        difficulty: One of 'easy', 'intermediate', 'advanced'.
+    
+    Returns:
+        List of question dicts matching DocQuizQuestion schema.
+    """
+    if not client:
+        raise ValueError("Missing API Key. Document quiz generation cannot run.")
+
+    # Truncate to avoid context overflow
+    max_chars = 8000
+    if len(text) > max_chars:
+        text = text[:max_chars] + "\n\n[... document truncated for processing ...]"
+
+    num_questions = max(3, min(10, int(num_questions)))
+    difficulty = difficulty if difficulty in ('easy', 'intermediate', 'advanced') else 'intermediate'
+
+    prompt = (
+        f"Generate exactly {num_questions} multiple-choice questions at {difficulty} difficulty "
+        f"based ONLY on the following document text. Do not use any external knowledge.\n\n"
+        f"--- DOCUMENT TEXT ---\n{text}\n--- END DOCUMENT TEXT ---"
+    )
+
+    system_instruction = (
+        "You are an expert assessment designer for India's Ministry of Statistics (MoSPI). "
+        "Generate MCQs strictly from the provided document text. "
+        "Each question must have exactly 4 options with 1 correct answer. "
+        "The explanation MUST cite or reference the specific part of the document that supports the answer. "
+        "Auto-tag each question to the most relevant MoSPI FRAC competency quadrant: "
+        "comp_statistical (survey design, sampling, national accounts, SDG indicators), "
+        "comp_technical (Python, R, SQL, GIS, AI/ML, data pipelines), "
+        "comp_digital_governance (cybersecurity, data privacy, gov-cloud, DPI systems), "
+        "comp_behavioural (leadership, communication, project management, ethics). "
+        "If the content doesn't clearly fit any quadrant, default to comp_statistical."
+    )
+
+    try:
+        response = client.models.generate_content(
+            model='gemini-3.6-flash',
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction,
+                response_mime_type="application/json",
+                response_schema=DocQuizResponse,
+                temperature=0.3,
+            ),
+        )
+
+        data = json.loads(response.text)
+        return data.get("questions", [])
+
+    except Exception as e:
+        print(f"Gemini API Error (Doc Quiz): {e}")
+        raise ValueError(f"Document quiz generation failed: {str(e)}")

@@ -7,6 +7,7 @@ import EditProfileModal from '../components/EditProfileModal';
 import { useCompetency } from '../context/CompetencyContext';
 import { Moon, Sun, LogOut } from 'lucide-react';
 import ActivityHeatmap from '../components/ActivityHeatmap';
+import { ALL_TAGS, COMPETENCY_META, TARGET_FRAMEWORK } from '../data/competencyTaxonomy';
 
 
 
@@ -179,28 +180,27 @@ export default function DashboardPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            {[
-              { key: 'comp_big_data_analytics', label: 'Big Data & Modern Statistics' },
-              { key: 'comp_ai_ml_statistics', label: 'AI & ML in Official Statistics' },
-              { key: 'comp_gis_spatial', label: 'GIS & Spatial Analytics' },
-              { key: 'comp_cloud_infrastructure', label: 'Cloud Infrastructure for Gov Data' }
-            ].map(domain => {
-              const score = compProfile?.[domain.key] ?? 0;
-              const isGap = score < 60;
+            {ALL_TAGS.map(tag => {
+              const meta = COMPETENCY_META[tag];
+              const score = compProfile?.[tag] ?? 0;
+              const target = TARGET_FRAMEWORK[compProfile?.designation]?.[tag] ?? 60;
+              const isGap = score < target;
               return (
-                <div key={domain.key}>
+                <div key={tag}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="label-mono font-bold">{domain.label}</span>
+                    <span className="label-mono font-bold">{meta.icon} {meta.label}</span>
                     <span className="label-mono text-sm" style={{ color: isGap ? '#DC2626' : 'var(--color-emerald)' }}>
-                      {score}%
+                      {score}% <span className="text-muted text-xs">/ {target}% target</span>
                     </span>
                   </div>
-                  <div className="w-full h-4 border-2 border-ink bg-canvas overflow-hidden">
+                  <div className="w-full h-4 bg-canvas overflow-hidden" 
+                       style={{ border: 'var(--border-width) solid var(--color-border)', borderRadius: 'var(--border-radius)' }}>
                     <div
                       className="h-full transition-all duration-700 ease-out"
                       style={{
                         width: `${score}%`,
-                        backgroundColor: isGap ? '#DC2626' : 'var(--color-primary)'
+                        backgroundColor: isGap ? '#DC2626' : 'var(--color-primary)',
+                        borderRadius: 'var(--border-radius)',
                       }}
                     />
                   </div>

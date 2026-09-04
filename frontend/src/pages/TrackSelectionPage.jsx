@@ -31,17 +31,17 @@ const THEME_IMAGES = {
 };
 
 const TAG_TO_IMAGE_KEY = {
-  'comp_big_data_analytics': 'data',
-  'comp_ai_ml_statistics': 'ai',
-  'comp_gis_spatial': 'data',
-  'comp_cloud_infrastructure': 'cloud',
+  'comp_statistical': 'data',
+  'comp_technical': 'ai',
+  'comp_digital_governance': 'cloud',
+  'comp_behavioural': 'data',
 };
 
 const TAG_TO_ICON = {
-  'comp_big_data_analytics': Database,
-  'comp_ai_ml_statistics': Bot,
-  'comp_gis_spatial': BarChart3,
-  'comp_cloud_infrastructure': Cloud,
+  'comp_statistical': Database,
+  'comp_technical': Bot,
+  'comp_digital_governance': Cloud,
+  'comp_behavioural': BarChart3,
 };
 
 export default function TrackSelectionPage() {

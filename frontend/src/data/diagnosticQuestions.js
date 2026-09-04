@@ -1,15 +1,19 @@
 /**
  * FRAC Diagnostic Question Bank
- * 12 MCQs — 3 per competency domain
+ * 12 MCQs — 3 per official MoSPI competency quadrant
  * Aligned to MoSPI capacity-building requirements (SIH 26101)
+ * 
+ * Tags use the official 4-quadrant taxonomy from competencyTaxonomy.js
  */
+
+import { COMPETENCY_META } from './competencyTaxonomy';
 
 const DIAGNOSTIC_QUESTIONS = [
   // ═══════════════════════════════════════════════════════════════
-  // DOMAIN 1: Big Data & Modern Statistics (comp_big_data_analytics)
+  // QUADRANT 1: Statistical (comp_statistical)
   // ═══════════════════════════════════════════════════════════════
   {
-    id: "bd_01",
+    id: "stat_01",
     question_text:
       "The National Sample Survey (NSS) generates terabytes of micro-data per round. Which approach is most appropriate for processing unit-level NSS records at scale while preserving sampling weights?",
     options: [
@@ -20,201 +24,176 @@ const DIAGNOSTIC_QUESTIONS = [
     ],
     correct_answer:
       "Use a distributed computing framework like Apache Spark with weighted aggregation UDFs",
-    frac_competency_tag: "comp_big_data_analytics",
+    frac_competency_tag: "comp_statistical",
   },
   {
-    id: "bd_02",
+    id: "stat_02",
     question_text:
-      "A district-level statistical office receives daily price data from 300+ market centres for the Consumer Price Index (CPI). What is the most reliable strategy for handling missing or delayed market reports?",
+      "India's GDP estimation follows which primary methodology as recommended by the UN System of National Accounts (SNA)?",
     options: [
-      "Exclude the missing market entirely from the index calculation",
-      "Apply statistical imputation methods such as last-observation-carried-forward (LOCF) combined with seasonal adjustment",
-      "Wait indefinitely until all 300 markets report before computing the index",
-      "Replace all missing values with the national average price",
+      "Expenditure approach only, summing all household spending",
+      "Production (value-added) approach at basic prices with adjustments for taxes and subsidies",
+      "Income approach only, summing all wages and profits",
+      "Trade balance approach, subtracting imports from exports",
     ],
     correct_answer:
-      "Apply statistical imputation methods such as last-observation-carried-forward (LOCF) combined with seasonal adjustment",
-    frac_competency_tag: "comp_big_data_analytics",
+      "Production (value-added) approach at basic prices with adjustments for taxes and subsidies",
+    frac_competency_tag: "comp_statistical",
   },
   {
-    id: "bd_03",
+    id: "stat_03",
     question_text:
-      "When designing a data pipeline to ingest Annual Survey of Industries (ASI) returns submitted in multiple regional formats (CSV, XML, scanned forms), which architecture pattern best ensures data quality?",
+      "When designing a multi-stage stratified random sample for the Periodic Labour Force Survey (PLFS), which factor is MOST critical for minimizing design effect?",
     options: [
-      "Directly load all files into a single SQL table without validation",
-      "Implement an ELT (Extract-Load-Transform) pipeline with schema validation, deduplication, and automated anomaly detection at the staging layer",
-      "Manually review each submission and re-type the data into a spreadsheet",
-      "Reject all submissions that are not in CSV format",
+      "Maximizing the number of households per Primary Sampling Unit (PSU)",
+      "Using systematic random sampling at every stage",
+      "Maximizing the number of PSUs while keeping the per-PSU sample size small",
+      "Replacing non-responding households with the nearest neighbour",
     ],
     correct_answer:
-      "Implement an ELT (Extract-Load-Transform) pipeline with schema validation, deduplication, and automated anomaly detection at the staging layer",
-    frac_competency_tag: "comp_big_data_analytics",
-  },
-
-  // ═══════════════════════════════════════════════════════════════
-  // DOMAIN 2: AI & ML in Official Statistics (comp_ai_ml_statistics)
-  // ═══════════════════════════════════════════════════════════════
-  {
-    id: "ai_01",
-    question_text:
-      "MoSPI wants to use machine learning to auto-classify economic activities reported in free-text fields of the Economic Census into NIC (National Industrial Classification) codes. Which approach is most suitable?",
-    options: [
-      "Use a rule-based regex matcher that searches for exact keyword matches",
-      "Train a supervised text classification model (e.g., fine-tuned BERT) on historically labelled NIC-coded records",
-      "Ask each enumerator to manually assign the NIC code during field collection",
-      "Apply K-means clustering on the raw text without any labelled data",
-    ],
-    correct_answer:
-      "Train a supervised text classification model (e.g., fine-tuned BERT) on historically labelled NIC-coded records",
-    frac_competency_tag: "comp_ai_ml_statistics",
-  },
-  {
-    id: "ai_02",
-    question_text:
-      "A pilot project uses satellite imagery to estimate crop acreage for the Agriculture Census. The model achieves 95% accuracy on training data but only 60% on new district images. What is the most likely issue?",
-    options: [
-      "The satellite images are too high-resolution for the model to process",
-      "The model is overfitting to the training region and lacks generalization — more diverse training data and regularization are needed",
-      "The model needs to be converted from Python to Java for better performance",
-      "60% accuracy is acceptable for government use and no further action is needed",
-    ],
-    correct_answer:
-      "The model is overfitting to the training region and lacks generalization — more diverse training data and regularization are needed",
-    frac_competency_tag: "comp_ai_ml_statistics",
-  },
-  {
-    id: "ai_03",
-    question_text:
-      "When deploying an AI model that predicts GDP nowcasts from high-frequency indicators (GST collections, e-way bills), what is the most critical governance requirement for MoSPI?",
-    options: [
-      "The model should be a black-box deep neural network to maximize accuracy",
-      "Model explainability, version control, and an audit trail so that published estimates can be reproduced and justified to Parliament",
-      "The model should only run on a single analyst's laptop for security",
-      "Accuracy is irrelevant as long as the model runs faster than the previous method",
-    ],
-    correct_answer:
-      "Model explainability, version control, and an audit trail so that published estimates can be reproduced and justified to Parliament",
-    frac_competency_tag: "comp_ai_ml_statistics",
+      "Maximizing the number of PSUs while keeping the per-PSU sample size small",
+    frac_competency_tag: "comp_statistical",
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // DOMAIN 3: GIS & Spatial Analytics (comp_gis_spatial)
+  // QUADRANT 2: Technical (comp_technical)
   // ═══════════════════════════════════════════════════════════════
   {
-    id: "gis_01",
+    id: "tech_01",
     question_text:
-      "For the upcoming Census, MoSPI plans to digitize Enumeration Block (EB) boundaries. What is the most appropriate spatial data format and coordinate reference system for India-wide census mapping?",
+      "A district statistical office needs to automate monthly CPI data processing. Which tool combination is most suitable for building a reproducible statistical pipeline?",
     options: [
-      "Store boundaries as JPEG images georeferenced with Google Maps screenshots",
-      "Use GeoJSON or Shapefile format with WGS 84 (EPSG:4326) or Everest/India-specific projected CRS for area calculations",
-      "Use plain CSV files with latitude and longitude columns only, no polygon support",
-      "Store all boundaries as descriptive text (e.g., 'North of the river, east of the highway')",
+      "Microsoft Word macros with manual copy-paste into Excel",
+      "Python (pandas + NumPy) with scheduled scripts and version-controlled notebooks",
+      "A single large SQL query with no documentation",
+      "Outsourcing all data processing to a third-party vendor",
     ],
     correct_answer:
-      "Use GeoJSON or Shapefile format with WGS 84 (EPSG:4326) or Everest/India-specific projected CRS for area calculations",
-    frac_competency_tag: "comp_gis_spatial",
+      "Python (pandas + NumPy) with scheduled scripts and version-controlled notebooks",
+    frac_competency_tag: "comp_technical",
   },
   {
-    id: "gis_02",
+    id: "tech_02",
     question_text:
-      "A state statistical bureau wants to create a poverty heat map by overlaying BPL (Below Poverty Line) household data with SECC (Socio-Economic Caste Census) records at the village level. What is the key technical challenge?",
+      "You need to create a choropleth map showing district-wise poverty ratios using Census and SECC data. Which approach is most appropriate?",
     options: [
-      "Converting the data to a pie chart format",
-      "Spatial join accuracy — matching household records to the correct village polygon requires geocoded addresses or a reliable location code (LGD code) linkage",
-      "Choosing the right colour palette for the map",
-      "Poverty data cannot be displayed on maps due to privacy laws",
+      "Plot data on Google Maps using manual pin drops",
+      "Use QGIS/ArcGIS with shapefiles from the Survey of India, joining poverty data by district code",
+      "Create a table in Excel and colour-code cells manually",
+      "Take screenshots of existing maps and annotate them in Paint",
     ],
     correct_answer:
-      "Spatial join accuracy — matching household records to the correct village polygon requires geocoded addresses or a reliable location code (LGD code) linkage",
-    frac_competency_tag: "comp_gis_spatial",
+      "Use QGIS/ArcGIS with shapefiles from the Survey of India, joining poverty data by district code",
+    frac_competency_tag: "comp_technical",
   },
   {
-    id: "gis_03",
+    id: "tech_03",
     question_text:
-      "MoSPI is building a national dashboard that displays district-wise IIP (Index of Industrial Production) on an interactive map. Which technology stack is most appropriate for serving this to thousands of concurrent government users?",
+      "An AI/ML model trained to detect outliers in Annual Survey of Industries (ASI) data shows 95% training accuracy but only 40% accuracy on new data. What is the most likely issue?",
     options: [
-      "Embed a static screenshot of a desktop GIS application in the dashboard",
-      "Use a tile-server (e.g., GeoServer or Mapbox) with vector tiles, served via a CDN, and rendered client-side with a library like Leaflet or Mapbox GL JS",
-      "Email individual PDF maps to each user on request",
-      "Use a single Google My Maps link shared across all departments",
+      "The model needs more complex architecture (deeper neural network)",
+      "The model is overfitting — it memorized training data rather than learning generalizable patterns",
+      "The test data is corrupt and should be discarded",
+      "AI models cannot be applied to survey data",
     ],
     correct_answer:
-      "Use a tile-server (e.g., GeoServer or Mapbox) with vector tiles, served via a CDN, and rendered client-side with a library like Leaflet or Mapbox GL JS",
-    frac_competency_tag: "comp_gis_spatial",
+      "The model is overfitting — it memorized training data rather than learning generalizable patterns",
+    frac_competency_tag: "comp_technical",
   },
 
   // ═══════════════════════════════════════════════════════════════
-  // DOMAIN 4: Cloud Infrastructure for Gov Data (comp_cloud_infrastructure)
+  // QUADRANT 3: Digital Governance (comp_digital_governance)
   // ═══════════════════════════════════════════════════════════════
   {
-    id: "cloud_01",
+    id: "dg_01",
     question_text:
-      "MoSPI is migrating its on-premise data warehouse to the MeghRaj (GI Cloud) platform. Which data residency and compliance requirement is most critical?",
+      "Under the Information Technology Act, 2000 and the Digital Personal Data Protection Act (DPDPA) 2023, which practice is MANDATORY when collecting respondent data in government surveys?",
     options: [
-      "All data must be stored on personal USB drives for portability",
-      "Data must reside within Indian sovereign territory, comply with MeitY cloud guidelines, and be encrypted at rest and in transit",
-      "Any international cloud provider (US/EU region) can be used without restrictions for government data",
-      "Data residency requirements only apply to defence data, not statistical data",
+      "Publishing all individual respondent data on the ministry website for transparency",
+      "Obtaining informed consent, implementing data minimization, and ensuring purpose limitation",
+      "Collecting as much personal data as possible for future use cases",
+      "Storing data indefinitely without any retention policy",
     ],
     correct_answer:
-      "Data must reside within Indian sovereign territory, comply with MeitY cloud guidelines, and be encrypted at rest and in transit",
-    frac_competency_tag: "comp_cloud_infrastructure",
+      "Obtaining informed consent, implementing data minimization, and ensuring purpose limitation",
+    frac_competency_tag: "comp_digital_governance",
   },
   {
-    id: "cloud_02",
+    id: "dg_02",
     question_text:
-      "During the decennial Census, data submission volumes spike 100x for 3 months and then drop to near-zero. Which cloud architecture pattern is most cost-effective for handling this?",
+      "A government statistical database hosted on MeghRaj (GI Cloud) requires secure access. Which mechanism aligns with NIC and CERT-In cybersecurity guidelines?",
     options: [
-      "Provision permanent high-capacity servers that run year-round at full capacity",
-      "Use auto-scaling compute groups (e.g., Kubernetes HPA or serverless functions) that scale up during peak Census months and scale down automatically after",
-      "Process all Census data manually on desktop computers in field offices",
-      "Delay Census data processing until the following year when servers are free",
+      "Single shared password for all department staff posted on the intranet",
+      "Multi-Factor Authentication (MFA) with role-based access control (RBAC) and audit logging",
+      "No authentication — data should be freely accessible to all government employees",
+      "Email-based login with no password requirement",
     ],
     correct_answer:
-      "Use auto-scaling compute groups (e.g., Kubernetes HPA or serverless functions) that scale up during peak Census months and scale down automatically after",
-    frac_competency_tag: "comp_cloud_infrastructure",
+      "Multi-Factor Authentication (MFA) with role-based access control (RBAC) and audit logging",
+    frac_competency_tag: "comp_digital_governance",
   },
   {
-    id: "cloud_03",
+    id: "dg_03",
     question_text:
-      "A MoSPI data lake stores sensitive household survey micro-data alongside publicly available aggregate statistics. What is the best practice for access control?",
+      "The Digital Public Infrastructure (DPI) stack in India includes several core platforms. Which of the following is NOT part of India's DPI ecosystem?",
     options: [
-      "Give all employees full admin access to simplify operations",
-      "Implement role-based access control (RBAC) with data classification tiers — public aggregates are open, while unit-level micro-data requires MFA and is restricted to authorized statistical officers only",
-      "Store all data in a single unencrypted S3 bucket with a public URL",
-      "Access control is unnecessary because government data is not valuable to attackers",
+      "Aadhaar (unique digital identity)",
+      "UPI (Unified Payments Interface)",
+      "DigiLocker (document verification)",
+      "Microsoft Azure Government Cloud",
+    ],
+    correct_answer: "Microsoft Azure Government Cloud",
+    frac_competency_tag: "comp_digital_governance",
+  },
+
+  // ═══════════════════════════════════════════════════════════════
+  // QUADRANT 4: Behavioural (comp_behavioural)
+  // ═══════════════════════════════════════════════════════════════
+  {
+    id: "beh_01",
+    question_text:
+      "You are leading a cross-divisional team (NSO + DPD + FOD) to implement a new digital data collection system. Multiple divisions resist the change. What is the most effective leadership approach?",
+    options: [
+      "Issue a mandatory directive and penalize non-compliance",
+      "Engage stakeholders early with pilot demonstrations, address concerns, and create change champions in each division",
+      "Implement the system without informing the teams until launch day",
+      "Abandon the initiative because of resistance",
     ],
     correct_answer:
-      "Implement role-based access control (RBAC) with data classification tiers — public aggregates are open, while unit-level micro-data requires MFA and is restricted to authorized statistical officers only",
-    frac_competency_tag: "comp_cloud_infrastructure",
+      "Engage stakeholders early with pilot demonstrations, address concerns, and create change champions in each division",
+    frac_competency_tag: "comp_behavioural",
+  },
+  {
+    id: "beh_02",
+    question_text:
+      "While preparing a statistical report for the Cabinet Secretariat, you discover that the data methodology has a limitation that could affect interpretation. What is the most ethical course of action?",
+    options: [
+      "Omit the limitation to avoid complicating the narrative",
+      "Clearly document the methodological limitation in the report with its potential impact on findings",
+      "Modify the data to eliminate the limitation's effect",
+      "Delay the report indefinitely until the limitation is resolved",
+    ],
+    correct_answer:
+      "Clearly document the methodological limitation in the report with its potential impact on findings",
+    frac_competency_tag: "comp_behavioural",
+  },
+  {
+    id: "beh_03",
+    question_text:
+      "A large-scale survey project is falling behind schedule due to field enumeration delays. As the project manager, which approach best demonstrates project management competency?",
+    options: [
+      "Reduce the sample size to meet the deadline without informing stakeholders",
+      "Reassess the critical path, reallocate field resources, communicate revised timelines to stakeholders, and implement daily progress tracking",
+      "Blame the field staff and demand overtime without additional resources",
+      "Wait until the deadline passes and then report the delay",
+    ],
+    correct_answer:
+      "Reassess the critical path, reallocate field resources, communicate revised timelines to stakeholders, and implement daily progress tracking",
+    frac_competency_tag: "comp_behavioural",
   },
 ];
 
 export default DIAGNOSTIC_QUESTIONS;
 
-/**
- * FRAC Competency Tag Metadata
- * Used for display labels and domain colors in the results screen
- */
-export const COMPETENCY_META = {
-  comp_big_data_analytics: {
-    label: "Big Data & Modern Statistics",
-    color: "#2563EB",
-    icon: "📊",
-  },
-  comp_ai_ml_statistics: {
-    label: "AI & ML in Official Statistics",
-    color: "#7C3AED",
-    icon: "🤖",
-  },
-  comp_gis_spatial: {
-    label: "GIS & Spatial Analytics",
-    color: "#059669",
-    icon: "🗺️",
-  },
-  comp_cloud_infrastructure: {
-    label: "Cloud Infrastructure for Gov Data",
-    color: "#EA580C",
-    icon: "☁️",
-  },
-};
+// Re-export COMPETENCY_META from the taxonomy file for backward compatibility
+export { COMPETENCY_META } from './competencyTaxonomy';

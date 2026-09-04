@@ -9,7 +9,7 @@ import DIAGNOSTIC_QUESTIONS, { COMPETENCY_META } from '../../data/diagnosticQues
  * Steps through 12 domain-specific MCQs, tracks answers,
  * and produces a competency gap score object on completion.
  * 
- * Output shape: { comp_big_data_analytics: 33, comp_ai_ml_statistics: 100, ... }
+ * Output shape: { comp_statistical: 33, comp_technical: 100, comp_digital_governance: 66, comp_behavioural: 100 }
  */
 export default function DiagnosticAssessment({ onComplete }) {
   const [currentIndex, setCurrentIndex] = useState(0);

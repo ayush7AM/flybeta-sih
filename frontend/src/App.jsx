@@ -14,6 +14,8 @@ import VideoDetailPage from './pages/VideoDetailPage';
 import ResetPasswordConfirmPage from './pages/ResetPasswordConfirmPage';
 import DashboardPage from './pages/DashboardPage';
 import DiagnosticPage from './pages/DiagnosticPage';
+import RecommendationsPage from './pages/RecommendationsPage';
+import QuizGeneratorPage from './pages/QuizGeneratorPage';
 
 export default function App() {
   return (
@@ -40,6 +42,8 @@ export default function App() {
                 <Route path="/vision/video/:id" element={<VideoDetailPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/diagnostic" element={<DiagnosticPage />} />
+                <Route path="/recommendations" element={<RecommendationsPage />} />
+                <Route path="/quiz-generator" element={<QuizGeneratorPage />} />
               </Route>
             </Routes>
           </CompetencyProvider>

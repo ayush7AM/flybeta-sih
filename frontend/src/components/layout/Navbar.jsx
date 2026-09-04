@@ -14,6 +14,8 @@ const NAV_LINKS = [
 const AUTH_NAV_LINKS = [
   { label: 'Dashboard', path: '/dashboard' },
   { label: 'Diagnostic', path: '/diagnostic' },
+  { label: 'Pathways', path: '/recommendations' },
+  { label: 'Quiz Engine', path: '/quiz-generator' },
 ];
 
 export default function Navbar() {

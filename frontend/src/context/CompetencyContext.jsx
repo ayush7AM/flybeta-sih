@@ -30,6 +30,8 @@ export function CompetencyProvider({ children }) {
   const hasCompletedDiagnostic = !!profile;
   const userDesignation = profile?.designation || null;
   const userDivision = profile?.division || null;
+  const yearsOfService = profile?.yearsOfService || null;
+  const previousTrainings = profile?.previousTrainings || [];
 
   return (
     <CompetencyContext.Provider value={{ 
@@ -38,7 +40,9 @@ export function CompetencyProvider({ children }) {
       hasCompletedDiagnostic, 
       isLoaded,
       userDesignation,
-      userDivision
+      userDivision,
+      yearsOfService,
+      previousTrainings,
     }}>
       {children}
     </CompetencyContext.Provider>
