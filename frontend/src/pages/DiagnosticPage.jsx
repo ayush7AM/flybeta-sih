@@ -222,7 +222,7 @@ export default function DiagnosticPage() {
   };
 
   return (
-    <div>
+    <div id="tour-page-diagnostic">
       {/* Page Header */}
       <header className="mb-10">
         <div

@@ -55,7 +55,7 @@ export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState('divisions');
 
   return (
-    <div className="max-w-6xl mx-auto px-3 md:px-4 py-6 md:py-8 space-y-6 md:space-y-8">
+    <div id="tour-page-admin" className="max-w-6xl mx-auto px-3 md:px-4 py-6 md:py-8 space-y-6 md:space-y-8">
 
       {/* ── Header ─────────────────────────────────────────────── */}
       <div className="flex items-center justify-between flex-wrap gap-4">

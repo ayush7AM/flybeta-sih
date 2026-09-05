@@ -123,6 +123,7 @@ export default function TrackSelectionPage() {
           return (
             <article
               key={track.id}
+              id={index === 0 ? 'tour-first-track' : undefined}
               className="brutalist-card flex flex-col overflow-hidden"
               style={{
                 borderColor: isGap ? '#DC2626' : 'var(--color-ink)',

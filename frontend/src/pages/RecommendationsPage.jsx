@@ -31,7 +31,7 @@ export default function RecommendationsPage() {
     : 0;
 
   return (
-    <div>
+    <div id="tour-page-recommendations">
       {/* Page Header */}
       <header className="mb-8">
         <div

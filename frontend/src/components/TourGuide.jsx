@@ -1,17 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 
 /**
- * TourGuide — Multi-Page Guided Tour
- * 
- * Walks new users across multiple pages:
- *   Dashboard → Tracks → Diagnostic → Pathways → Quiz Engine → Labs → Admin
- * 
- * Uses localStorage `mospi_tour_page` to track which page group to show.
- * Each page has its own tour steps. Clicking "Next" on the last step of a page
- * auto-navigates to the next page and continues the tour there.
+ * TourGuide — Multi-Page Guided Tour with Global Step Numbering
+ *
+ * Walks new users across pages with per-component highlights.
+ * Uses localStorage to track progress across page navigations.
+ *
+ * Total: 12 steps across 7 pages
  */
 
 const TOUR_PAGES = [
@@ -21,17 +19,35 @@ const TOUR_PAGES = [
       {
         element: '#tour-identity',
         popover: {
-          title: '👤 Your Officer Profile',
-          description: 'Your designation, division, and FRAC assessment status live here. This identity drives all personalized recommendations.',
+          title: '👤 Officer Identity Card',
+          description: 'Your designation, division, and years of service. This drives all competency targets and personalized recommendations.',
           side: 'bottom',
           align: 'start',
         },
       },
       {
+        element: '#tour-heatmap',
+        popover: {
+          title: '📅 Activity Heatmap',
+          description: 'GitHub-style calendar showing your daily learning activity. Build streaks by completing lessons every day!',
+          side: 'top',
+          align: 'center',
+        },
+      },
+      {
         element: '#tour-radar',
         popover: {
-          title: '📊 Competency Radar',
-          description: 'Your current FRAC scores vs the target framework for your designation. Red areas = skill gaps that need attention.',
+          title: '📊 FRAC Competency Radar',
+          description: 'Your current scores vs the target framework. Blue = your score, green = target. Red zones indicate skill gaps that need priority training.',
+          side: 'top',
+          align: 'center',
+        },
+      },
+      {
+        element: '#tour-track-progress',
+        popover: {
+          title: '📈 Track Progress',
+          description: 'Module-by-module completion across all 4 FRAC learning tracks. Progress bars fill as you complete levels.',
           side: 'top',
           align: 'center',
         },
@@ -42,11 +58,12 @@ const TOUR_PAGES = [
     path: '/tracks',
     steps: [
       {
+        element: '#tour-first-track',
         popover: {
-          title: '📚 Learning Tracks',
-          description: 'Four MoSPI tracks aligned to the FRAC quadrants: Statistical, Technical, Digital Governance, and Behavioural. Pick any track to start structured learning.',
-          side: 'bottom',
-          align: 'center',
+          title: '📚 Learning Track Cards',
+          description: 'Each card maps to a FRAC quadrant. Red borders highlight your weakest areas. Click "START TRACK" to enter a level-by-level roadmap with lessons and boss quizzes.',
+          side: 'left',
+          align: 'start',
         },
       },
     ],
@@ -55,9 +72,10 @@ const TOUR_PAGES = [
     path: '/diagnostic',
     steps: [
       {
+        element: '#tour-page-diagnostic',
         popover: {
-          title: '🎯 FRAC Diagnostic',
-          description: 'Retake the 12-question competency assessment anytime to update your skill profile. Your officer data is pre-filled — just answer the questions.',
+          title: '🎯 FRAC Diagnostic Assessment',
+          description: 'Retake the 12-question competency quiz anytime to update your skill profile. Your officer data (designation, division) stays pre-filled.',
           side: 'bottom',
           align: 'center',
         },
@@ -68,9 +86,10 @@ const TOUR_PAGES = [
     path: '/recommendations',
     steps: [
       {
+        element: '#tour-page-recommendations',
         popover: {
-          title: '🗺️ Training Pathways',
-          description: 'AI-curated recommendations from iGOT Karmayogi e-courses and NSSTA TPAC institutional programmes — filtered by your specific skill gaps.',
+          title: '🗺️ AI Training Pathways',
+          description: 'Two tabs: iGOT Karmayogi e-courses for self-paced learning, and NSSTA TPAC institutional programmes for classroom training. Both filtered by your FRAC skill gaps.',
           side: 'bottom',
           align: 'center',
         },
@@ -81,9 +100,10 @@ const TOUR_PAGES = [
     path: '/quiz-generator',
     steps: [
       {
+        element: '#tour-page-quiz',
         popover: {
           title: '📝 Document Quiz Engine',
-          description: 'Upload any MoSPI statistical manual or circular (PDF/PPTX) — AI auto-generates FRAC-tagged MCQs with instant grading and explanations.',
+          description: 'Upload any MoSPI statistical manual or circular (PDF/PPTX). AI extracts key concepts and generates FRAC-tagged MCQs with instant grading and explanations.',
           side: 'bottom',
           align: 'center',
         },
@@ -94,9 +114,10 @@ const TOUR_PAGES = [
     path: '/labs/architect',
     steps: [
       {
+        element: '#tour-page-labs',
         popover: {
           title: '🏗️ AI Labs',
-          description: 'Project Architect generates step-by-step blueprints. Code Reviewer analyzes your code for bugs and style issues. Both powered by Gemini AI.',
+          description: 'Two tools: Project Architect generates step-by-step blueprints from your idea. Code Reviewer analyzes your code for bugs, style, and best practices.',
           side: 'bottom',
           align: 'center',
         },
@@ -107,9 +128,10 @@ const TOUR_PAGES = [
     path: '/admin',
     steps: [
       {
+        element: '#tour-page-admin',
         popover: {
-          title: '🏛️ Admin Analytics',
-          description: 'Division-wide competency heatmaps, cadre-level gap analysis, and training effectiveness metrics for DIID administrators.',
+          title: '🏛️ Admin Analytics Dashboard',
+          description: 'Three tabs: Division Heatmap for org-wide scores, Cadre Analysis for JSO→Dy.Dir comparison, and Training Effectiveness for completion rate trends.',
           side: 'bottom',
           align: 'center',
         },
@@ -118,72 +140,140 @@ const TOUR_PAGES = [
   },
 ];
 
+// Pre-compute global step total
+const TOTAL_STEPS = TOUR_PAGES.reduce((sum, pg) => sum + pg.steps.length, 0);
+
+function getStepOffset(pageIndex) {
+  let offset = 0;
+  for (let i = 0; i < pageIndex; i++) {
+    offset += TOUR_PAGES[i].steps.length;
+  }
+  return offset;
+}
+
 export default function TourGuide() {
   const navigate = useNavigate();
   const location = useLocation();
+  const driverRef = useRef(null);
 
   useEffect(() => {
     const hasSeenTour = localStorage.getItem('mospi_has_seen_tour');
     if (hasSeenTour === 'true') return;
 
-    // Which page group are we on?
     const currentPageIndex = parseInt(localStorage.getItem('mospi_tour_page') || '0', 10);
     const tourPage = TOUR_PAGES[currentPageIndex];
+
     if (!tourPage) {
-      // Tour is complete
       localStorage.setItem('mospi_has_seen_tour', 'true');
       localStorage.removeItem('mospi_tour_page');
       return;
     }
 
-    // Are we on the right page for this tour group?
+    // Navigate to correct page if needed
     if (!location.pathname.startsWith(tourPage.path)) {
-      // Navigate to the correct page
       navigate(tourPage.path);
       return;
     }
 
-    // Small delay to let the page render
-    const timer = setTimeout(() => {
-      const isLastPageGroup = currentPageIndex >= TOUR_PAGES.length - 1;
-      const steps = tourPage.steps;
+    const stepOffset = getStepOffset(currentPageIndex);
+    const isLastPage = currentPageIndex >= TOUR_PAGES.length - 1;
 
+    const timer = setTimeout(() => {
       const driverObj = driver({
-        showProgress: true,
+        showProgress: false,
         animate: true,
         overlayColor: 'rgba(15, 23, 42, 0.75)',
-        stagePadding: 8,
+        stagePadding: 10,
         stageRadius: 8,
         popoverClass: 'smartskills-tour-popover',
-        nextBtnText: isLastPageGroup ? 'Finish Tour 🎉' : 'Next →',
-        prevBtnText: '← Back',
-        doneBtnText: isLastPageGroup ? 'Start Exploring! 🚀' : 'Next Page →',
-        allowClose: true,
-        steps: steps,
+        allowClose: false,   // Force use of Skip button instead of random clicks
+        steps: tourPage.steps,
+
+        onPopoverRender: (popover, { state }) => {
+          // ── Global step counter ──
+          const currentGlobal = stepOffset + state.activeIndex + 1;
+          const progressEl = popover.progressText;
+          if (progressEl) {
+            progressEl.textContent = `${currentGlobal} of ${TOTAL_STEPS}`;
+          } else {
+            const p = document.createElement('span');
+            p.className = 'driver-popover-progress-text';
+            p.textContent = `${currentGlobal} of ${TOTAL_STEPS}`;
+            const footer = popover.footerButtons;
+            if (footer) footer.prepend(p);
+          }
+
+          // ── Button text ──
+          const isLastStepOnPage = state.activeIndex === tourPage.steps.length - 1;
+          const nextBtn = popover.nextButton;
+          if (nextBtn) {
+            if (isLastPage && isLastStepOnPage) {
+              nextBtn.textContent = 'Finish Tour 🚀';
+            } else if (isLastStepOnPage) {
+              nextBtn.textContent = 'Next Page →';
+            } else {
+              nextBtn.textContent = 'Next →';
+            }
+          }
+          const prevBtn = popover.previousButton;
+          if (prevBtn) {
+            prevBtn.textContent = '← Back';
+          }
+
+          // ── Skip Tutorial link ──
+          const footer = popover.footerButtons;
+          if (footer && !footer.querySelector('.tour-skip-btn')) {
+            const skipBtn = document.createElement('button');
+            skipBtn.className = 'tour-skip-btn';
+            skipBtn.textContent = 'Skip Tutorial';
+            skipBtn.style.cssText = `
+              background: none; border: none; cursor: pointer;
+              font-family: var(--font-mono); font-size: 0.65rem;
+              color: var(--color-muted); text-transform: uppercase;
+              letter-spacing: 0.05em; text-decoration: underline;
+              margin-left: auto; padding: 4px 0;
+            `;
+            skipBtn.addEventListener('click', () => {
+              localStorage.setItem('mospi_has_seen_tour', 'true');
+              localStorage.removeItem('mospi_tour_page');
+              driverObj.destroy();
+            });
+            footer.appendChild(skipBtn);
+          }
+        },
+
         onDestroyStarted: () => {
           if (driverObj.isLastStep()) {
-            // Move to next page group
             const nextIndex = currentPageIndex + 1;
             if (nextIndex < TOUR_PAGES.length) {
               localStorage.setItem('mospi_tour_page', String(nextIndex));
               driverObj.destroy();
               navigate(TOUR_PAGES[nextIndex].path);
             } else {
-              // Tour complete
               localStorage.setItem('mospi_has_seen_tour', 'true');
               localStorage.removeItem('mospi_tour_page');
               driverObj.destroy();
             }
           } else {
+            // Early dismiss — still mark complete
+            localStorage.setItem('mospi_has_seen_tour', 'true');
+            localStorage.removeItem('mospi_tour_page');
             driverObj.destroy();
           }
         },
       });
 
+      driverRef.current = driverObj;
       driverObj.drive();
-    }, 600);
+    }, 700);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      if (driverRef.current) {
+        try { driverRef.current.destroy(); } catch {}
+        driverRef.current = null;
+      }
+    };
   }, [location.pathname]);
 
   return null;

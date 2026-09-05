@@ -53,7 +53,7 @@ export default function Navbar() {
 
         {/* Desktop Nav Links */}
         <div className="hidden md:flex gap-2">
-          {[...NAV_LINKS, ...(user ? AUTH_NAV_LINKS : [])].map(({ label, path }) => {
+          {(user ? AUTH_NAV_LINKS : NAV_LINKS).map(({ label, path }) => {
             const isActive = path === '/tracks'
               ? location.pathname === '/tracks' || location.pathname.startsWith('/track')
               : location.pathname.startsWith(path);
@@ -113,7 +113,7 @@ export default function Navbar() {
           ref={mobileMenuRef}
           className="md:hidden absolute top-16 md:top-20 left-0 w-full bg-surface border-b-2 border-ink shadow-[var(--shadow-brutal)] flex flex-col z-40"
         >
-          {[...NAV_LINKS, ...(user ? AUTH_NAV_LINKS : [])].map(({ label, path }) => {
+          {(user ? AUTH_NAV_LINKS : NAV_LINKS).map(({ label, path }) => {
             const isActive = path === '/tracks'
               ? location.pathname === '/tracks' || location.pathname.startsWith('/track')
               : location.pathname.startsWith(path);

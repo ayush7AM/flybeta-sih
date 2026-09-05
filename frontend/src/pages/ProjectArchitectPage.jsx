@@ -35,7 +35,7 @@ export default function ProjectArchitectPage() {
   };
 
   return (
-    <div>
+    <div id="tour-page-labs">
       <LabsSubNav />
 
       {/* ── Hero Section ──────────────────────────────────────────────── */}

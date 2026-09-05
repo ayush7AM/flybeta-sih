@@ -35,7 +35,7 @@ export default function QuizGeneratorPage() {
   };
 
   return (
-    <div>
+    <div id="tour-page-quiz">
       {/* Page Header */}
       <header className="mb-8">
         <div

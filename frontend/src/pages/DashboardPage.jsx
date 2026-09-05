@@ -197,8 +197,9 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* ── Activity Heatmap ───────────────────────────────────────────── */}
-      <ActivityHeatmap />
+      <div id="tour-heatmap">
+        <ActivityHeatmap />
+      </div>
 
       {/* ── FRAC Competency Radar Chart ──────────────────────────────── */}
       <div id="tour-radar" className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
@@ -296,7 +297,7 @@ export default function DashboardPage() {
       </div>
 
       {/* ── MoSPI Track Progress ──────────────────────────────────────── */}
-      <div className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
+      <div id="tour-track-progress" className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
         <h3 className="heading-md mb-4">LEARNING TRACK PROGRESS</h3>
 
         <div className="space-y-4">
