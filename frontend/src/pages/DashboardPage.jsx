@@ -5,49 +5,45 @@ import { useTheme } from '../context/ThemeContext';
 import { updateActiveTheme } from '../services/api';
 import EditProfileModal from '../components/EditProfileModal';
 import { useCompetency } from '../context/CompetencyContext';
-import { Moon, Sun, LogOut } from 'lucide-react';
+import { Moon, Sun, LogOut, Building2, Briefcase, Clock, GraduationCap } from 'lucide-react';
 import ActivityHeatmap from '../components/ActivityHeatmap';
 import { ALL_TAGS, COMPETENCY_META, TARGET_FRAMEWORK } from '../data/competencyTaxonomy';
-
-
-
-// ── Track metadata (matches DESIGN.md accent tokens) ────────────────────
-
-const TRACK_META = {
-  cloud:          { label: 'Cloud Computing',   color: '#2563EB', icon: '☁️' },
-  ai:             { label: 'AI & ML',           color: '#6D28D9', icon: '🤖' },
-  'data-science': { label: 'Data Science',      color: '#059669', icon: '📊' },
-};
+import { MOSPI_TRACKS } from '../data/tracksData';
+import {
+  RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
+  Radar, Legend, ResponsiveContainer, Tooltip
+} from 'recharts';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
   const { user, refetchUser, loading, logout } = useAuth();
   const { themeKey, themes, themeKeys, setTheme, isDarkMode, toggleDarkMode } = useTheme();
-  const { profile: compProfile, hasCompletedDiagnostic } = useCompetency();
+  const {
+    profile: compProfile,
+    hasCompletedDiagnostic,
+    userDesignation,
+    userDivision,
+    yearsOfService,
+  } = useCompetency();
 
-  const [themeUpdating, setThemeUpdating] = useState(null); // key being updated
+  const [themeUpdating, setThemeUpdating] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
-  // ── Profile save handler (from EditProfileModal) ──────────────────────
   const handleProfileSave = () => {
     refetchUser();
     setEditModalOpen(false);
   };
 
-  // ── Auth guard ────────────────────────────────────────────────────────
   useEffect(() => {
     if (!loading && !user) {
       navigate('/tracks', { replace: true });
     }
   }, [user, loading, navigate]);
 
-  // ── Theme click handler ───────────────────────────────────────────────
   const handleThemeChange = async (key) => {
     if (key === themeKey) return;
     setThemeUpdating(key);
-    // Apply immediately on the frontend
     setTheme(key);
-    // Only persist to backend if user is authenticated
     if (user) {
       try {
         await updateActiveTheme(key);
@@ -59,7 +55,6 @@ export default function DashboardPage() {
     setThemeUpdating(null);
   };
 
-  // ── Loading skeleton ──────────────────────────────────────────────────
   if (loading || !user) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
@@ -70,7 +65,20 @@ export default function DashboardPage() {
     );
   }
 
-  const profile = user; // Alias for convenience below
+  const profile = user;
+
+  // ── Radar chart data ────────────────────────────────────────────
+  const radarData = ALL_TAGS.map((tag) => {
+    const meta = COMPETENCY_META[tag];
+    const actual = compProfile?.[tag] ?? 0;
+    const target = TARGET_FRAMEWORK[compProfile?.designation || userDesignation]?.[tag] ?? 60;
+    return {
+      quadrant: meta.shortLabel,
+      'Your Score': actual,
+      'Target': target,
+      fullMark: 100,
+    };
+  });
 
   return (
     <div className="max-w-5xl mx-auto px-3 md:px-4 py-6 md:py-8 space-y-6 md:space-y-8">
@@ -81,7 +89,7 @@ export default function DashboardPage() {
         <p className="text-muted label-mono mt-1">YOUR PILOT DASHBOARD</p>
       </div>
 
-      {/* ── Mobile Quick Actions (visible only on mobile) ────────────── */}
+      {/* ── Mobile Quick Actions ────────────────────────────────────── */}
       <div className="flex md:hidden items-center gap-2">
         <button
           onClick={toggleDarkMode}
@@ -101,6 +109,7 @@ export default function DashboardPage() {
 
       {/* ── Hero Identity Card ──────────────────────────────────────── */}
       <div
+        id="tour-identity"
         className="brutalist-card p-4 md:p-8"
         style={{ background: 'var(--color-surface)' }}
       >
@@ -149,7 +158,7 @@ export default function DashboardPage() {
               </p>
             )}
 
-            {/* Professional Badges */}
+            {/* Professional Info Badges */}
             <div className="flex flex-wrap gap-2 md:gap-3 mt-3">
               <span className="brutalist-badge bg-primary text-white border-transparent">
                 MoSPI Official
@@ -160,6 +169,30 @@ export default function DashboardPage() {
                 </span>
               )}
             </div>
+
+            {/* Designation/Division/YoS Info */}
+            {(userDesignation || userDivision || yearsOfService) && (
+              <div className="flex flex-wrap gap-3 mt-3 pt-3" style={{ borderTop: '1px solid var(--color-border)' }}>
+                {userDesignation && (
+                  <div className="flex items-center gap-1.5 text-xs text-muted">
+                    <Briefcase size={14} style={{ color: 'var(--color-primary)' }} />
+                    <span className="label-mono">{userDesignation}</span>
+                  </div>
+                )}
+                {userDivision && (
+                  <div className="flex items-center gap-1.5 text-xs text-muted">
+                    <Building2 size={14} style={{ color: 'var(--color-primary)' }} />
+                    <span className="label-mono">{userDivision}</span>
+                  </div>
+                )}
+                {yearsOfService && (
+                  <div className="flex items-center gap-1.5 text-xs text-muted">
+                    <Clock size={14} style={{ color: 'var(--color-primary)' }} />
+                    <span className="label-mono">{yearsOfService}</span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -167,84 +200,139 @@ export default function DashboardPage() {
       {/* ── Activity Heatmap ───────────────────────────────────────────── */}
       <ActivityHeatmap />
 
-      {/* ── FRAC Baseline Competency ────────────────────────────────── */}
-      <div className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
-        <h3 className="heading-md mb-4">FRAC BASELINE COMPETENCY</h3>
+      {/* ── FRAC Competency Radar Chart ──────────────────────────────── */}
+      <div id="tour-radar" className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
+        <h3 className="heading-md mb-4">FRAC COMPETENCY PROFILE</h3>
 
         {!hasCompletedDiagnostic ? (
-          <div className="bg-canvas border-2 border-ink p-4 flex justify-between items-center flex-wrap gap-4">
+          <div className="bg-canvas p-4 flex justify-between items-center flex-wrap gap-4"
+               style={{ border: 'var(--border-width) solid var(--color-border)', borderRadius: 'var(--border-radius)' }}>
             <span className="label-mono text-muted">Assessment pending...</span>
             <button onClick={() => navigate('/diagnostic')} className="brutalist-btn brutalist-btn-primary">
               Take Assessment
             </button>
           </div>
         ) : (
-          <div className="space-y-4">
-            {ALL_TAGS.map(tag => {
-              const meta = COMPETENCY_META[tag];
-              const score = compProfile?.[tag] ?? 0;
-              const target = TARGET_FRAMEWORK[compProfile?.designation]?.[tag] ?? 60;
-              const isGap = score < target;
-              return (
-                <div key={tag}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="label-mono font-bold">{meta.icon} {meta.label}</span>
-                    <span className="label-mono text-sm" style={{ color: isGap ? '#DC2626' : 'var(--color-emerald)' }}>
-                      {score}% <span className="text-muted text-xs">/ {target}% target</span>
-                    </span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Radar Chart */}
+            <div style={{ width: '100%', height: 320 }}>
+              <ResponsiveContainer>
+                <RadarChart data={radarData} cx="50%" cy="50%" outerRadius="75%">
+                  <PolarGrid stroke="var(--color-border)" />
+                  <PolarAngleAxis
+                    dataKey="quadrant"
+                    tick={{ fill: 'var(--color-muted)', fontSize: 11, fontFamily: 'var(--font-mono)' }}
+                  />
+                  <PolarRadiusAxis
+                    angle={90}
+                    domain={[0, 100]}
+                    tick={{ fill: 'var(--color-muted)', fontSize: 10 }}
+                  />
+                  <Radar
+                    name="Target"
+                    dataKey="Target"
+                    stroke="#94a3b8"
+                    fill="#94a3b8"
+                    fillOpacity={0.15}
+                    strokeWidth={2}
+                    strokeDasharray="5 5"
+                  />
+                  <Radar
+                    name="Your Score"
+                    dataKey="Your Score"
+                    stroke="var(--color-primary)"
+                    fill="var(--color-primary)"
+                    fillOpacity={0.25}
+                    strokeWidth={2}
+                  />
+                  <Legend
+                    wrapperStyle={{ fontSize: 11, fontFamily: 'var(--font-mono)' }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      background: 'var(--color-surface)',
+                      border: '2px solid var(--color-border)',
+                      borderRadius: 'var(--border-radius)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 12,
+                    }}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Linear bars alongside */}
+            <div className="space-y-4">
+              {ALL_TAGS.map(tag => {
+                const meta = COMPETENCY_META[tag];
+                const score = compProfile?.[tag] ?? 0;
+                const target = TARGET_FRAMEWORK[compProfile?.designation]?.[tag] ?? 60;
+                const isGap = score < target;
+                return (
+                  <div key={tag}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="label-mono font-bold text-sm">{meta.icon} {meta.label}</span>
+                      <span className="label-mono text-sm" style={{ color: isGap ? '#DC2626' : 'var(--color-emerald)' }}>
+                        {score}% <span className="text-muted text-xs">/ {target}%</span>
+                      </span>
+                    </div>
+                    <div className="w-full h-3 bg-canvas overflow-hidden"
+                         style={{ border: 'var(--border-width) solid var(--color-border)', borderRadius: 'var(--border-radius)' }}>
+                      <div
+                        className="h-full transition-all duration-700 ease-out"
+                        style={{
+                          width: `${score}%`,
+                          backgroundColor: isGap ? '#DC2626' : meta.color,
+                          borderRadius: 'var(--border-radius)',
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="w-full h-4 bg-canvas overflow-hidden" 
-                       style={{ border: 'var(--border-width) solid var(--color-border)', borderRadius: 'var(--border-radius)' }}>
-                    <div
-                      className="h-full transition-all duration-700 ease-out"
-                      style={{
-                        width: `${score}%`,
-                        backgroundColor: isGap ? '#DC2626' : 'var(--color-primary)',
-                        borderRadius: 'var(--border-radius)',
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         )}
       </div>
 
-      {/* ── Track Progress ──────────────────────────────────────────── */}
+      {/* ── MoSPI Track Progress ──────────────────────────────────────── */}
       <div className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
-        <h3 className="heading-md mb-4">TRACK PROGRESS</h3>
+        <h3 className="heading-md mb-4">LEARNING TRACK PROGRESS</h3>
 
         <div className="space-y-4">
-          {Object.entries(TRACK_META).map(([slug, meta]) => {
-            const dp = profile?.domain_progress?.find((d) => d.domain_name === slug);
+          {MOSPI_TRACKS.map((track) => {
+            const meta = COMPETENCY_META[track.frac_competency_tag] || {};
+            const dp = profile?.domain_progress?.find((d) => d.domain_name === track.id);
             const highest = dp?.highest_unlocked_level || 1;
             const completed = Math.max(highest - 1, 0);
-            const trackPct = Math.round((completed / 10) * 100);
+            const totalModules = track.modulesCount || track.modules?.length || 4;
+            const trackPct = Math.round((completed / totalModules) * 100);
 
             return (
-              <div key={slug}>
+              <div key={track.id}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="label-mono font-bold flex items-center gap-2">
-                    <span>{meta.icon}</span>
-                    <span>{meta.label}</span>
+                  <span className="label-mono font-bold flex items-center gap-2 text-sm">
+                    <span>{meta.icon || '📘'}</span>
+                    <span>{track.title}</span>
                   </span>
-                  <span className="label-mono text-muted text-sm">
-                    {completed} / 10 Completed
+                  <span className="label-mono text-muted text-xs">
+                    {completed} / {totalModules} Modules
                   </span>
                 </div>
                 <div
-                  className="w-full h-5 border-3 border-ink relative overflow-hidden"
+                  className="w-full h-4 relative overflow-hidden"
                   style={{
                     backgroundColor: 'var(--color-canvas)',
-                    borderWidth: '3px',
+                    border: 'var(--border-width) solid var(--color-border)',
+                    borderRadius: 'var(--border-radius)',
                   }}
                 >
                   <div
                     className="h-full transition-all duration-500 ease-out"
                     style={{
                       width: `${trackPct}%`,
-                      backgroundColor: meta.color,
+                      backgroundColor: meta.color || 'var(--color-primary)',
+                      borderRadius: 'var(--border-radius)',
                     }}
                   />
                 </div>
@@ -283,7 +371,6 @@ export default function DashboardPage() {
                   opacity: isUpdating ? 0.6 : 1,
                 }}
               >
-                {/* Active indicator */}
                 {isActive && (
                   <span
                     className="absolute -top-2 -right-2 w-6 h-6 flex items-center justify-center border-2 border-ink text-xs font-bold"
@@ -292,11 +379,7 @@ export default function DashboardPage() {
                     ✓
                   </span>
                 )}
-
-                {/* Theme icon */}
                 <span className="text-3xl">{t.icon}</span>
-
-                {/* Color swatch */}
                 <div
                   className="w-full h-3 border-2"
                   style={{
@@ -304,8 +387,6 @@ export default function DashboardPage() {
                     borderColor: borderColor,
                   }}
                 />
-
-                {/* Label */}
                 <span
                   className="label-mono text-xs font-bold text-center"
                   style={{ color: isActive ? borderColor : 'var(--color-muted)' }}
@@ -317,6 +398,7 @@ export default function DashboardPage() {
           })}
         </div>
       </div>
+
       {/* ── Edit Profile Modal ──────────────────────────────────────── */}
       {editModalOpen && (
         <EditProfileModal

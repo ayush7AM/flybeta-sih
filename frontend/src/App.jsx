@@ -16,6 +16,7 @@ import DashboardPage from './pages/DashboardPage';
 import DiagnosticPage from './pages/DiagnosticPage';
 import RecommendationsPage from './pages/RecommendationsPage';
 import QuizGeneratorPage from './pages/QuizGeneratorPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 
 export default function App() {
   return (
@@ -30,20 +31,24 @@ export default function App() {
               {/* Password reset confirmation — standalone */}
               <Route path="/reset-password/:uid/:token" element={<ResetPasswordConfirmPage />} />
 
+              {/* Onboarding diagnostic — standalone, no navbar (first-time only) */}
+              <Route path="/onboarding" element={<DiagnosticPage />} />
+
               {/* App routes — inside Layout with Navbar */}
               <Route element={<Layout />}>
+                <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/tracks" element={<TrackSelectionPage />} />
                 <Route path="/track/:name" element={<TrackRoadmapPage />} />
                 <Route path="/track/:name/level/:num/lesson/:order" element={<LessonRunnerPage />} />
+                <Route path="/diagnostic" element={<DiagnosticPage />} />
+                <Route path="/recommendations" element={<RecommendationsPage />} />
+                <Route path="/quiz-generator" element={<QuizGeneratorPage />} />
                 <Route path="/labs" element={<Navigate to="/labs/architect" replace />} />
                 <Route path="/labs/architect" element={<ProjectArchitectPage />} />
                 <Route path="/labs/reviewer" element={<CodeReviewerPage />} />
                 <Route path="/vision" element={<VisionPage />} />
                 <Route path="/vision/video/:id" element={<VideoDetailPage />} />
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/diagnostic" element={<DiagnosticPage />} />
-                <Route path="/recommendations" element={<RecommendationsPage />} />
-                <Route path="/quiz-generator" element={<QuizGeneratorPage />} />
+                <Route path="/admin" element={<AdminDashboardPage />} />
               </Route>
             </Routes>
           </CompetencyProvider>

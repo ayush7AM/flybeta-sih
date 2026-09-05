@@ -2,18 +2,21 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LandingNavbar from './LandingNavbar';
 import AuthModal from '../auth/AuthModal';
+import ThemePickerModal from './ThemePickerModal';
 import { useAuth } from '../../context/AuthContext';
 
 export default function HeroSection() {
   const [showAuth, setShowAuth] = useState(false);
+  const [showThemePicker, setShowThemePicker] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
 
   const handleCTA = () => {
     if (user) {
-      navigate('/tracks');
+      navigate('/dashboard');
     } else {
-      setShowAuth(true);
+      // Step 1 of onboarding: Theme Picker → then routes to /diagnostic
+      setShowThemePicker(true);
     }
   };
 
@@ -83,7 +86,7 @@ export default function HeroSection() {
           gamified levels, boss quizzes, and an AI-powered capstone evaluator.
         </p>
 
-        {/* CTA — redirects to /tracks if logged in, else opens AuthModal */}
+        {/* CTA — opens Theme Picker for unauthenticated, Dashboard for authenticated */}
         <button
           onClick={handleCTA}
           className="mt-12 inline-block px-12 py-5 bg-[#059669] text-white font-black text-xl uppercase tracking-wider no-underline border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[8px] active:translate-y-[8px] active:shadow-none transition-all cursor-pointer"
@@ -99,7 +102,13 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* ── Auth Modal ────────────────────────────────────────────────── */}
+      {/* ── Theme Picker Modal (Step 1 of onboarding) ───────────────── */}
+      <ThemePickerModal
+        isOpen={showThemePicker}
+        onClose={() => setShowThemePicker(false)}
+      />
+
+      {/* ── Auth Modal (legacy fallback) ────────────────────────────── */}
       <AuthModal
         isOpen={showAuth}
         onClose={() => setShowAuth(false)}

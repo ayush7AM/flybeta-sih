@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import OracleWidget from './OracleWidget';
+import TourGuide from '../TourGuide';
 import { useTheme } from '../../context/ThemeContext';
 
 // ── Per-theme background images ──────────────────────────────────────────
@@ -49,6 +50,7 @@ export default function Layout() {
           <Outlet />
         </main>
         <OracleWidget />
+        <TourGuide />
       </div>
     </div>
   );

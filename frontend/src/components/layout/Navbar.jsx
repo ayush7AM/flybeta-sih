@@ -13,9 +13,12 @@ const NAV_LINKS = [
 
 const AUTH_NAV_LINKS = [
   { label: 'Dashboard', path: '/dashboard' },
+  { label: 'Tracks', path: '/tracks' },
   { label: 'Diagnostic', path: '/diagnostic' },
   { label: 'Pathways', path: '/recommendations' },
   { label: 'Quiz Engine', path: '/quiz-generator' },
+  { label: 'Labs', path: '/labs' },
+  { label: 'Admin', path: '/admin' },
 ];
 
 export default function Navbar() {

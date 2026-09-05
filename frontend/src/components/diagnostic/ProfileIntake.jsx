@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ArrowRight, UserCircle } from 'lucide-react';
+import { useCompetency } from '../../context/CompetencyContext';
 
 const DESIGNATIONS = [
   'Junior Statistical Officer (JSO)',
@@ -45,10 +46,13 @@ const PREVIOUS_TRAININGS = [
 ];
 
 export default function ProfileIntake({ onComplete }) {
-  const [designation, setDesignation] = useState('');
-  const [division, setDivision] = useState('');
-  const [yearsOfService, setYearsOfService] = useState('');
-  const [previousTrainings, setPreviousTrainings] = useState([]);
+  const { profile: existingProfile } = useCompetency();
+
+  // Pre-fill from existing profile if available (returning user)
+  const [designation, setDesignation] = useState(existingProfile?.designation || '');
+  const [division, setDivision] = useState(existingProfile?.division || '');
+  const [yearsOfService, setYearsOfService] = useState(existingProfile?.yearsOfService || '');
+  const [previousTrainings, setPreviousTrainings] = useState(existingProfile?.previousTrainings || []);
 
   const handleTrainingToggle = (training) => {
     if (training === 'None') {

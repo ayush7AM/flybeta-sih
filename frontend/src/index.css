@@ -611,3 +611,77 @@ body {
 .animate-marquee {
   animation: marquee 20s linear infinite;
 }
+
+/* ── Driver.js Tour Overrides (Enterprise Aesthetic) ──────────────────── */
+
+.smartskills-tour-popover.driver-popover {
+  background: var(--color-surface) !important;
+  color: var(--color-ink) !important;
+  border: 2px solid var(--color-border) !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--shadow-brutal-lg) !important;
+  font-family: var(--font-body) !important;
+  max-width: 340px !important;
+}
+
+.smartskills-tour-popover .driver-popover-title {
+  font-family: var(--font-heading) !important;
+  font-weight: 800 !important;
+  font-size: 0.95rem !important;
+  color: var(--color-primary) !important;
+  letter-spacing: 0.01em !important;
+}
+
+.smartskills-tour-popover .driver-popover-description {
+  font-size: 0.8rem !important;
+  color: var(--color-muted) !important;
+  line-height: 1.5 !important;
+}
+
+.smartskills-tour-popover .driver-popover-progress-text {
+  font-family: var(--font-mono) !important;
+  font-size: 0.65rem !important;
+  color: var(--color-muted) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.smartskills-tour-popover .driver-popover-navigation-btns button {
+  font-family: var(--font-mono) !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-radius: var(--border-radius) !important;
+  padding: 6px 16px !important;
+  transition: all 0.15s ease !important;
+}
+
+.smartskills-tour-popover .driver-popover-next-btn {
+  background: var(--color-primary) !important;
+  color: #fff !important;
+  border: 2px solid var(--color-primary) !important;
+}
+
+.smartskills-tour-popover .driver-popover-next-btn:hover {
+  opacity: 0.9 !important;
+}
+
+.smartskills-tour-popover .driver-popover-prev-btn {
+  background: transparent !important;
+  color: var(--color-muted) !important;
+  border: 2px solid var(--color-border) !important;
+}
+
+.smartskills-tour-popover .driver-popover-prev-btn:hover {
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+.smartskills-tour-popover .driver-popover-arrow-side-left .driver-popover-arrow,
+.smartskills-tour-popover .driver-popover-arrow-side-right .driver-popover-arrow,
+.smartskills-tour-popover .driver-popover-arrow-side-top .driver-popover-arrow,
+.smartskills-tour-popover .driver-popover-arrow-side-bottom .driver-popover-arrow {
+  border-color: var(--color-border) !important;
+}
+
