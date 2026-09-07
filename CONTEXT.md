@@ -35,17 +35,11 @@ The project is being rapidly prototyped and built utilizing agentic AI coding wo
 
 ## 🗺️ The Roadmap: What Remains to be Built
 
-### Phase 12: Infrastructure & Deployment
-A final decision is required on the hosting architecture. This means choosing between containerizing the application with Docker for maximum control on a custom server, or utilizing streamlined, cloud-native PaaS solutions (like Vercel and Render) for rapid, automated deployments.
-
-### Backend & State Wiring
-The frontend components need to be connected to a live database to handle authentication and persist user data. This includes wiring up the internal player stats so that XP, daily streaks, and module progression are saved across sessions.
-
-### The Gemini Evaluator Engine
-The core differentiator of the platform—the AI Capstone Evaluator—needs to be integrated. This requires writing the backend logic to securely ping the Gemini API, parse the user's submitted code, evaluate it against a rubric, and return the graded feedback to the frontend dashboard.
-
 ### Curriculum Content Population
 The structural shells for the tracks are built, but the actual educational content must be written. This involves populating the JSON or database structures with the interactive lessons, the specific Boss Quiz questions, and the parameters for the capstone projects.
+
+### Performance & Monitoring
+Add application performance monitoring, error tracking, and analytics to the production deployment.
 
 ---
 
@@ -136,9 +130,35 @@ User Dashboard (Profile API, Rank Progression, Theme Persistence).
   - Username and display name casing fix — inline `textTransform: 'none'` overrides on `heading-lg` and `label-mono`.
   - `MEDIA_URL` / `MEDIA_ROOT` configured in `settings.py`; `/media` served in development; Vite proxies `/media` to Django.
   - **Phase 11c**: XP State Sync — squashed `get_dev_user` in DRF views, enforced `IsAuthenticated`, fixed `total_xp` math, unified `AuthContext` to fetch from `/users/profile/` (rich payload), and removed redundant local state in `DashboardPage.jsx` so Navbar and Dashboard sync instantly.
+- **Phase 12 (Completed)**: SIH MoSPI Rebranding & Diagnostic Flow
+  - Rebranded platform for MoSPI Smart Skills Intelligence — FRAC competency framework.
+  - Built 12-question Diagnostic Assessment with real-time scoring per FRAC quadrant.
+  - Pre-signup skill gap analysis — users see results before creating an account.
+  - `DiagnosticPage.jsx` — profile intake + quiz + results with radar chart.
+  - `TrackRoadmapPage.jsx` — learning track roadmaps per FRAC competency.
+  - `AdminDashboardPage.jsx` — Division Heatmap, Cadre Analysis, Training Effectiveness analytics.
+  - `TourGuide.jsx` — 11-step guided onboarding using driver.js across 4 pages.
+  - Oracle Widget powered by Gemini AI for contextual Q&A.
+  - Quiz Engine for competency-based assessments.
+- **Phase 13 (Completed)**: Mobile & UX Polish
+  - Responsive navbar with hamburger menu at `lg` breakpoint (1024px).
+  - Mobile-optimized: ThemePickerModal, DiagnosticPage, AuthModal, Tour Popover, AdminDashboardPage.
+  - Full-width stacked tab buttons on mobile admin dashboard.
+  - Tour guide back button navigates to previous page.
+  - Fixed 415 Unsupported Media Type on profile PATCH (added `JSONParser`).
+  - CORS origins auto-stripped of trailing slashes.
+- **Phase 14 (Completed)**: Production Deployment
+  - **Backend**: Deployed on Render (free tier) — Gunicorn + WhiteNoise.
+  - **Frontend**: Deployed on Vercel — Vite SPA with `vercel.json` rewrites.
+  - **Database**: Supabase PostgreSQL (Mumbai, `aws-0-ap-south-1`).
+  - **AI Proxy**: Route429 Cloudflare Worker for Gemini API key rotation.
+  - Production settings: `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS` from env vars.
+  - `build.sh` for Render: `pip install`, `collectstatic`, `migrate`.
+  - Frontend `VITE_API_URL` env var for API base URL switching.
+  - Live URLs: `https://flybeta-sih.vercel.app` (frontend) + `https://flybeta-sih.onrender.com` (backend).
 
 ### What's Next
-- **Phase 12**: TBD
+- **Phase 15**: Content expansion, analytics, and performance monitoring
 
 
 ## Curriculum
