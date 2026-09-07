@@ -248,6 +248,18 @@ export default function TourGuide() {
           }
         },
 
+        onPrevClick: () => {
+          // If on the first step of a page, go back to previous page
+          if (driverObj.getActiveIndex() === 0 && currentPageIndex > 0) {
+            const prevIndex = currentPageIndex - 1;
+            localStorage.setItem('mospi_tour_page', String(prevIndex));
+            driverObj.destroy();
+            navigate(TOUR_PAGES[prevIndex].path);
+          } else {
+            driverObj.movePrevious();
+          }
+        },
+
         onDestroyStarted: () => {
           if (driverObj.isLastStep()) {
             const nextIndex = currentPageIndex + 1;
