@@ -45,14 +45,14 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-3 md:px-12 h-16 md:h-20 bg-surface"
+    <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-3 lg:px-12 h-16 lg:h-20 bg-surface"
          style={{ boxShadow: 'var(--shadow-brutal)', borderBottom: 'var(--border-width) solid var(--color-border)' }}>
       {/* Left: Logo + Nav Links (Desktop) */}
-      <div className="flex items-center gap-2 md:gap-8">
+      <div className="flex items-center gap-2 lg:gap-8">
         <Logo to="/tracks" />
 
-        {/* Desktop Nav Links */}
-        <div className="hidden md:flex gap-2">
+        {/* Desktop Nav Links — only visible at lg (1024px+) */}
+        <div className="hidden lg:flex gap-2">
           {(user ? AUTH_NAV_LINKS : NAV_LINKS).map(({ label, path }) => {
             const isActive = path === '/tracks'
               ? location.pathname === '/tracks' || location.pathname.startsWith('/track')
@@ -75,9 +75,9 @@ export default function Navbar() {
       </div>
 
       {/* Right: Desktop actions + Mobile hamburger */}
-      <div className="flex items-center gap-2 md:gap-3">
+      <div className="flex items-center gap-2 lg:gap-3">
         {/* Desktop-only: Dark Mode + Logout */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           <button
             onClick={toggleDarkMode}
             className="brutalist-badge bg-canvas text-ink cursor-pointer hover:bg-border-light transition-colors p-2"
@@ -97,9 +97,9 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Mobile-only: Hamburger */}
+        {/* Mobile/Tablet: Hamburger — visible below lg */}
         <button
-          className="md:!hidden brutalist-badge bg-canvas text-ink cursor-pointer hover:bg-border-light transition-colors p-2 mobile-menu-btn"
+          className="lg:!hidden brutalist-badge bg-canvas text-ink cursor-pointer hover:bg-border-light transition-colors p-2 mobile-menu-btn"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           title="Menu"
         >
@@ -107,11 +107,11 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu Dropdown — visible below lg */}
       {mobileMenuOpen && (
         <div 
           ref={mobileMenuRef}
-          className="md:hidden absolute top-16 md:top-20 left-0 w-full bg-surface border-b-2 border-ink shadow-[var(--shadow-brutal)] flex flex-col z-40"
+          className="lg:hidden absolute top-16 left-0 w-full bg-surface border-b-2 border-ink shadow-[var(--shadow-brutal)] flex flex-col z-40"
         >
           {(user ? AUTH_NAV_LINKS : NAV_LINKS).map(({ label, path }) => {
             const isActive = path === '/tracks'
@@ -132,6 +132,27 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {/* Mobile footer: Dark Mode + Logout */}
+          <div className="flex items-center justify-between px-6 py-3 border-t-2 border-ink bg-canvas">
+            <button
+              onClick={toggleDarkMode}
+              className="brutalist-badge bg-surface text-ink cursor-pointer hover:bg-border-light transition-colors p-2 flex items-center gap-2"
+            >
+              {isDarkMode ? <Moon size={16} /> : <Sun size={16} />}
+              <span className="label-mono text-xs">{isDarkMode ? 'Dark' : 'Light'}</span>
+            </button>
+
+            {user && (
+              <button
+                onClick={() => { logout(); setMobileMenuOpen(false); }}
+                className="brutalist-badge bg-red-100 text-red-700 cursor-pointer hover:bg-red-200 transition-colors p-2 flex items-center gap-2"
+              >
+                <LogOut size={16} />
+                <span className="label-mono text-xs">Logout</span>
+              </button>
+            )}
+          </div>
         </div>
       )}
     </nav>

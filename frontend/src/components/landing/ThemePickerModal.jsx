@@ -39,7 +39,7 @@ export default function ThemePickerModal({ isOpen, onClose }) {
       >
         {/* Header */}
         <div
-          className="flex items-center justify-between p-5"
+          className="flex items-center justify-between p-4 md:p-5"
           style={{
             borderBottom: 'var(--border-width) solid var(--color-border)',
             background: 'var(--color-primary)',
@@ -62,7 +62,7 @@ export default function ThemePickerModal({ isOpen, onClose }) {
         </div>
 
         {/* Content */}
-        <div className="p-5 overflow-y-auto">
+        <div className="p-4 md:p-5 overflow-y-auto">
           <p className="text-muted text-sm m-0 mb-4">
             Select a visual identity for your experience. You can always change this later from the dashboard.
           </p>
@@ -129,14 +129,14 @@ export default function ThemePickerModal({ isOpen, onClose }) {
 
         {/* Footer */}
         <div
-          className="p-5 flex justify-end"
+          className="p-4 md:p-5 flex justify-end"
           style={{
             borderTop: 'var(--border-width) solid var(--color-border)',
           }}
         >
           <button
             onClick={handleContinue}
-            className="brutalist-btn bg-primary text-white flex items-center gap-2 px-6 py-2.5"
+            className="brutalist-btn bg-primary text-white flex items-center gap-2 px-4 md:px-6 py-2.5 w-full md:w-auto justify-center"
           >
             Continue to Assessment <ChevronRight size={18} />
           </button>

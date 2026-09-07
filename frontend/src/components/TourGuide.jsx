@@ -69,6 +69,19 @@ const TOUR_PAGES = [
     ],
   },
   {
+    path: '/track/cloud',
+    steps: [
+      {
+        popover: {
+          title: '🗺️ Track Roadmap',
+          description: 'Each track has 10 levels with progressively harder lessons. Complete all lessons in a level to unlock the next. Boss quizzes gate each milestone!',
+          side: 'bottom',
+          align: 'center',
+        },
+      },
+    ],
+  },
+  {
     path: '/diagnostic',
     steps: [
       {
@@ -180,7 +193,7 @@ export default function TourGuide() {
 
     const timer = setTimeout(() => {
       const driverObj = driver({
-        showProgress: false,
+        showProgress: true,
         animate: true,
         overlayColor: 'rgba(15, 23, 42, 0.75)',
         stagePadding: 10,
@@ -190,17 +203,10 @@ export default function TourGuide() {
         steps: tourPage.steps,
 
         onPopoverRender: (popover, { state }) => {
-          // ── Global step counter ──
+          // ── Override progress text with global count ──
           const currentGlobal = stepOffset + state.activeIndex + 1;
-          const progressEl = popover.progressText;
-          if (progressEl) {
-            progressEl.textContent = `${currentGlobal} of ${TOTAL_STEPS}`;
-          } else {
-            const p = document.createElement('span');
-            p.className = 'driver-popover-progress-text';
-            p.textContent = `${currentGlobal} of ${TOTAL_STEPS}`;
-            const footer = popover.footerButtons;
-            if (footer) footer.prepend(p);
+          if (popover.progressText) {
+            popover.progressText.textContent = `${currentGlobal} of ${TOTAL_STEPS}`;
           }
 
           // ── Button text ──

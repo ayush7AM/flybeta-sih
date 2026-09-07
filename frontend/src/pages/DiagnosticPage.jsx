@@ -83,7 +83,7 @@ export default function DiagnosticPage() {
               boxShadow: 'var(--shadow-brutal-lg)',
             }}
           >
-            <div className="flex items-center gap-4 mb-2">
+            <div className="flex items-center gap-2 md:gap-4 mb-2 flex-wrap">
               <div
                 className="brutalist-badge"
                 style={{ background: 'var(--color-emerald)', color: '#fff' }}
@@ -162,7 +162,7 @@ export default function DiagnosticPage() {
               color: '#fff',
             }}
           >
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-3 md:gap-4 flex-col sm:flex-row">
               <div className="p-2 rounded-full" style={{ background: 'rgba(255,255,255,0.2)' }}>
                 <UserPlus size={24} />
               </div>
@@ -177,7 +177,7 @@ export default function DiagnosticPage() {
                 <div className="flex flex-wrap gap-3">
                   <button
                     onClick={() => setShowAuth(true)}
-                    className="brutalist-btn bg-white flex items-center gap-2 px-6 py-2.5"
+                    className="brutalist-btn bg-white flex items-center gap-2 px-5 md:px-6 py-2.5 w-full sm:w-auto justify-center"
                     style={{ color: 'var(--color-primary)' }}
                   >
                     <CheckCircle size={16} /> Create Account
@@ -226,14 +226,14 @@ export default function DiagnosticPage() {
       {/* Page Header */}
       <header className="mb-10">
         <div
-          className="bg-surface p-8 inline-block"
+          className="bg-surface p-5 md:p-8 inline-block"
           style={{
             border: 'var(--border-width) solid var(--color-border)',
             borderRadius: 'var(--border-radius)',
             boxShadow: 'var(--shadow-brutal-lg)',
           }}
         >
-          <div className="flex items-center gap-4 mb-2">
+          <div className="flex items-center gap-2 md:gap-4 mb-2 flex-wrap">
             <div
               className="brutalist-badge"
               style={{ background: 'var(--color-primary)', color: 'var(--color-canvas)' }}

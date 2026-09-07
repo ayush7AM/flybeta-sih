@@ -621,7 +621,8 @@ body {
   border-radius: var(--border-radius) !important;
   box-shadow: var(--shadow-brutal-lg) !important;
   font-family: var(--font-body) !important;
-  max-width: 340px !important;
+  max-width: 360px !important;
+  padding: 16px !important;
 }
 
 .smartskills-tour-popover .driver-popover-title {
@@ -630,12 +631,22 @@ body {
   font-size: 0.95rem !important;
   color: var(--color-primary) !important;
   letter-spacing: 0.01em !important;
+  margin-bottom: 6px !important;
 }
 
 .smartskills-tour-popover .driver-popover-description {
   font-size: 0.8rem !important;
   color: var(--color-muted) !important;
   line-height: 1.5 !important;
+  margin-bottom: 12px !important;
+}
+
+/* Footer: progress text sits on its own line above buttons */
+.smartskills-tour-popover .driver-popover-footer {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin-top: 4px !important;
 }
 
 .smartskills-tour-popover .driver-popover-progress-text {
@@ -643,18 +654,27 @@ body {
   font-size: 0.65rem !important;
   color: var(--color-muted) !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
+  letter-spacing: 0.08em !important;
+  display: block !important;
+}
+
+.smartskills-tour-popover .driver-popover-navigation-btns {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
 }
 
 .smartskills-tour-popover .driver-popover-navigation-btns button {
   font-family: var(--font-mono) !important;
-  font-size: 0.75rem !important;
+  font-size: 0.7rem !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.05em !important;
   border-radius: var(--border-radius) !important;
-  padding: 6px 16px !important;
+  padding: 8px 16px !important;
   transition: all 0.15s ease !important;
+  white-space: nowrap !important;
 }
 
 .smartskills-tour-popover .driver-popover-next-btn {
@@ -678,6 +698,24 @@ body {
   color: var(--color-primary) !important;
 }
 
+/* Skip Tutorial button — sits in the nav buttons row, pushed right */
+.smartskills-tour-popover .tour-skip-btn {
+  margin-left: auto !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.6rem !important;
+  color: var(--color-muted) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  text-decoration: underline !important;
+  opacity: 0.7 !important;
+  transition: opacity 0.15s !important;
+}
+
+.smartskills-tour-popover .tour-skip-btn:hover {
+  opacity: 1 !important;
+  color: var(--color-primary) !important;
+}
+
 .smartskills-tour-popover .driver-popover-arrow-side-left .driver-popover-arrow,
 .smartskills-tour-popover .driver-popover-arrow-side-right .driver-popover-arrow,
 .smartskills-tour-popover .driver-popover-arrow-side-top .driver-popover-arrow,
@@ -685,3 +723,40 @@ body {
   border-color: var(--color-border) !important;
 }
 
+/* ── Mobile Tour Overrides ──────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .smartskills-tour-popover.driver-popover {
+    max-width: calc(100vw - 32px) !important;
+    padding: 12px !important;
+  }
+
+  .smartskills-tour-popover .driver-popover-title {
+    font-size: 0.85rem !important;
+  }
+
+  .smartskills-tour-popover .driver-popover-description {
+    font-size: 0.72rem !important;
+    margin-bottom: 8px !important;
+  }
+
+  .smartskills-tour-popover .driver-popover-navigation-btns {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .smartskills-tour-popover .driver-popover-navigation-btns button {
+    font-size: 0.6rem !important;
+    padding: 8px 12px !important;
+    flex: 1 1 0 !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  .smartskills-tour-popover .tour-skip-btn {
+    width: 100% !important;
+    text-align: center !important;
+    margin-left: 0 !important;
+    margin-top: 4px !important;
+  }
+}

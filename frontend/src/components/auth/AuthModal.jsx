@@ -88,10 +88,10 @@ export default function AuthModal({ isOpen, onClose, customMessage = null, initi
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="relative w-full max-w-md bg-[var(--color-surface)] border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-md bg-[var(--color-surface)] border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col max-h-[90vh] mx-2 sm:mx-0">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b-4 border-black bg-[var(--color-primary)]">
-          <h2 className="text-2xl font-black text-black uppercase tracking-wider">
+          <h2 className="text-xl md:text-2xl font-black text-black uppercase tracking-wider">
             {view === 'login' && 'Welcome Back'}
             {view === 'register' && 'Join FlyBeta'}
             {view === 'forgot' && 'Reset Password'}
@@ -105,7 +105,7 @@ export default function AuthModal({ isOpen, onClose, customMessage = null, initi
         </div>
 
         {/* Content (Scrollable) */}
-        <div className="p-6 overflow-y-auto">
+        <div className="p-4 md:p-6 overflow-y-auto">
           {customMessage && (
             <div className="mb-6 p-4 border-l-4 border-blue-500 bg-blue-50 text-blue-900 font-medium text-sm">
               {customMessage}
@@ -243,7 +243,7 @@ export default function AuthModal({ isOpen, onClose, customMessage = null, initi
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t-4 border-black bg-[var(--color-bg-primary)] text-center">
+        <div className="p-4 md:p-6 border-t-4 border-black bg-[var(--color-bg-primary)] text-center">
           {view === 'login' && (
             <p className="text-[var(--color-ink)] font-medium">
               New here? <button onClick={() => toggleView('register')} className="font-bold text-[var(--color-primary)] uppercase hover:underline bg-transparent border-none cursor-pointer">Register</button>

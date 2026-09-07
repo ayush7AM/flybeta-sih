@@ -25,12 +25,15 @@ load_dotenv(BASE_DIR / '.env')
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-11q#rgngwp+klrmw-(2crp26#@70o4vddm*n#51-wyf$5v2tte'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-11q#rgngwp+klrmw-(2crp26#@70o4vddm*n#51-wyf$5v2tte'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # API Keys
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
@@ -58,6 +61,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',   # Serve static files in production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -135,6 +139,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# WhiteNoise — compressed static file serving
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Media files (User uploads — avatars, etc.)
 MEDIA_URL = '/media/'
@@ -194,6 +206,13 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # ---------------------------------------------------------------------------
-# CORS — allow all in development
+# CORS
 # ---------------------------------------------------------------------------
-CORS_ALLOW_ALL_ORIGINS = True  # Lock down in production
+CORS_ALLOWED_ORIGINS = os.environ.get(
+    'CORS_ALLOWED_ORIGINS',
+    'http://localhost:5173,http://127.0.0.1:5173'
+).split(',')
+
+# Fallback: allow all in DEBUG mode
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True

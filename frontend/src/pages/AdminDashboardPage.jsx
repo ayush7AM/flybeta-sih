@@ -55,40 +55,40 @@ export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState('divisions');
 
   return (
-    <div id="tour-page-admin" className="max-w-6xl mx-auto px-3 md:px-4 py-6 md:py-8 space-y-6 md:space-y-8">
+    <div id="tour-page-admin" className="max-w-6xl mx-auto px-2 sm:px-3 lg:px-4 py-4 sm:py-6 lg:py-8 space-y-4 sm:space-y-6 lg:space-y-8">
 
       {/* ── Header ─────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
             <Link
               to="/dashboard"
-              className="brutalist-badge bg-canvas text-ink no-underline cursor-pointer hover:bg-border-light transition-colors flex items-center gap-1"
+              className="brutalist-badge bg-canvas text-ink no-underline cursor-pointer hover:bg-border-light transition-colors flex items-center gap-1 text-xs"
             >
               <ArrowLeft size={14} /> Learner View
             </Link>
-            <span className="brutalist-badge" style={{ background: '#DC2626', color: '#fff' }}>
+            <span className="brutalist-badge text-xs" style={{ background: '#DC2626', color: '#fff' }}>
               ADMIN
             </span>
           </div>
-          <h1 className="heading-xl m-0">DIID ANALYTICS</h1>
-          <p className="text-muted label-mono mt-1">ENTERPRISE CAPACITY MONITORING</p>
+          <h1 className="heading-xl m-0 text-xl sm:text-2xl lg:text-3xl">DIID ANALYTICS</h1>
+          <p className="text-muted label-mono mt-1 text-xs">ENTERPRISE CAPACITY MONITORING</p>
         </div>
       </div>
 
       {/* ── Summary Cards ─────────────────────────────────────── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
         {SUMMARY_STATS.map((stat) => (
           <div
             key={stat.label}
-            className="brutalist-card p-4"
+            className="brutalist-card p-3 sm:p-4"
             style={{ background: 'var(--color-surface)' }}
           >
-            <div className="flex items-center gap-2 mb-2">
-              <stat.icon size={18} style={{ color: stat.color }} />
-              <span className="label-mono text-xs text-muted">{stat.label}</span>
+            <div className="flex items-center gap-2 mb-1 sm:mb-2">
+              <stat.icon size={16} style={{ color: stat.color }} />
+              <span className="label-mono text-[10px] sm:text-xs text-muted">{stat.label}</span>
             </div>
-            <p className="heading-lg m-0" style={{ color: stat.color, fontSize: '1.5rem' }}>
+            <p className="heading-lg m-0 text-lg sm:text-xl lg:text-2xl" style={{ color: stat.color }}>
               {stat.value}
             </p>
           </div>
@@ -96,7 +96,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* ── Tab Selector ──────────────────────────────────────── */}
-      <div className="flex gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
         {[
           { key: 'divisions', label: 'Division Heatmap' },
           { key: 'cadres', label: 'Cadre Analysis' },
@@ -105,7 +105,7 @@ export default function AdminDashboardPage() {
           <button
             key={key}
             onClick={() => setActiveTab(key)}
-            className="label-mono text-xs px-4 py-2 cursor-pointer transition-all"
+            className="label-mono text-xs px-4 py-2.5 cursor-pointer transition-all text-center"
             style={{
               borderRadius: 'var(--border-radius)',
               border: '2px solid',
@@ -123,52 +123,55 @@ export default function AdminDashboardPage() {
 
       {/* Division-wide Competency Heatmap */}
       {activeTab === 'divisions' && (
-        <div className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
-          <h3 className="heading-md mb-2">Division-Wide Competency Scores</h3>
-          <p className="text-muted text-xs label-mono mb-4">
+        <div className="brutalist-card p-3 sm:p-4 lg:p-6" style={{ background: 'var(--color-surface)' }}>
+          <h3 className="heading-md mb-1 sm:mb-2 text-sm sm:text-base">Division-Wide Competency Scores</h3>
+          <p className="text-muted text-[10px] sm:text-xs label-mono mb-3 sm:mb-4">
             Average FRAC scores across 7 divisions — identifies systemic skill gaps
           </p>
-          <div style={{ width: '100%', height: 400 }}>
-            <ResponsiveContainer>
-              <BarChart data={DIVISION_SCORES} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
-                <XAxis
-                  dataKey="division"
-                  tick={{ fill: 'var(--color-muted)', fontSize: 11, fontFamily: 'var(--font-mono)' }}
-                />
-                <YAxis
-                  domain={[0, 100]}
-                  tick={{ fill: 'var(--color-muted)', fontSize: 10 }}
-                />
-                <Tooltip
-                  contentStyle={{
-                    background: 'var(--color-surface)',
-                    border: '2px solid var(--color-border)',
-                    borderRadius: 'var(--border-radius)',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 11,
-                  }}
-                />
-                <Legend wrapperStyle={{ fontSize: 11, fontFamily: 'var(--font-mono)' }} />
-                {ALL_TAGS.map((tag, i) => (
-                  <Bar
-                    key={tag}
-                    dataKey={tag}
-                    name={COMPETENCY_META[tag].shortLabel}
-                    fill={BAR_COLORS[i]}
-                    radius={[2, 2, 0, 0]}
+          <div className="overflow-x-auto -mx-3 sm:mx-0">
+            <div style={{ width: '100%', minWidth: 500, height: 300 }} className="sm:h-[400px]">
+              <ResponsiveContainer>
+                <BarChart data={DIVISION_SCORES} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+                  <XAxis
+                    dataKey="division"
+                    tick={{ fill: 'var(--color-muted)', fontSize: 10, fontFamily: 'var(--font-mono)' }}
                   />
-                ))}
-              </BarChart>
-            </ResponsiveContainer>
+                  <YAxis
+                    domain={[0, 100]}
+                    tick={{ fill: 'var(--color-muted)', fontSize: 9 }}
+                    width={30}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      background: 'var(--color-surface)',
+                      border: '2px solid var(--color-border)',
+                      borderRadius: 'var(--border-radius)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 10,
+                    }}
+                  />
+                  <Legend wrapperStyle={{ fontSize: 10, fontFamily: 'var(--font-mono)' }} />
+                  {ALL_TAGS.map((tag, i) => (
+                    <Bar
+                      key={tag}
+                      dataKey={tag}
+                      name={COMPETENCY_META[tag].shortLabel}
+                      fill={BAR_COLORS[i]}
+                      radius={[2, 2, 0, 0]}
+                    />
+                  ))}
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
 
           {/* Critical gaps callout */}
-          <div className="mt-4 p-3 flex items-start gap-3" style={{ background: '#FEF2F2', borderRadius: 'var(--border-radius)', border: '1px solid #FECACA' }}>
-            <AlertTriangle size={18} style={{ color: '#DC2626', marginTop: 2 }} />
+          <div className="mt-3 sm:mt-4 p-3 flex items-start gap-2 sm:gap-3" style={{ background: '#FEF2F2', borderRadius: 'var(--border-radius)', border: '1px solid #FECACA' }}>
+            <AlertTriangle size={16} className="flex-shrink-0" style={{ color: '#DC2626', marginTop: 2 }} />
             <div>
-              <p className="label-mono text-xs font-bold m-0" style={{ color: '#DC2626' }}>CRITICAL GAPS IDENTIFIED</p>
-              <p className="text-xs text-muted m-0 mt-1">
+              <p className="label-mono text-[10px] sm:text-xs font-bold m-0" style={{ color: '#DC2626' }}>CRITICAL GAPS IDENTIFIED</p>
+              <p className="text-[10px] sm:text-xs text-muted m-0 mt-1">
                 FOD &amp; SDRD show Digital Governance scores below 42% — recommend prioritizing NSSTA cybersecurity &amp; Gov-Cloud programmes.
               </p>
             </div>
@@ -178,14 +181,14 @@ export default function AdminDashboardPage() {
 
       {/* Cadre-level Skill Gaps */}
       {activeTab === 'cadres' && (
-        <div className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
-          <h3 className="heading-md mb-2">Skill Gaps by Cadre (JSO → Dy. Director)</h3>
-          <p className="text-muted text-xs label-mono mb-4">
+        <div className="brutalist-card p-3 sm:p-4 lg:p-6" style={{ background: 'var(--color-surface)' }}>
+          <h3 className="heading-md mb-1 sm:mb-2 text-sm sm:text-base">Skill Gaps by Cadre (JSO → Dy. Director)</h3>
+          <p className="text-muted text-[10px] sm:text-xs label-mono mb-3 sm:mb-4">
             Aggregate competency levels across designation groups
           </p>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             {/* Radar view */}
-            <div style={{ width: '100%', height: 350 }}>
+            <div style={{ width: '100%', height: 280 }} className="sm:h-[350px]">
               <ResponsiveContainer>
                 <RadarChart data={ALL_TAGS.map((tag) => ({
                   quadrant: COMPETENCY_META[tag].shortLabel,
@@ -196,20 +199,20 @@ export default function AdminDashboardPage() {
                   <PolarGrid stroke="var(--color-border)" />
                   <PolarAngleAxis
                     dataKey="quadrant"
-                    tick={{ fill: 'var(--color-muted)', fontSize: 11, fontFamily: 'var(--font-mono)' }}
+                    tick={{ fill: 'var(--color-muted)', fontSize: 10, fontFamily: 'var(--font-mono)' }}
                   />
-                  <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: 'var(--color-muted)', fontSize: 10 }} />
+                  <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: 'var(--color-muted)', fontSize: 9 }} />
                   <Radar name="JSO" dataKey="JSO" stroke="#DC2626" fill="#DC2626" fillOpacity={0.15} strokeWidth={2} />
                   <Radar name="SSO" dataKey="SSO" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.15} strokeWidth={2} />
                   <Radar name="Dy. Director" dataKey="Dy. Dir" stroke="#059669" fill="#059669" fillOpacity={0.15} strokeWidth={2} />
-                  <Legend wrapperStyle={{ fontSize: 11, fontFamily: 'var(--font-mono)' }} />
+                  <Legend wrapperStyle={{ fontSize: 10, fontFamily: 'var(--font-mono)' }} />
                   <Tooltip
                     contentStyle={{
                       background: 'var(--color-surface)',
                       border: '2px solid var(--color-border)',
                       borderRadius: 'var(--border-radius)',
                       fontFamily: 'var(--font-mono)',
-                      fontSize: 11,
+                      fontSize: 10,
                     }}
                   />
                 </RadarChart>
@@ -217,25 +220,25 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Table view */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs label-mono" style={{ borderCollapse: 'collapse' }}>
+            <div className="overflow-x-auto -mx-3 sm:mx-0">
+              <table className="w-full text-[10px] sm:text-xs label-mono" style={{ borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid var(--color-border)' }}>
                     <th className="text-left py-2 px-2 text-muted">Cadre</th>
                     {ALL_TAGS.map(tag => (
-                      <th key={tag} className="text-center py-2 px-2 text-muted">{COMPETENCY_META[tag].icon}</th>
+                      <th key={tag} className="text-center py-2 px-1 sm:px-2 text-muted">{COMPETENCY_META[tag].icon}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {CADRE_GAPS.map((row) => (
                     <tr key={row.cadre} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                      <td className="py-2 px-2 font-bold">{row.cadre}</td>
+                      <td className="py-2 px-2 font-bold whitespace-nowrap">{row.cadre}</td>
                       {ALL_TAGS.map(tag => {
                         const val = row[tag];
                         const isLow = val < 50;
                         return (
-                          <td key={tag} className="text-center py-2 px-2" style={{ color: isLow ? '#DC2626' : 'var(--color-emerald)' }}>
+                          <td key={tag} className="text-center py-2 px-1 sm:px-2" style={{ color: isLow ? '#DC2626' : 'var(--color-emerald)' }}>
                             {val}%
                           </td>
                         );
@@ -251,31 +254,31 @@ export default function AdminDashboardPage() {
 
       {/* Training Programme Effectiveness */}
       {activeTab === 'training' && (
-        <div className="brutalist-card p-4 md:p-6" style={{ background: 'var(--color-surface)' }}>
-          <h3 className="heading-md mb-2">Training Programme Effectiveness</h3>
-          <p className="text-muted text-xs label-mono mb-4">
+        <div className="brutalist-card p-3 sm:p-4 lg:p-6" style={{ background: 'var(--color-surface)' }}>
+          <h3 className="heading-md mb-1 sm:mb-2 text-sm sm:text-base">Training Programme Effectiveness</h3>
+          <p className="text-muted text-[10px] sm:text-xs label-mono mb-3 sm:mb-4">
             Completion rates &amp; score improvement trends (iGOT + NSSTA TPAC)
           </p>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             {/* Completion rates */}
             <div>
-              <p className="label-mono text-xs font-bold mb-2 text-muted">COMPLETION RATES (%)</p>
-              <div style={{ width: '100%', height: 280 }}>
+              <p className="label-mono text-[10px] sm:text-xs font-bold mb-2 text-muted">COMPLETION RATES (%)</p>
+              <div style={{ width: '100%', height: 240 }} className="sm:h-[280px]">
                 <ResponsiveContainer>
-                  <AreaChart data={TRAINING_EFFECTIVENESS} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                  <AreaChart data={TRAINING_EFFECTIVENESS} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
-                    <XAxis dataKey="quarter" tick={{ fill: 'var(--color-muted)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
-                    <YAxis domain={[0, 100]} tick={{ fill: 'var(--color-muted)', fontSize: 10 }} />
+                    <XAxis dataKey="quarter" tick={{ fill: 'var(--color-muted)', fontSize: 9, fontFamily: 'var(--font-mono)' }} />
+                    <YAxis domain={[0, 100]} tick={{ fill: 'var(--color-muted)', fontSize: 9 }} width={30} />
                     <Tooltip
                       contentStyle={{
                         background: 'var(--color-surface)',
                         border: '2px solid var(--color-border)',
                         borderRadius: 'var(--border-radius)',
                         fontFamily: 'var(--font-mono)',
-                        fontSize: 11,
+                        fontSize: 10,
                       }}
                     />
-                    <Legend wrapperStyle={{ fontSize: 11, fontFamily: 'var(--font-mono)' }} />
+                    <Legend wrapperStyle={{ fontSize: 10, fontFamily: 'var(--font-mono)' }} />
                     <Area type="monotone" dataKey="iGOT_completion" name="iGOT" stroke="#2563EB" fill="#2563EB" fillOpacity={0.15} strokeWidth={2} />
                     <Area type="monotone" dataKey="NSSTA_completion" name="NSSTA" stroke="#7C3AED" fill="#7C3AED" fillOpacity={0.15} strokeWidth={2} />
                   </AreaChart>
@@ -285,23 +288,23 @@ export default function AdminDashboardPage() {
 
             {/* Score improvement */}
             <div>
-              <p className="label-mono text-xs font-bold mb-2 text-muted">AVG SCORE IMPROVEMENT (pts)</p>
-              <div style={{ width: '100%', height: 280 }}>
+              <p className="label-mono text-[10px] sm:text-xs font-bold mb-2 text-muted">AVG SCORE IMPROVEMENT (pts)</p>
+              <div style={{ width: '100%', height: 240 }} className="sm:h-[280px]">
                 <ResponsiveContainer>
-                  <LineChart data={TRAINING_EFFECTIVENESS} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                  <LineChart data={TRAINING_EFFECTIVENESS} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
-                    <XAxis dataKey="quarter" tick={{ fill: 'var(--color-muted)', fontSize: 10, fontFamily: 'var(--font-mono)' }} />
-                    <YAxis tick={{ fill: 'var(--color-muted)', fontSize: 10 }} />
+                    <XAxis dataKey="quarter" tick={{ fill: 'var(--color-muted)', fontSize: 9, fontFamily: 'var(--font-mono)' }} />
+                    <YAxis tick={{ fill: 'var(--color-muted)', fontSize: 9 }} width={30} />
                     <Tooltip
                       contentStyle={{
                         background: 'var(--color-surface)',
                         border: '2px solid var(--color-border)',
                         borderRadius: 'var(--border-radius)',
                         fontFamily: 'var(--font-mono)',
-                        fontSize: 11,
+                        fontSize: 10,
                       }}
                     />
-                    <Line type="monotone" dataKey="avg_score_improvement" name="Score Δ" stroke="#059669" strokeWidth={3} dot={{ fill: '#059669', r: 4 }} />
+                    <Line type="monotone" dataKey="avg_score_improvement" name="Score Δ" stroke="#059669" strokeWidth={3} dot={{ fill: '#059669', r: 3 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>

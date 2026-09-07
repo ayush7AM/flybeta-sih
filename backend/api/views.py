@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.decorators import action
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework import status
 
 from learn.models import Domain, Level, Lesson, LevelProgress, DomainProgress, CapstoneSubmission
@@ -53,7 +53,7 @@ class UserProfileView(APIView):
     """
     from rest_framework.permissions import IsAuthenticated
     permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [JSONParser, MultiPartParser, FormParser]
 
     def get(self, request):
         profile = request.user.profile

@@ -46,7 +46,7 @@ export default function Layout() {
       {/* All content sits above the overlay */}
       <div className="relative" style={{ zIndex: 10 }}>
         <Navbar />
-        <main className="max-w-[1440px] mx-auto px-3 md:px-12 pt-24 md:pt-28 pb-12 md:pb-16">
+        <main className="max-w-[1440px] mx-auto px-3 lg:px-12 pt-20 lg:pt-28 pb-12 lg:pb-16">
           <Outlet />
         </main>
         <OracleWidget />
