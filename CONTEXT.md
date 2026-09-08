@@ -148,14 +148,25 @@ User Dashboard (Profile API, Rank Progression, Theme Persistence).
   - Fixed 415 Unsupported Media Type on profile PATCH (added `JSONParser`).
   - CORS origins auto-stripped of trailing slashes.
 - **Phase 14 (Completed)**: Production Deployment
-  - **Backend**: Deployed on Render (free tier) — Gunicorn + WhiteNoise.
+  - Configured frontend deployment on Vercel (`flybeta-sih.vercel.app`).
+  - Switched backend deployment to Railway (`flybeta.up.railway.app`) to eliminate cold start delays.
+  - Setup `.env.production` routing and secure environment variables across both platforms.
+  - Mitigated Django CORS header strictness to support production API access.
+  - Fixed Tour Guide React Hook crash (Minified Error #310) when API fetches failed or triggered early returns.
+- **Phase 15 (Completed)**: AI Workflows Documentation
+  - Updated `README.md` to comprehensively detail the 3 core Gemini integrations:
+    1. Oracle (Conversational AI Assistant via proxy)
+    2. Code-Drishti (Generative Lab Evaluator strict rubric matching)
+    3. AI Skill-Gap Diagnostics (FRAC Matrix routing logic)
+  - Synced repository tracking and build logs.
+  - **Backend**: Deployed on Railway (previously Render) — Gunicorn + WhiteNoise.
   - **Frontend**: Deployed on Vercel — Vite SPA with `vercel.json` rewrites.
   - **Database**: Supabase PostgreSQL (Mumbai, `aws-0-ap-south-1`).
   - **AI Proxy**: Route429 Cloudflare Worker for Gemini API key rotation.
   - Production settings: `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS` from env vars.
-  - `build.sh` for Render: `pip install`, `collectstatic`, `migrate`.
-  - Frontend `VITE_API_URL` env var for API base URL switching.
-  - Live URLs: `https://flybeta-sih.vercel.app` (frontend) + `https://flybeta-sih.onrender.com` (backend).
+  - `build.sh` for Railway: `pip install`, `collectstatic`, `migrate`.
+  - `render.yaml` Blueprint available for legacy Render fallback.
+  - Live URLs: `https://flybeta-sih.vercel.app` (frontend) + `https://flybeta.up.railway.app` (backend).
 
 ### What's Next
 - **Phase 15**: Content expansion, analytics, and performance monitoring
